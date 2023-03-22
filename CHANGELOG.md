@@ -1,3 +1,17 @@
+## [0.0.4](https://github.com/hemengke1997/ts-template/compare/v0.0.3...v0.0.4) (2023-03-22)
+
+
+### Bug Fixes
+
+* bump script ([1d2b81c](https://github.com/hemengke1997/ts-template/commit/1d2b81c5fdf0b90eb65a2777682ae685d1483931))
+
+
+### Features
+
+* expose key interface ([f1dc858](https://github.com/hemengke1997/ts-template/commit/f1dc858d8ee4c98608c979e48877b9a6fde044fd))
+
+
+
 ## [0.0.3](https://github.com/hemengke1997/ts-template/compare/v0.0.2...v0.0.3) (2023-03-22)
 
 
