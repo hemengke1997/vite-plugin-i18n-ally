@@ -52,8 +52,8 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint .",
     "up": "taze -I -w -r",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "bump": "bumpp package.json -c -p -t -all"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "bump": "bumpp package.json -c -p -t -all -x \"pnpm run changelog\""
   },
   "peerDependencies": {
     "i18next": ">=21.0.0",
