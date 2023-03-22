@@ -131,7 +131,7 @@ async function initModules(opts: { entry: string }) {
 }
 
 function isJson(p: string) {
-  return /\.?json5?$/.test(path.extname(p))
+  return /\.json5?$/.test(path.extname(p))
 }
 
 export async function i18nDetector(options: DetectI18nResourceOptions) {
