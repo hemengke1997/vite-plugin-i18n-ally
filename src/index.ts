@@ -13,7 +13,7 @@ import { name as PKGNAME } from '../package.json'
 
 const debug = createDebug(PKGNAME)
 
-interface DetectI18nResourceOptions {
+export interface DetectI18nResourceOptions {
   localeEntry: string
 }
 

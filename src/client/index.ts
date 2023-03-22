@@ -2,7 +2,7 @@ import type { i18n } from 'i18next'
 import helper from 'virtual:i18n-helper'
 import { name as PKGNAME } from '../../package.json'
 
-interface I18nSetupOptions {
+export interface I18nSetupOptions {
   i18n: i18n
   setQueryOnChange?: {
     lookupTarget: string
