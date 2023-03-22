@@ -41,7 +41,9 @@
   "files": [
     "dist",
     "CHANGELOG.md",
-    "README.md"
+    "README.md",
+    "virtual.d.ts",
+    "i18n.d.ts"
   ],
   "scripts": {
     "dev": "tsup --watch",
