@@ -1,3 +1,12 @@
+## [0.0.5](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.4...v0.0.5) (2023-03-22)
+
+
+### Bug Fixes
+
+* move deps ([01eaaed](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/01eaaed54b5e664fe67756c974e5b96c8f0ff2c0))
+
+
+
 ## [0.0.4](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.3...v0.0.4) (2023-03-22)
 
 
