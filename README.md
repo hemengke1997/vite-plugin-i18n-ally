@@ -1,9 +1,17 @@
 # vite-plugin-i18n-detector
 
+> Lazyloadable i18n locales detector
+
 ## Features
 
 - Unawared DX
 - **lazyload** locale resource
+
+## Install
+
+```bash
+pnpm add vite-plugin-i18n-detector i18next
+```
 
 ## Usage
 
