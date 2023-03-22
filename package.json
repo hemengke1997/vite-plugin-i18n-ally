@@ -1,0 +1,53 @@
+{
+  "name": "ts-template",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@7.30.0",
+  "description": "a template for typescript project or plugin",
+  "author": "hemengke <https://github.com/hemengke1997>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemengke1997/ts-template.git"
+  },
+  "keywords": [
+    "TODO"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest",
+    "preinstall": "npx only-allow pnpm",
+    "lint": "eslint .",
+    "up": "taze -I -w -r",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "bump": "bumpp packages/*/package.json -c -p --tag -all"
+  },
+  "devDependencies": {
+    "@minko-fe/eslint-config": "1.2.32",
+    "@minko-fe/tsconfig": "^1.2.32",
+    "bumpp": "^9.0.0",
+    "conventional-changelog-cli": "^2.2.2",
+    "eslint": "8.36.0",
+    "pnpm": "^7.30.0",
+    "taze": "^0.9.1",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
+  }
+}
