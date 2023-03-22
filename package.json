@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-i18n-detector",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@7.30.0",
   "description": "vite plugin for auto lazy-detect i18n resources",
   "author": "hemengke <https://github.com/hemengke1997>",
@@ -51,7 +51,7 @@
     "lint": "eslint .",
     "up": "taze -I -w -r",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "bump": "bumpp packages/*/package.json -c -p -t -all"
+    "bump": "bumpp package.json -c -p -t -all"
   },
   "peerDependencies": {
     "i18next": ">=21.0.0",
