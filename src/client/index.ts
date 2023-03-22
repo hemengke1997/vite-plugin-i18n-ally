@@ -4,19 +4,18 @@ import { name as PKGNAME } from '../../package.json'
 
 export interface I18nSetupOptions {
   i18n: i18n
-  setQueryOnChange?: {
-    lookupTarget: string
-  }
-  onLocaleChange: () => void
+  fallbackLng: string
+  onLocaleChange: (lng?: string) => void
+  setQuery?:
+    | {
+        lookupTarget: string
+      }
+    | boolean
 }
 
 function setupI18n(options: I18nSetupOptions) {
-  const { onLocaleChange, setQueryOnChange, i18n } = options || {}
+  const { onLocaleChange, setQuery, i18n, fallbackLng } = options || {}
 
-  let fallbackLng = i18n.store.options.fallbackLng as string
-  if (typeof fallbackLng === 'boolean') {
-    fallbackLng = ''
-  }
   const lng = i18n.language || fallbackLng
   let currentLng: string | undefined = lng
 
@@ -49,7 +48,7 @@ function setupI18n(options: I18nSetupOptions) {
   }
 
   async function setLangAttrs(lang: string) {
-    if (setQueryOnChange) {
+    if (setQuery) {
       /**
        * NOTE:
        * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
@@ -58,11 +57,14 @@ function setupI18n(options: I18nSetupOptions) {
        * axios.defaults.headers.common['Accept-Language'] = lang
        */
       document.querySelector('html')?.setAttribute('lang', lang)
-      const { lookupTarget } = setQueryOnChange
-      const queryString = (await import('query-string')).default
-      const query = queryString.parse(location.search)
-      query[lookupTarget] = lang
-      history.replaceState({ query }, '', queryString.stringifyUrl({ url: window.location.href, query }))
+
+      if (typeof setQuery === 'object') {
+        const { lookupTarget } = setQuery
+        const queryString = (await import('query-string')).default
+        const query = queryString.parse(location.search)
+        query[lookupTarget] = lang
+        history.replaceState({ query }, '', queryString.stringifyUrl({ url: window.location.href, query }))
+      }
     }
   }
 
@@ -87,7 +89,7 @@ function setupI18n(options: I18nSetupOptions) {
 
   load(lng, () => {
     // Notify UI framewrok render
-    onLocaleChange()
+    onLocaleChange(lng)
   })
 }
 

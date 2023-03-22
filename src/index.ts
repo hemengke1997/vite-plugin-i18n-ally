@@ -7,7 +7,7 @@ import glob from 'tiny-glob'
 import stripDirs from 'strip-dirs'
 import depth from 'depth'
 import fs from 'fs-extra'
-import { cloneDeep } from '@minko-fe/lodash-pro'
+import cloneDeep from 'clone-deep'
 import createDebug from 'debug'
 import { name as PKGNAME } from '../package.json'
 

@@ -10,6 +10,7 @@ import './index.css'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const lookupTarget = 'lang'
+const fallbackLng = 'en'
 
 i18next
   .use(LanguageDetector)
@@ -26,7 +27,7 @@ i18next
     interpolation: {
       escapeValue: false,
     },
-    fallbackLng: 'en',
+    fallbackLng,
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator'],
       caches: ['localStorage', 'sessionStorage', 'cookie'],
@@ -46,4 +47,5 @@ setupI18n({
       </React.StrictMode>,
     )
   },
+  fallbackLng,
 })

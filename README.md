@@ -73,6 +73,7 @@ i18next
   })
 
 setupI18n({
+  i18n: i18next,
   onLocaleChange: () => {
     root.render(
       <React.StrictMode>
@@ -80,7 +81,7 @@ setupI18n({
       </React.StrictMode>,
     )
   },
-  setQueryOnChange: {
+  setQuery: {
     lookupTarget,
   }
 })
