@@ -1,7 +1,10 @@
 import { defineConfig } from 'tsup'
 
 export const tsup = defineConfig((option) => ({
-  entry: ['src/index.ts'],
+  entry: {
+    'client/index': 'src/client/index.ts',
+    'index': 'src/index.ts',
+  },
   dts: true,
   clean: true,
   format: ['cjs', 'esm'],
@@ -11,4 +14,5 @@ export const tsup = defineConfig((option) => ({
   minify: false,
   sourcemap: !!option.watch,
   tsconfig: option.watch ? 'tsconfig.dev.json' : 'tsconfig.json',
+  external: [/^virtual:.*/],
 }))
