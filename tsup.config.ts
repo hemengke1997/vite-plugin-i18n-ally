@@ -3,9 +3,9 @@ import { defineConfig } from 'tsup'
 export const tsup = defineConfig((option) => ({
   entry: {
     'client/index': 'src/client/index.ts',
-    'index': 'src/index.ts',
+    'index': 'src/plugin/index.ts',
   },
-  dts: true,
+  dts: !option.watch,
   clean: true,
   format: ['cjs', 'esm'],
   platform: 'node',

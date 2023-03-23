@@ -17,6 +17,7 @@ pnpm add vite-plugin-i18n-detector i18next
 
 ### vite.config.ts
 ```ts
+import path from 'path'
 import { defineConfig } from 'vite'
 import { i18nDetector } from 'vite-plugin-i18n-detector'
 
@@ -24,7 +25,7 @@ import { i18nDetector } from 'vite-plugin-i18n-detector'
 export default defineConfig({
   plugins: [
     i18nDetector({
-      localeEntry: './src/locale',
+      localeEntry: path.join(__dirname, './src/locale'),
     }),
   ],
 })

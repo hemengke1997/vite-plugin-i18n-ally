@@ -70,6 +70,7 @@ function setupI18n(options: I18nSetupOptions) {
 
   const _changeLanguage = i18n.changeLanguage
   i18n.changeLanguage = async (lang: string | undefined, ...args) => {
+    // If language did't change, return
     if (currentLng === lang) return undefined as any
     currentLng = lang
     await load(lang)

@@ -60,12 +60,16 @@
     "vite": ">=4.0.0"
   },
   "dependencies": {
+    "@minko-fe/lodash-pro": "^0.0.63",
     "clone-deep": "^4.0.1",
     "debug": "^4.3.4",
     "depth": "^0.1.1",
+    "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.1",
     "jsonc-simple-parser": "^3.0.0",
     "parse-glob": "^3.0.4",
+    "pathe": "^1.1.0",
+    "picocolors": "^1.0.0",
     "query-string": "^8.1.0",
     "strip-dirs": "^3.0.0",
     "tiny-glob": "^0.2.9"
