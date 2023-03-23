@@ -1,16 +1,13 @@
 import path from 'path'
 import type { PluginOption } from 'vite'
-import { createFilter, normalizePath } from 'vite'
-import parseGlob from 'parse-glob'
+import { normalizePath } from 'vite'
 import { trimEnd } from '@minko-fe/lodash-pro'
 import { clearObjectValue, debug, initModules, invalidateVirtualModule, isJson } from './utils'
-import { PKGNAME, RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
+import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { LocaleDetector } from './utils/LocaleDetector'
-import { isArray, isString } from './utils/is'
-import { ParsePathMatcher } from './utils/PathMatcher'
+import type { EnableParsersType } from './parsers'
 
 export interface DetectI18nResourceOptions {
-  include: string
   /**
    * @default
    * process.cwd()
@@ -34,66 +31,20 @@ export interface DetectI18nResourceOptions {
    * @description
    * Currently support 'json(5)' only
    */
-  enabledParsers: Array<'json' | 'json5'>
-}
-
-const SUPPORTED_PARSER = ['json', 'json5']
-
-function enabledParserExts(_enabledParsers?: string[]) {
-  const enabledParsers = _enabledParsers || SUPPORTED_PARSER
-  return enabledParsers.filter(Boolean).join('|')
+  enabledParsers: EnableParsersType
 }
 
 export async function i18nDetector(options: DetectI18nResourceOptions) {
   debug('plugin options:', options)
 
-  const pathMatcher = `${options.pathMatcher}.{ext}`
+  const localeDetector = new LocaleDetector({
+    cwd: options.cwd || process.cwd(),
+    localesPaths: options.localesPaths,
+    pathMatcher: options.pathMatcher,
+    enabledParsers: options.enabledParsers,
+  })
 
-  const matcher = ParsePathMatcher(pathMatcher, enabledParserExts(options.enabledParsers))
-
-  function joinJsonSuffix(p: string) {
-    return `${p}/**/*.{json,json5}`
-  }
-
-  // normalize for `options.include`
-  let include = options.include
-  include = normalizePath(joinJsonSuffix(include))
-
-  let localesPaths = options.localesPaths
-  localesPaths = localesPaths.map((item) => trimEnd(normalizePath(joinJsonSuffix(item)), '/\\').replace(/\\/g, '/'))
-
-  const localeDetector = new LocaleDetector({ cwd: options.cwd || process.cwd(), localesPaths, pathMatcher: matcher })
-
-  console.log(localesPaths, 'localesPaths')
-
-  // if (path.parse(localeEntry).ext) {
-  //   throw new Error(`[${PKGNAME}]: 'localeEntry' should be a dir path like './src/locales', but got a file`)
-  // }
-
-  // if (localeEntry.startsWith('.')) {
-  //   localeEntry = path.join(process.cwd(), localeEntry)
-  // }
-
-  // const entry = normalizePath(`${localeEntry}/**/*.{json,json5}`)
-
-  // const parsedEntry = parseGlob(entry)
-
-  // const { base } = parsedEntry
-
-  // setGlobalData({
-  // localeDirBasename: path.basename(base),
-  // localeEntry,
-  // })
-
-  // debug('globalData:', getGlobalData())
-
-  let { langModules, resolvedIds, virtualLangModules } = await initModules({ include })
-
-  // debug('initModules returnValue:', {
-  //   langModules,
-  //   resolvedIds,
-  //   virtualLangModules,
-  // })
+  let { modules, virtualModules, resolvedIds } = await localeDetector.init()
 
   return {
     name: 'vite:detect-i18n-resource',
@@ -104,7 +55,7 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
       },
     }),
     async resolveId(id: string, importer: string) {
-      if (id in virtualLangModules) {
+      if (id in virtualModules) {
         return RESOLVED_VIRTUAL_PREFIX + id
       }
 
@@ -127,15 +78,15 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
     async load(id) {
       if (id.startsWith(RESOLVED_VIRTUAL_PREFIX)) {
         const idNoPrefix = id.slice(RESOLVED_VIRTUAL_PREFIX.length)
-        const resolvedId = idNoPrefix in virtualLangModules ? idNoPrefix : resolvedIds.get(idNoPrefix)
+        const resolvedId = idNoPrefix in virtualModules ? idNoPrefix : resolvedIds.get(idNoPrefix)
 
         if (resolvedId) {
-          const module = virtualLangModules[resolvedId]
+          const module = virtualModules[resolvedId]
           return typeof module === 'string' ? module : `export default ${JSON.stringify(module)}`
         }
 
         if (id.endsWith(RESOURCE_VIRTURL_HELPER)) {
-          const langs = clearObjectValue(langModules)
+          const langs = clearObjectValue(modules)
           let code = `export default { `
           for (const k in langs) {
             // Currently rollup don't support inline chunkName
@@ -158,8 +109,8 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
     async handleHotUpdate({ file, server }) {
       // if (file.includes(parsedEntry.base) && isJson(file)) {
       //   const modules = await initModules({ entry })
-      //   virtualLangModules = modules.virtualLangModules
-      //   langModules = modules.langModules
+      //   virtualModules = modules.virtualModules
+      //   modules = modules.modules
       //   resolvedIds = modules.resolvedIds
       //   debug('hmr:', file, 'hmr re-inited modules:', modules)
       //   for (const [, value] of resolvedIds) {

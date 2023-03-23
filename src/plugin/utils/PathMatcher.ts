@@ -2,6 +2,7 @@
 
 // Examples
 // {namespaces}/{lang}
+// {namespaces}/{lang}.json
 // {lang}/{namespace}/**/*
 // something/{lang}/{namespace}/**/*
 export function ParsePathMatcher(pathMatcher: string, exts = '') {

@@ -66,6 +66,7 @@
     "depth": "^0.1.1",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.1",
+    "json5": "^2.2.3",
     "jsonc-simple-parser": "^3.0.0",
     "parse-glob": "^3.0.4",
     "pathe": "^1.1.0",

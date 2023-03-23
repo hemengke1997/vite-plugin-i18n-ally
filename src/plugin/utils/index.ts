@@ -8,7 +8,7 @@ import fs from 'fs-extra'
 import cloneDeep from 'clone-deep'
 import createDebug from 'debug'
 import type { DetectI18nResourceOptions } from '..'
-import { getGlobalData } from './LocaleDetector'
+// import { getGlobalData } from './LocaleDetector'
 import { PKGNAME, RESOLVED_VIRTUAL_PREFIX, VIRTUAL } from './constant'
 import { isArray } from './is'
 
@@ -17,20 +17,19 @@ export const debug = createDebug(PKGNAME)
 type ResourceType<T = any> = Record<string, T>
 
 function getLangName(resourcePath: string) {
-  const fileBase = path.basename(path.dirname(resourcePath))
+  // const fileBase = path.basename(path.dirname(resourcePath))
 
-  console.log(getGlobalData(), 'getGlobalData()')
-
-  const { localeDirBasename, localeEntry } = getGlobalData()
-  if (fileBase === localeDirBasename) {
-    // FileName is lang
-    return [path.parse(resourcePath).name]
-  }
-  // Dir is lang
-  const len = depth(localeEntry)
-  console.log(len)
-  const parsedFile = path.parse(stripDirs(resourcePath, len))
-  return [...path.parse(stripDirs(resourcePath, len)).dir.split(path.sep), parsedFile.name]
+  // const { localeDirBasename, localeEntry } = getGlobalData()
+  // if (fileBase === localeDirBasename) {
+  //   // FileName is lang
+  //   return [path.parse(resourcePath).name]
+  // }
+  // // Dir is lang
+  // const len = depth(localeEntry)
+  // console.log(len)
+  // const parsedFile = path.parse(stripDirs(resourcePath, len))
+  // return [...path.parse(stripDirs(resourcePath, len)).dir.split(path.sep), parsedFile.name]
+  return []
 }
 
 function fillObject(obj: ResourceType, keyArray: string[], data: Record<string, any>) {

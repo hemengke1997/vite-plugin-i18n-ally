@@ -20,6 +20,7 @@ importers:
       fast-glob: ^3.2.12
       fs-extra: ^11.1.1
       i18next: ^22.4.13
+      json5: ^2.2.3
       jsonc-simple-parser: ^3.0.0
       parse-glob: ^3.0.4
       pathe: ^1.1.0
@@ -40,6 +41,7 @@ importers:
       depth: 0.1.1
       fast-glob: 3.2.12
       fs-extra: 11.1.1
+      json5: 2.2.3
       jsonc-simple-parser: 3.0.0
       parse-glob: 3.0.4
       pathe: 1.1.0
@@ -3509,7 +3511,6 @@ packages:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
     hasBin: true
-    dev: true
 
   /jsonc-eslint-parser/2.2.0:
     resolution: {integrity: sha512-x5QjzBOORd+T2EjErIxJnkOEbLVEdD1ILEeBbIJt8Eq/zUn7P7M8qdnWiNVBK5f8oxnJpc6SBHOeeIEl/swPjg==}
