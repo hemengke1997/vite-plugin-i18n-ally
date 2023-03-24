@@ -1,11 +1,9 @@
 import path from 'path'
 import type { PluginOption } from 'vite'
-import { normalizePath } from 'vite'
-import { trimEnd } from '@minko-fe/lodash-pro'
-import { clearObjectValue, debug, initModules, invalidateVirtualModule, isJson } from './utils'
 import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { LocaleDetector } from './utils/LocaleDetector'
 import type { EnableParsersType } from './parsers'
+import { debug } from './utils/debugger'
 
 export interface DetectI18nResourceOptions {
   /**
@@ -21,21 +19,21 @@ export interface DetectI18nResourceOptions {
   localesPaths: string[]
   /**
    * @example
-   * {namespaces}/{lang}
-   * {lang}/{namespace}
-   * {locale}/{namespaces}.{ext}
-   * something/{lang}/{namespace}
+   * `{namespaces}/{lang}`
+   * `{lang}/{namespace}`
+   * `{locale}/{namespaces}.{ext}`
+   * `something/{lang}/{namespace}`
    */
   pathMatcher: string
   /**
    * @description
-   * Currently support 'json(5)' only
+   * Currently support `['json', 'json5']` only
    */
   enabledParsers: EnableParsersType
 }
 
 export async function i18nDetector(options: DetectI18nResourceOptions) {
-  debug('plugin options:', options)
+  debug('i18nDetector options:', options)
 
   const localeDetector = new LocaleDetector({
     cwd: options.cwd || process.cwd(),
@@ -44,7 +42,7 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
     enabledParsers: options.enabledParsers,
   })
 
-  let { modules, virtualModules, resolvedIds } = await localeDetector.init()
+  await localeDetector.init()
 
   return {
     name: 'vite:detect-i18n-resource',
@@ -55,6 +53,8 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
       },
     }),
     async resolveId(id: string, importer: string) {
+      const { virtualModules, resolvedIds } = localeDetector.localeModules
+
       if (id in virtualModules) {
         return RESOLVED_VIRTUAL_PREFIX + id
       }
@@ -76,6 +76,7 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
       return null
     },
     async load(id) {
+      const { virtualModules, resolvedIds, modules } = localeDetector.localeModules
       if (id.startsWith(RESOLVED_VIRTUAL_PREFIX)) {
         const idNoPrefix = id.slice(RESOLVED_VIRTUAL_PREFIX.length)
         const resolvedId = idNoPrefix in virtualModules ? idNoPrefix : resolvedIds.get(idNoPrefix)
@@ -86,9 +87,8 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
         }
 
         if (id.endsWith(RESOURCE_VIRTURL_HELPER)) {
-          const langs = clearObjectValue(modules)
           let code = `export default { `
-          for (const k in langs) {
+          for (const k in modules) {
             // Currently rollup don't support inline chunkName
             // TODO: chunk name
             code += `${k}: () => import('${VIRTUAL}-${k}'),`
@@ -107,16 +107,25 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
       return null
     },
     async handleHotUpdate({ file, server }) {
-      // if (file.includes(parsedEntry.base) && isJson(file)) {
-      //   const modules = await initModules({ entry })
-      //   virtualModules = modules.virtualModules
-      //   modules = modules.modules
-      //   resolvedIds = modules.resolvedIds
-      //   debug('hmr:', file, 'hmr re-inited modules:', modules)
-      //   for (const [, value] of resolvedIds) {
-      //     invalidateVirtualModule(server, value)
-      //   }
-      // }
+      const updated = await localeDetector.onFileChanged({ fsPath: file })
+
+      if (updated) {
+        const { resolvedIds } = localeDetector.localeModules
+        debug('hmr', resolvedIds)
+        for (const [, value] of resolvedIds) {
+          const { moduleGraph, ws } = server
+          const module = moduleGraph.getModuleById(RESOLVED_VIRTUAL_PREFIX + value)
+          if (module) {
+            moduleGraph.invalidateModule(module)
+            if (ws) {
+              ws.send({
+                type: 'full-reload',
+                path: '*',
+              })
+            }
+          }
+        }
+      }
     },
   } as PluginOption
 }

@@ -6,6 +6,7 @@
 
 - Unawared DX
 - **lazyload** locale resource
+- Options like 'i18n-ally'
 
 ## Install
 
@@ -25,7 +26,9 @@ import { i18nDetector } from 'vite-plugin-i18n-detector'
 export default defineConfig({
   plugins: [
     i18nDetector({
-      localeEntry: path.join(__dirname, './src/locale'),
+      localesPaths: [path.join(__dirname, './src/locale')],
+      pathMatcher: '{locale}/{namespaces}.{ext}',
+      enabledParsers: ['json', 'json5'],
     }),
   ],
 })
@@ -107,10 +110,10 @@ function App() {
 {
   "i18n-ally.localesPaths": ["src/locale"],
   "i18n-ally.keystyle": "flat",
-  "i18n-ally.enabledParsers": ["json"],
+  "i18n-ally.enabledParsers": ["json", "json5"],
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.namespace": true,
-  "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",
+  "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
   "i18n-ally.sourceLanguage": "en"
 }
 ```

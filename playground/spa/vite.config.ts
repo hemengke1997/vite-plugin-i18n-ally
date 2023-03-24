@@ -8,9 +8,8 @@ export default defineConfig({
   plugins: [
     react(),
     i18nDetector({
-      include: path.join(__dirname, './src/locale'),
       localesPaths: [path.join(__dirname, './src/locale')],
-      pathMatcher: '{locale}/{namespaces}.{ext}',
+      pathMatcher: '{locale}/{namespace}',
       enabledParsers: ['json', 'json5'],
     }),
   ],

@@ -31,12 +31,17 @@ function setupI18n(options: I18nSetupOptions) {
       lang = fallbackLng
     }
 
-    const lazyload: () => Promise<{ default: Record<string, any> | undefined }> = helper[lang]
+    const lazyload: (() => Promise<{ default: Record<string, any> | undefined }>) | undefined = helper[lang]
+
+    if (!lazyload) {
+      console.error(`[${PKGNAME}]: No locales detected, please ensure 'localesPaths' and locale files exist`)
+      return
+    }
 
     const langs = (await lazyload()).default
 
     if (!langs) {
-      console.warn(`[${PKGNAME}]: No locales detected, please ensure 'localeEntry' and locale files exist`)
+      console.warn(`[${PKGNAME}]: No locales detected, please ensure 'localesPaths' and locale files exist`)
       return
     }
 

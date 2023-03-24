@@ -1,7 +1,8 @@
-declare module 'depth' {
-  export default (path: string) => number
+declare module 'string.prototype.trimend' {
+  export default (str: string, replacer: string) => string
 }
 
-declare module 'strip-dirs' {
-  export default (path: string, length: number) => string
+declare module 'uniq' {
+  const uniq: (arr: string[]) => string[]
+  export default uniq
 }

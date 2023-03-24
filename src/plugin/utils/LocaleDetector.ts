@@ -1,13 +1,16 @@
+// Edit from https://github.com/lokalise/i18n-ally
 import path from 'path'
-import { trimEnd, uniq } from '@minko-fe/lodash-pro'
+import trimEnd from 'string.prototype.trimend'
+import uniq from 'uniq'
 import fg from 'fast-glob'
 import { normalizePath } from 'vite'
 import cloneDeep from 'clone-deep'
 import type { DetectI18nResourceOptions } from '..'
 import { AvailableParsers, DefaultEnabledParsers } from '../parsers'
-import { logger } from './logger'
 import { ParsePathMatcher } from './PathMatcher'
-import { VIRTUAL } from './constant'
+import { PKGNAME, VIRTUAL } from './constant'
+import { debug } from './debugger'
+import { logger } from './logger'
 
 export interface Config extends DetectI18nResourceOptions {
   cwd: string
@@ -35,11 +38,17 @@ export class LocaleDetector {
   private _localesPaths: string[]
   private _rootPath: string
 
+  private _localeModules: {
+    modules: Record<string, any>
+    virtualModules: Record<string, any>
+    resolvedIds: Map<string, string>
+  } = { modules: {}, virtualModules: {}, resolvedIds: new Map() }
+
   constructor(c: Config) {
     this.config = c
 
     this._rootPath = c.cwd
-    const pathMatcher = this.normalizeMatcher(c.pathMatcher)
+    const pathMatcher = c.pathMatcher
     this._pathMatcher = {
       regex: ParsePathMatcher(pathMatcher, this.enabledParserExts()),
       matcher: pathMatcher,
@@ -50,16 +59,18 @@ export class LocaleDetector {
 
   async init() {
     if (await this.findLocaleDirs()) {
-      logger.info(`🚀 Initializing loader "${this._rootPath}"`)
-
-      logger.info(`🗃 Custom Path Matcher: ${this._pathMatcher.matcher}`)
-
-      logger.info(`🗃 Path Matcher Regex: ${this._pathMatcher.regex}`)
+      debug(`🚀 Initializing loader "${this._rootPath}"`)
+      debug(`🗃 Custom Path Matcher: ${this._pathMatcher.matcher}`)
+      debug(`🗃 Path Matcher Regex: ${this._pathMatcher.regex}`)
       await this.loadAll()
     }
 
-    logger.info('✅ Loading finished\n')
-    return this.moduleLocale()
+    this.update()
+  }
+
+  private update() {
+    debug('✅ Loading finished')
+    this.moduleLocale()
   }
 
   private moduleLocale() {
@@ -91,11 +102,72 @@ export class LocaleDetector {
       delete virtualModules[k]
     })
 
-    return {
+    this._localeModules = {
       modules,
       virtualModules,
       resolvedIds,
     }
+
+    debug('📦 Module locale updated', this._localeModules)
+  }
+
+  get localeModules() {
+    return this._localeModules
+  }
+
+  async onFileChanged({ fsPath: filepath }: { fsPath: string }) {
+    filepath = path.resolve(filepath)
+
+    const { dirpath, relative } = this.getRelativePath(filepath) || {}
+    if (!dirpath || !relative) {
+      return
+    }
+
+    debug(`🔄 File changed  ${relative} ${dirpath}`)
+
+    return this.lazyLoadFile(dirpath, relative)
+  }
+
+  private loadFileWaitingList: [string, string][] = []
+
+  private loadFileExecutor = async () => {
+    const list = this.loadFileWaitingList
+    this.loadFileWaitingList = []
+    if (list.length) {
+      let changed = false
+      for (const [d, r] of list) changed = (await this.loadFile(d, r)) || changed
+
+      if (changed) {
+        this.update()
+        return true
+      }
+    }
+    return false
+  }
+
+  private lazyLoadFile = async (d: string, r: string) => {
+    if (!this.loadFileWaitingList.find(([a, b]) => a === d && b === r)) {
+      this.loadFileWaitingList.push([d, r])
+    }
+    const updated = await this.loadFileExecutor()
+
+    return updated
+  }
+
+  private getRelativePath(filepath: string) {
+    let dirpath = this._localeDirs.find((dir) => filepath.startsWith(dir))
+    if (!dirpath) {
+      return
+    }
+
+    let relative = path.relative(dirpath, filepath)
+
+    if (process.platform === 'win32') {
+      relative = relative.replace(/\\/g, '/')
+      dirpath = dirpath.replace(/\\/g, '/')
+    }
+
+    return { dirpath, relative }
   }
 
   get files() {
@@ -105,15 +177,14 @@ export class LocaleDetector {
   private async loadAll() {
     for (const pathname of this._localeDirs) {
       try {
-        logger.info(`\n📂 Loading locales under ${pathname}`)
+        debug(`📂 Loading locales under ${pathname}`)
         await this.loadDirectory(pathname)
-
-        if (!this.files.length) {
-          logger.info(`\n💥 No locale files detected in: ${pathname}`)
-        }
       } catch (e) {
         console.error(e)
       }
+    }
+    if (!this.files.length) {
+      throw new Error(`[${PKGNAME}]: No locale files detected. Please check your config.`)
     }
   }
 
@@ -122,7 +193,7 @@ export class LocaleDetector {
       cwd: searchingPath,
       onlyFiles: true,
       ignore: ['node_modules/**'],
-      deep: 2,
+      deep: 2, // todo
     })
 
     for (const relative of files) {
@@ -144,7 +215,7 @@ export class LocaleDetector {
         return
       }
 
-      logger.info(`📑 Loading (${locale}) ${relativePath}`)
+      debug(`📑 Loading (${locale}) ${relativePath}`)
 
       const data = await parser.load(filepath)
 
@@ -160,7 +231,7 @@ export class LocaleDetector {
       return true
     } catch (e) {
       this.unsetFile(relativePath)
-      logger.info(`🐛 Failed to load ${e}`)
+      debug(`🐛 Failed to load ${e}`)
       console.error(e)
     }
   }
@@ -193,10 +264,6 @@ export class LocaleDetector {
     let locale = match.groups?.locale
 
     if (!locale) {
-      locale = 'en' // todo
-    }
-
-    if (!locale) {
       return
     }
 
@@ -221,10 +288,6 @@ export class LocaleDetector {
     return this.getEnabledParsers().find((parser) => parser.supports(ext))
   }
 
-  private normalizeMatcher(matcher: string) {
-    return matcher.endsWith('{ext}') ? matcher : `${matcher}.{ext}`
-  }
-
   private enabledParserExts() {
     const enabledParsers = this.getEnabledParsers().map((item) => item.id)
     return enabledParsers.filter(Boolean).join('|')
@@ -240,11 +303,11 @@ export class LocaleDetector {
     return AvailableParsers.filter((i) => ids.includes(i.id))
   }
 
-  getPathMatcher() {
+  get pathMatcher() {
     return this._pathMatcher
   }
 
-  getLocaleDirs() {
+  get localeDirs() {
     return this._localeDirs
   }
 
@@ -261,8 +324,8 @@ export class LocaleDetector {
         }
 
         this._localeDirs = uniq(_locale_dirs.map((p) => path.resolve(this._rootPath, p)))
-      } catch (e: any) {
-        logger.error(e.message)
+      } catch (e) {
+        console.error(e)
       }
     }
     if (this._localeDirs.length === 0) {
