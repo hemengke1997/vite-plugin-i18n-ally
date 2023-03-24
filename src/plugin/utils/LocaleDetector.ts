@@ -1,4 +1,3 @@
-// Edit from https://github.com/lokalise/i18n-ally
 import path from 'path'
 import trimEnd from 'string.prototype.trimend'
 import uniq from 'uniq'
@@ -54,7 +53,12 @@ export class LocaleDetector {
       matcher: pathMatcher,
     }
 
-    this._localesPaths = c.localesPaths.map((item) => trimEnd(normalizePath(item), '/\\').replace(/\\/g, '/'))
+    this._localesPaths = c.localesPaths.map((item) =>
+      trimEnd(normalizePath(path.isAbsolute(item) ? item : path.resolve(this._rootPath, item)), '/\\').replace(
+        /\\/g,
+        '/',
+      ),
+    )
   }
 
   async init() {
