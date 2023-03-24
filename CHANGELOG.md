@@ -1,3 +1,17 @@
+## [0.0.6](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.5...v0.0.6) (2023-03-24)
+
+
+### Features
+
+* refactor ([607f177](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/607f177c782cac408a42c6744bde353fa322806f))
+
+
+### Performance Improvements
+
+* better types ([f2669fd](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/f2669fd60b4eb67acd02e7836eb195e12d53a455))
+
+
+
 ## [0.0.5](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.4...v0.0.5) (2023-03-22)
 
 
