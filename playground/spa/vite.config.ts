@@ -9,8 +9,8 @@ export default defineConfig({
     react(),
     i18nDetector({
       localesPaths: [path.join(__dirname, './src/locale')],
-      pathMatcher: '{locale}/{namespace}',
-      enabledParsers: ['json', 'json5'],
+      pathMatcher: '{locale}/{namespace}.{ext}',
+      enabledParsers: ['json'],
     }),
   ],
   clearScreen: false,

@@ -296,11 +296,11 @@ export class LocaleDetector {
   getEnabledParsers() {
     let ids = this.config.enabledParsers
 
-    if (!ids.length) {
+    if (!ids?.length) {
       ids = DefaultEnabledParsers
     }
 
-    return AvailableParsers.filter((i) => ids.includes(i.id))
+    return AvailableParsers.filter((i) => ids!.includes(i.id))
   }
 
   get pathMatcher() {

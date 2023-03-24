@@ -19,17 +19,19 @@ export interface DetectI18nResourceOptions {
   localesPaths: string[]
   /**
    * @example
-   * `{namespaces}/{lang}`
-   * `{lang}/{namespace}`
    * `{locale}/{namespaces}.{ext}`
-   * `something/{lang}/{namespace}`
+   * `{locale}/{namespace}.json`
+   * `{namespaces}/{locale}`
+   * `something/{locale}/{namespace}`
    */
   pathMatcher: string
   /**
+   * @default
+   * ['json', 'json5']
    * @description
    * Currently support `['json', 'json5']` only
    */
-  enabledParsers: EnableParsersType
+  enabledParsers?: EnableParsersType
 }
 
 export async function i18nDetector(options: DetectI18nResourceOptions) {
