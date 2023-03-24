@@ -1,3 +1,12 @@
+## [0.0.7](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.6...v0.0.7) (2023-03-24)
+
+
+### Bug Fixes
+
+* parsers edge case ([3ccd116](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/3ccd116a4c2a87bf4c17e62cb785f8581f157cf1))
+
+
+
 ## [0.0.6](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.5...v0.0.6) (2023-03-24)
 
 
