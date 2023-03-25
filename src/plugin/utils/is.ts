@@ -12,7 +12,7 @@ enum EnumDataType {
 }
 
 function is(val: unknown, type: string) {
-  return toString.call(val) === `[object ${type}]`
+  return Object.prototype.toString.call(val) === `[object ${type}]`
 }
 
 export function isArray(data: unknown): data is Array<any> {
