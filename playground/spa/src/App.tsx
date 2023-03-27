@@ -1,50 +1,45 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { useTranslation } from 'react-i18next'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   const { t, i18n } = useTranslation()
+
+  const [, update] = useReducer((x) => x + 1, 0)
 
   return (
     <div className='App'>
-      <div>目前是：{t('test.key')}</div>
+      <div id='language'>{t('test.key')}</div>
       <button
         onClick={async () => {
-          i18n.changeLanguage('zh')
+          await i18n.changeLanguage('zh')
+          console.log('fdsafdsaf')
+          update()
         }}
+        id='zh'
       >
         中文
       </button>
       <button
         onClick={async () => {
-          i18n.changeLanguage('en')
+          await i18n.changeLanguage('en')
+          update()
         }}
+        id='en'
       >
         英文
       </button>
       <button
         onClick={async () => {
-          i18n.changeLanguage('de')
+          await i18n.changeLanguage('de')
+          update()
         }}
+        id='de'
       >
         德文
       </button>
-
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
     </div>
   )
 }
 
-// eslint-disable-next-line no-restricted-syntax
 export default App

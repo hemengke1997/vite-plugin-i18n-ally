@@ -1,3 +1,6 @@
 {
-  "extends": "@minko-fe/tsconfig/tsconfig.lib"
+  "extends": "@minko-fe/tsconfig/tsconfig.lib",
+  "compilerOptions": {
+    "types": ["vitest/globals"]
+  }
 }
