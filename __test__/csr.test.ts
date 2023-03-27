@@ -10,15 +10,20 @@ describe('crs spa', () => {
   let server: ViteDevServer
 
   beforeAll(async () => {
-    server = await createServer({
-      root: path.resolve(__dirname, '../playground/spa'),
-      configFile: path.resolve(__dirname, '../playground/spa/vite.config.ts'),
-      server: {
-        port: 9527,
-      },
-    })
+    try {
+      server = await createServer({
+        root: path.resolve(__dirname, '../playground/spa'),
+        configFile: path.resolve(__dirname, '../playground/spa/vite.config.ts'),
+        server: {
+          port: 9527,
+        },
+      })
 
-    await server.listen()
+      await server.listen()
+    } catch (e) {
+      console.log('createServer failed', path.resolve(__dirname, '../playground/spa/vite.config.ts'))
+      console.error(e)
+    }
 
     browser = await puppeteer.launch()
     page = await browser.newPage()
