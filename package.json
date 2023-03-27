@@ -96,6 +96,7 @@
     "tsup": "^6.7.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.1",
+    "vite-plugin-i18n-detector": "workspace:*",
     "vitest": "^0.29.7"
   }
 }

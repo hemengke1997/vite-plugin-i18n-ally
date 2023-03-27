@@ -38,6 +38,7 @@ importers:
       typescript: ^5.0.2
       uniq: ^1.0.1
       vite: ^4.2.1
+      vite-plugin-i18n-detector: workspace:*
       vitest: ^0.29.7
     dependencies:
       clone-deep: 4.0.1
@@ -75,6 +76,7 @@ importers:
       tsup: 6.7.0_typescript@5.0.2
       typescript: 5.0.2
       vite: 4.2.1
+      vite-plugin-i18n-detector: 'link:'
       vitest: 0.29.7_jsdom@21.1.1
 
   playground/spa:
