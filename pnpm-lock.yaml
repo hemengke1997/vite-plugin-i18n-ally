@@ -30,6 +30,7 @@ importers:
       puppeteer: ^19.8.0
       query-string: ^8.1.0
       react: ^18.2.0
+      react-dom: ^18.2.0
       react-i18next: ^12.2.0
       string.prototype.trimend: ^1.0.6
       taze: ^0.9.1
@@ -68,6 +69,7 @@ importers:
       pnpm: 7.30.0
       puppeteer: 19.8.0_typescript@5.0.2
       react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
       react-i18next: 12.2.0_2rh65uwnd6kial3dj4kteywnti
       taze: 0.9.1
       tsup: 6.7.0_typescript@5.0.2
