@@ -11,8 +11,8 @@ describe('crs spa', () => {
 
   beforeAll(async () => {
     server = await createServer({
-      root: path.resolve(__dirname, '../'),
-      configFile: path.resolve(__dirname, '../vite.config.ts'),
+      root: path.resolve(__dirname, '../playground/spa'),
+      configFile: path.resolve(__dirname, '../playground/spa/vite.config.ts'),
       server: {
         port: 9527,
       },
