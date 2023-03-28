@@ -4,14 +4,14 @@ import uniq from 'uniq'
 import fg from 'fast-glob'
 import { normalizePath } from 'vite'
 import cloneDeep from 'clone-deep'
-import type { DetectI18nResourceOptions } from '..'
+import type { I18nDetectorOptions } from '..'
 import { AvailableParsers, DefaultEnabledParsers } from '../parsers'
 import { ParsePathMatcher } from './PathMatcher'
 import { PKGNAME, VIRTUAL } from './constant'
 import { debug } from './debugger'
 import { logger } from './logger'
 
-export interface Config extends DetectI18nResourceOptions {
+export interface Config extends I18nDetectorOptions {
   cwd: string
 }
 

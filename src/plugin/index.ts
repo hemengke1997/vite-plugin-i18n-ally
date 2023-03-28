@@ -5,7 +5,7 @@ import { LocaleDetector } from './utils/LocaleDetector'
 import type { EnableParsersType } from './parsers'
 import { debug } from './utils/debugger'
 
-export interface DetectI18nResourceOptions {
+export interface I18nDetectorOptions {
   /**
    * @default
    * process.cwd()
@@ -34,7 +34,7 @@ export interface DetectI18nResourceOptions {
   enabledParsers?: EnableParsersType
 }
 
-export async function i18nDetector(options: DetectI18nResourceOptions) {
+export async function i18nDetector(options: I18nDetectorOptions) {
   debug('i18nDetector options:', options)
 
   const localeDetector = new LocaleDetector({
@@ -47,7 +47,7 @@ export async function i18nDetector(options: DetectI18nResourceOptions) {
   await localeDetector.init()
 
   return {
-    name: 'vite:detect-i18n-resource',
+    name: 'vite:i18n-detector',
     enforce: 'pre',
     config: () => ({
       optimizeDeps: {
