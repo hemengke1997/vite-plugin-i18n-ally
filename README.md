@@ -14,7 +14,7 @@
 pnpm add vite-plugin-i18n-detector i18next
 ```
 
-## Usage
+## Example
 
 ### vite.config.ts
 ```ts
