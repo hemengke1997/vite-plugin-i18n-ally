@@ -1,3 +1,17 @@
+## [0.0.8](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.7...v0.0.8) (2023-04-07)
+
+
+### Bug Fixes
+
+* language kebab case ([7d6f96a](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/7d6f96a64abee2a739b509f173306945af672af0))
+
+
+### Features
+
+* `localesPaths` support relative path ([5b8586e](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/5b8586e32ddba8524a3330f6013524dbc0c607b0))
+
+
+
 ## [0.0.7](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.6...v0.0.7) (2023-03-24)
 
 
