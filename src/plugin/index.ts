@@ -93,7 +93,7 @@ export async function i18nDetector(options: I18nDetectorOptions) {
           for (const k in modules) {
             // Currently rollup don't support inline chunkName
             // TODO: chunk name
-            code += `${k}: () => import('${VIRTUAL}-${k}'),`
+            code += `'${k}': () => import('${VIRTUAL}-${k}'),`
           }
           code += ' };'
 

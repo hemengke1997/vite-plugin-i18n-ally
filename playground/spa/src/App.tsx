@@ -38,6 +38,15 @@ function App() {
       >
         德文
       </button>
+      <button
+        onClick={async () => {
+          await i18n.changeLanguage('zh-tw')
+          update()
+        }}
+        id='zh-tw'
+      >
+        繁体
+      </button>
     </div>
   )
 }

@@ -27,6 +27,7 @@ i18next
     interpolation: {
       escapeValue: false,
     },
+    lowerCaseLng: true, // up to you
     fallbackLng,
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator'],
