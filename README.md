@@ -7,11 +7,18 @@
 - Unawared DX
 - **Lazyload** locale resource
 - Options like 'i18n-ally'
+- Opt-in Built-in i18next support
 
 ## Install
 
 ```bash
-pnpm add vite-plugin-i18n-detector i18next
+pnpm add vite-plugin-i18n-detector
+```
+
+### If you use i18next
+
+```bash
+pnpm add i18next
 ```
 
 ## Usage
@@ -41,7 +48,7 @@ export default defineConfig({
 import ReactDOM from 'react-dom/client'
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { setupI18n } from 'vite-plugin-i18n-detector/client'
+import { setupI18n } from 'vite-plugin-i18n-detector/client' // If you use i18next
 import App from './App'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
