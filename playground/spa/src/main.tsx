@@ -39,8 +39,15 @@ i18next
     },
   })
 
-setupI18n({
+
+const { loadResource, onLanguageChanged } = setupI18n({
   i18n: i18next,
+	language: i18next.language,
+	addResource: (langs, currentLang) => {
+		Object.keys(langs).forEach((ns) => {
+			i18next.addResourceBundle(currentLang, ns, langs[ns])
+		})
+	},
   onLocaleChange: () => {
     root.render(
       <React.StrictMode>
@@ -50,3 +57,20 @@ setupI18n({
   },
   fallbackLng,
 })
+
+const _changeLanguage = i18next.changeLanguage
+i18next.changeLanguage = async (lang: string | undefined, ...args) => {
+	let currentLng = i18next.language
+	// If language did't change, return
+	if (currentLng === lang) return undefined as any
+	currentLng = lang || currentLng
+	await loadResource(lang)
+	return _changeLanguage(lang, ...args)
+}
+
+
+
+i18next.on('languageChanged', (lang) => {
+	onLanguageChanged(lang)
+})
+
