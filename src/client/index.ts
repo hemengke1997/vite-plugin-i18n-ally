@@ -5,7 +5,7 @@ export interface I18nSetupOptions {
   language: string
   fallbackLng: string
   addResource: (langHelper: Record<string, string>, currentLang: string) => void
-  onInit?: (langHelper: Record<string, string>, currentLang: string) => void
+  onInit?: (langs: String[], currentLang: string) => void
   onLocaleChange: (currentLang?: string) => void
   setQuery?:
     | {
@@ -14,7 +14,7 @@ export interface I18nSetupOptions {
     | boolean
 }
 
-let langHelperCache: Record<string, string> | null = null
+const langs = Object.keys(helper)
 
 function setupI18n(options: I18nSetupOptions) {
   const { addResource, onLocaleChange, onInit, setQuery, language, fallbackLng } = options || {}
@@ -25,8 +25,6 @@ function setupI18n(options: I18nSetupOptions) {
     lang: string | undefined,
     onLoaded?: (langs: Record<string, string>, currentLang: string) => void,
   ) {
-    console.log(lang, 'lang')
-
     if (!lang) {
       console.warn(`[${PKGNAME}]: Language is undefined, fallback to '${fallbackLng}'`)
       lang = fallbackLng
@@ -45,16 +43,16 @@ function setupI18n(options: I18nSetupOptions) {
       return
     }
 
-    langHelperCache = (await lazyload()).default || null
+    const langHelper = (await lazyload()).default || null
 
-    if (!langHelperCache || !Object.keys(langHelperCache).length) {
+    if (!langHelper) {
       console.warn(`[${PKGNAME}]: No locales detected, please ensure 'localesPaths' and locale files exist`)
       return
     }
 
-    addResource(langHelperCache, lang!)
+    addResource(langHelper, lang!)
 
-    onLoaded?.(langHelperCache, lang!)
+    onLoaded?.(langHelper, lang!)
   }
 
   async function onLanguageChanged(lang: string) {
@@ -83,14 +81,14 @@ function setupI18n(options: I18nSetupOptions) {
     }
   }
 
-  async function onLoaded() {
+  function onLoaded() {
     // Load fallbackLng first
     if (lng !== fallbackLng) {
       load(fallbackLng)
     }
 
     onLanguageChanged(lng)
-    onInit?.(langHelperCache || {}, lng)
+    onInit?.(langs, lng)
   }
 
   onLoaded()
@@ -98,6 +96,7 @@ function setupI18n(options: I18nSetupOptions) {
   return {
     loadResource: load,
     onLanguageChanged,
+    langs,
   }
 }
 

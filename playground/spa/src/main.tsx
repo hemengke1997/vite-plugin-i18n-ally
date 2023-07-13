@@ -41,6 +41,11 @@ i18next
 
 const { loadResource, onLanguageChanged } = setupI18n({
   language: i18next.language,
+  onInit(langs) {
+    if (!langs.includes(i18next.language)) {
+      i18next.changeLanguage(fallbackLng)
+    }
+  },
   addResource: (langs, currentLang) => {
     Object.keys(langs).forEach((ns) => {
       i18next.addResourceBundle(currentLang, ns, langs[ns])
