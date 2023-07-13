@@ -1,4 +1,4 @@
-## [0.0.8](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.7...v0.0.8) (2023-04-07)
+## [0.0.9](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.7...v0.0.9) (2023-07-13)
 
 
 ### Bug Fixes
@@ -9,6 +9,7 @@
 ### Features
 
 * `localesPaths` support relative path ([5b8586e](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/5b8586e32ddba8524a3330f6013524dbc0c607b0))
+* 解耦i18next ([3dc9b40](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/3dc9b40ae71ecabb8d97914400f8a1c43006f049))
 
 
 
