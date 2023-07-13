@@ -7,18 +7,11 @@
 - Unawared DX
 - **Lazyload** locale resource
 - Options like 'i18n-ally'
-- Opt-in Built-in i18next support
 
 ## Install
 
 ```bash
 pnpm add vite-plugin-i18n-detector
-```
-
-### If you use i18next
-
-```bash
-pnpm add i18next
 ```
 
 ## Example
@@ -42,7 +35,7 @@ export default defineConfig({
 
 ```
 
-### main.tsx
+### i18next example
 
 ```tsx
 import ReactDOM from 'react-dom/client'
@@ -64,8 +57,13 @@ i18next
     resources: {},
   })
 
-setupI18n({
-  i18n: i18next,
+const { loadResource, onLanguageChanged } = setupI18n({
+	language: i18next.language,
+	onInit(langs) {
+    if (!langs.includes(i18next.language)) {
+      i18next.changeLanguage(fallbackLng)
+    }
+  },
   onLocaleChange: () => {
     root.render(
       <App />
@@ -77,6 +75,19 @@ setupI18n({
   }
 })
 
+const _changeLanguage = i18next.changeLanguage
+i18next.changeLanguage = async (lang: string | undefined, ...args) => {
+  let currentLng = i18next.language
+  // If language did't change, return
+  if (currentLng === lang) return undefined as any
+  currentLng = lang || currentLng
+  await loadResource(lang)
+  return _changeLanguage(lang, ...args)
+}
+
+i18next.on('languageChanged', (lang) => {
+  onLanguageChanged(lang)
+})
 ```
 
 ### App.tsx

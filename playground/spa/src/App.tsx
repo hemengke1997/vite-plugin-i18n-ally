@@ -13,7 +13,6 @@ function App() {
       <button
         onClick={async () => {
           await i18n.changeLanguage('zh')
-          console.log('fdsafdsaf')
           update()
         }}
         id='zh'
