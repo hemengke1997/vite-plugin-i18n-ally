@@ -1,3 +1,12 @@
+## [0.0.10](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.9...v0.0.10) (2023-07-13)
+
+
+### Bug Fixes
+
+* lang helper ([fcac698](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/fcac6988fdedf95620cb152aff1da24d21512a21))
+
+
+
 ## [0.0.9](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.7...v0.0.9) (2023-07-13)
 
 
