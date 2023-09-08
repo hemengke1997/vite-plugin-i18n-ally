@@ -9,7 +9,11 @@ function App() {
 
   return (
     <div className='App'>
-      <div id='language'>{t('test.key')}</div>
+      <h2>请打开控制台筛选js资源，切换语言时可看到懒加载语言资源文件</h2>
+
+      <div id='language' style={{ marginBottom: '16px' }}>
+        {t('test.key')}
+      </div>
       <button
         onClick={async () => {
           await i18n.changeLanguage('zh')

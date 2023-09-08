@@ -5,6 +5,11 @@ import { i18nDetector } from 'vite-plugin-i18n-detector'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    outDir: '../../playground-dist',
+    emptyOutDir: true,
+  },
+  base: '/vite-plugin-i18n-detector/',
   plugins: [
     react(),
     i18nDetector({
