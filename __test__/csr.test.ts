@@ -38,7 +38,7 @@ describe('crs spa', () => {
 
   test('should have title', async () => {
     const title = await page.title()
-    expect(title).toBe('SPA')
+    expect(title).toBe('vite-plugin-i18n-detector-demo')
   })
 
   test('should have lang', async () => {

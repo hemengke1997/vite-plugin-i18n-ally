@@ -1,0 +1,43 @@
+name: Github Pages Deploy # 指定action的名字
+
+on:
+  push: # 指定触发事件
+    branches:
+      - master # 指定触发 action 的分支
+
+# 允许一个并发的部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      # 拉取github仓库代码
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.31.0
+
+      # 执行依赖安装
+      - name: 安装依赖
+        run: |
+          pnpm install --no-frozen-lockfile
+
+      # 执行构建步骤
+      - name: 构建
+        run: |
+          pnpm run build:pages
+      # 执行部署
+      - name: 部署
+        uses: JamesIves/github-pages-deploy-action@releases/v3 # 这个action会根据配置自动推送代码到指定分支
+        with:
+          ACCESS_TOKEN: ${{ secrets.ghb_token }} # 指定密钥
+          BRANCH: gh-pages # #指定推送到的远程分支
+          FOLDER: playground-dist # 指定构建之后要推送哪个目录的代码

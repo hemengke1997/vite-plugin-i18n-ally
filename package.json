@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.10",
   "packageManager": "pnpm@7.30.0",
-  "description": "vite plugin for auto lazy-detect i18n resources",
+  "description": "vite plugin for lazyload i18n resources. 懒加载国际化资源的 vite 插件",
   "author": "hemengke <https://github.com/hemengke1997>",
   "license": "MIT",
   "repository": {
@@ -48,6 +48,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
+    "build:pages": "pnpm run build && cd playground/spa && pnpm run build",
     "test": "vitest",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint .",

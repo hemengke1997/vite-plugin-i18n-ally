@@ -1,107 +1,26 @@
 # vite-plugin-i18n-detector
 
-> Lazyloadable i18n locales detector
+> i18n国际化资源懒加载 vite 插件
 
-## Features
+## 特性
 
-- Unawared DX
-- **Lazyload** locale resource
-- Options like 'i18n-ally'
+- 无感知开发体验
+- **懒加载**当前语言资源文件
+- 类 `i18n-ally` 的配置项
 
-## Install
+## 安装
 
 ```bash
-pnpm add vite-plugin-i18n-detector
+pnpm add vite-plugin-i18n-detector -D
 ```
 
-## Example
+## 在线示例
+[Demo](https://hemengke1997.github.io/vite-plugin-i18n-detector/)
 
-### vite.config.ts
-```ts
-import path from 'path'
-import { defineConfig } from 'vite'
-import { i18nDetector } from 'vite-plugin-i18n-detector'
+## 代码示例
+[playground](./playground/spa/)
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    i18nDetector({
-      localesPaths: [path.join(__dirname, './src/locale')],
-      pathMatcher: '{locale}/{namespaces}.{ext}',
-      enabledParsers: ['json', 'json5'],
-    }),
-  ],
-})
-
-```
-
-### i18next example
-
-```tsx
-import ReactDOM from 'react-dom/client'
-import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
-import { setupI18n } from 'vite-plugin-i18n-detector/client' // If you use i18next
-import App from './App'
-
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-
-// The following is an example
-const fallbackLng = 'en'
-const lookupTarget = 'lang'
-
-i18next
-  .use(initReactI18next)
-  .init({
-    fallbackLng,
-    resources: {},
-  })
-
-const { loadResource, onLanguageChanged } = setupI18n({
-	language: i18next.language,
-	onInit(langs) {
-    if (!langs.includes(i18next.language)) {
-      i18next.changeLanguage(fallbackLng)
-    }
-  },
-  onLocaleChange: () => {
-    root.render(
-      <App />
-    )
-  },
-  fallbackLng,
-  setQuery: {
-    lookupTarget,
-  }
-})
-
-const _changeLanguage = i18next.changeLanguage
-i18next.changeLanguage = async (lang: string | undefined, ...args) => {
-  let currentLng = i18next.language
-  // If language did't change, return
-  if (currentLng === lang) return undefined as any
-  currentLng = lang || currentLng
-  await loadResource(lang)
-  return _changeLanguage(lang, ...args)
-}
-
-i18next.on('languageChanged', (lang) => {
-  onLanguageChanged(lang)
-})
-```
-
-### App.tsx
-
-```tsx
-import { useTranslation } from 'react-i18next'
-
-function App() {
-  const { t, i18n } = useTranslation()
-
-  return <div onClick={() => i18n.changeLanguage('zh')}>{t('namespace.key')}</div>
-}
-```
-
+## vscode国际化配置
 
 ### .vscode => settings.json
 ``` json
@@ -117,6 +36,6 @@ function App() {
 ```
 
 
-## ⚠️ Warning
+## ⚠️ 提示
 
-Currently, we only support `.json(5)` file
+目前仅支持 `json(5)` 资源文件
