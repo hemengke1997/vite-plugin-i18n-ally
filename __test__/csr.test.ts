@@ -1,8 +1,6 @@
-import path from 'path'
-import type { Browser, Page } from 'puppeteer'
-import puppeteer from 'puppeteer'
-import type { ViteDevServer } from 'vite'
-import { createServer } from 'vite'
+import path from 'node:path'
+import puppeteer, { type Browser, type Page } from 'puppeteer'
+import { type ViteDevServer, createServer } from 'vite'
 
 describe('crs spa', () => {
   let browser: Browser

@@ -1,6 +1,6 @@
 import { Json5Parser } from './json5'
 import { JsonParser } from './json'
-import type { Parser } from './base'
+import { type Parser } from './base'
 
 export type EnableParsersType = string[]
 

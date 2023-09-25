@@ -7,7 +7,7 @@ import { initReactI18next } from 'react-i18next'
 import App from './App'
 import './index.css'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
 const lookupTarget = 'lang'
 const fallbackLng = 'en'

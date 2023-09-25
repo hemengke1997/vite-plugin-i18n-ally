@@ -18,7 +18,7 @@ pnpm add vite-plugin-i18n-detector
 
 ### vite.config.ts
 ```ts
-import path from 'path'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import { i18nDetector } from 'vite-plugin-i18n-detector'
 
@@ -44,7 +44,7 @@ import { initReactI18next } from 'react-i18next'
 import { setupI18n } from 'vite-plugin-i18n-detector/client' // If you use i18next
 import App from './App'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
 // The following is an example
 const fallbackLng = 'en'

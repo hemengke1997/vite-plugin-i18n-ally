@@ -1,11 +1,11 @@
-import path from 'path'
+import path from 'node:path'
 import trimEnd from 'string.prototype.trimend'
 import uniq from 'uniq'
 import fg from 'fast-glob'
 import { normalizePath } from 'vite'
 import cloneDeep from 'clone-deep'
-import type { I18nDetectorOptions } from '..'
 import { AvailableParsers, DefaultEnabledParsers } from '../parsers'
+import { type I18nDetectorOptions } from '..'
 import { ParsePathMatcher } from './PathMatcher'
 import { PKGNAME, VIRTUAL } from './constant'
 import { debug } from './debugger'
@@ -54,8 +54,8 @@ export class LocaleDetector {
     }
 
     this._localesPaths = c.localesPaths.map((item) =>
-      trimEnd(normalizePath(path.isAbsolute(item) ? item : path.resolve(this._rootPath, item)), '/\\').replace(
-        /\\/g,
+      trimEnd(normalizePath(path.isAbsolute(item) ? item : path.resolve(this._rootPath, item)), '/\\').replaceAll(
+        '\\',
         '/',
       ),
     )
@@ -150,7 +150,7 @@ export class LocaleDetector {
   }
 
   private lazyLoadFile = async (d: string, r: string) => {
-    if (!this.loadFileWaitingList.find(([a, b]) => a === d && b === r)) {
+    if (!this.loadFileWaitingList.some(([a, b]) => a === d && b === r)) {
       this.loadFileWaitingList.push([d, r])
     }
     const updated = await this.loadFileExecutor()
@@ -167,8 +167,8 @@ export class LocaleDetector {
     let relative = path.relative(dirpath, filepath)
 
     if (process.platform === 'win32') {
-      relative = relative.replace(/\\/g, '/')
-      dirpath = dirpath.replace(/\\/g, '/')
+      relative = relative.replaceAll('\\', '/')
+      dirpath = dirpath.replaceAll('\\', '/')
     }
 
     return { dirpath, relative }
@@ -262,10 +262,10 @@ export class LocaleDetector {
 
     let namespace = match.groups?.namespace
     if (namespace) {
-      namespace = namespace.replace(/\//g, '.')
+      namespace = namespace.replaceAll('/', '.')
     }
 
-    let locale = match.groups?.locale
+    const locale = match.groups?.locale
 
     if (!locale) {
       return

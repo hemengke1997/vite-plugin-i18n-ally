@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noEmit": true,
     "noImplicitAny": false,
-    "noEmit": true
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   }
 }

@@ -3,12 +3,15 @@ import fs from 'fs-extra'
 export abstract class Parser {
   abstract readonly id: string
   private supportedExtsRegex: RegExp
-  constructor(public readonly languageIds: string[], public readonly supportedExts: string) {
+  constructor(
+    public readonly languageIds: string[],
+    public readonly supportedExts: string,
+  ) {
     this.supportedExtsRegex = new RegExp(`.?(${this.supportedExts})$`)
   }
 
   supports(ext: string) {
-    return !!ext.toLowerCase().match(this.supportedExtsRegex)
+    return !!this.supportedExtsRegex.test(ext.toLowerCase())
   }
 
   async load(filepath: string): Promise<object> {
@@ -16,7 +19,8 @@ export abstract class Parser {
     if (!raw) {
       return {}
     }
-    return await this.parse(raw)
+    const res = await this.parse(raw)
+    return res
   }
   abstract parse(text: string): Promise<object>
 }

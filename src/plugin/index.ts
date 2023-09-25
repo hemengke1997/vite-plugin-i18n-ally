@@ -1,9 +1,9 @@
-import path from 'path'
-import type { PluginOption } from 'vite'
+import path from 'node:path'
+import { type PluginOption } from 'vite'
 import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { LocaleDetector } from './utils/LocaleDetector'
-import type { EnableParsersType } from './parsers'
 import { debug } from './utils/debugger'
+import { type EnableParsersType } from './parsers'
 
 export interface I18nDetectorOptions {
   /**
@@ -90,8 +90,8 @@ export async function i18nDetector(options: I18nDetectorOptions) {
 
         if (id.endsWith(RESOURCE_VIRTURL_HELPER)) {
           let code = `export default { `
-          for (const k in modules) {
-            // Currently rollup don't support inline chunkName
+          for (const k of Object.keys(modules)) {
+            // Currently rollup doesn't support inline chunkName
             // TODO: chunk name
             code += `'${k}': () => import('${VIRTUAL}-${k}'),`
           }
