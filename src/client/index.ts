@@ -69,10 +69,9 @@ function setupI18n(options: I18nSetupOptions) {
     document.querySelector('html')?.setAttribute(query?.html || 'lang', lang)
 
     if (query?.url) {
-      const urlQuery = new URLSearchParams(window.location.search)
-      urlQuery.set(query.url, lang)
-      const newURL = `${window.location.pathname}?${urlQuery.toString()}`
-      window.history.pushState({ path: newURL }, '', newURL)
+      const currentURL = new URL(window.location.href)
+      currentURL.searchParams.set(query.url, lang)
+      window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
     }
   }
 
