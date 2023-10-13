@@ -7,11 +7,6 @@ import { type EnableParsersType } from './parsers'
 
 export interface I18nDetectorOptions {
   /**
-   * @default
-   * process.cwd()
-   */
-  cwd?: string
-  /**
    * @example
    * [path.resolve(__dirname, './src/locales')]
    * ['./src/locales']
@@ -32,6 +27,11 @@ export interface I18nDetectorOptions {
    * Currently support `['json', 'json5']` only
    */
   enabledParsers?: EnableParsersType
+  /**
+   * @default
+   * process.cwd()
+   */
+  cwd?: string
 }
 
 export async function i18nDetector(options: I18nDetectorOptions) {

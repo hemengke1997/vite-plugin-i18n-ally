@@ -23,7 +23,7 @@ describe('crs spa', () => {
       console.error(e)
     }
 
-    browser = await puppeteer.launch()
+    browser = await puppeteer.launch({ headless: true })
     page = await browser.newPage()
 
     await page.goto('http://localhost:9527')
@@ -40,6 +40,9 @@ describe('crs spa', () => {
   })
 
   test('should have lang', async () => {
+    await page.click('#en')
+    await page.waitForSelector('#en')
+
     const text = await page.evaluate(() => {
       const lang = document.querySelector('#language')
       return lang?.textContent

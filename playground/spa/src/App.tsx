@@ -5,7 +5,7 @@ import './App.css'
 function App() {
   const { t, i18n } = useTranslation()
 
-  const [, update] = useReducer((x) => x + 1, 0)
+  const [, update] = useReducer((x) => ++x, 0)
 
   return (
     <div className='App'>
