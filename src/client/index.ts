@@ -19,7 +19,14 @@ function setupI18n(options: I18nSetupOptions) {
 
   const lng = language || fallbackLng
 
-  async function loadResourceByLang(lang: string | undefined) {
+  async function loadResourceByLang(
+    lang: string,
+    options?: {
+      setQuery?: boolean
+    },
+  ) {
+    const { setQuery = true } = options || {}
+
     if (!lang) {
       console.warn(`[${PKGNAME}]: Language is undefined, fallback to '${fallbackLng}'`)
       lang = fallbackLng
@@ -45,9 +52,9 @@ function setupI18n(options: I18nSetupOptions) {
       return
     }
 
-    await onResourceLoaded(resource, lang!)
+    await onResourceLoaded(resource, lang)
 
-    _setQuery(lang!)
+    setQuery && _setQuery(lang)
   }
 
   async function _setQuery(lang: string) {
@@ -70,10 +77,11 @@ function setupI18n(options: I18nSetupOptions) {
   }
 
   async function _init() {
-    await loadResourceByLang(fallbackLng)
+    await loadResourceByLang(fallbackLng, { setQuery: false })
     if (lng !== fallbackLng) {
-      await loadResourceByLang(lng)
+      await loadResourceByLang(lng, { setQuery: false })
     }
+    _setQuery(lng)
   }
 
   _init().then(async () => {
