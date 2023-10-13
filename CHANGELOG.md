@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.1...v1.0.2) (2023-10-13)
+
+
+### Bug Fixes
+
+* missing url anchors ([36cbb1b](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/36cbb1b01de754cd7d1c796ef8a18103c618444a))
+
+
+
 ## [1.0.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.0...v1.0.1) (2023-10-13)
 
 
