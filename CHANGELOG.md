@@ -1,3 +1,17 @@
+# [1.0.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.10...v1.0.0) (2023-10-13)
+
+
+### Bug Fixes
+
+* test ([d8cf0d8](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/d8cf0d802a6087390ea171cc4b2107ef3456a79e))
+
+
+### Features
+
+* gh ([304cc5f](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/304cc5fcca3821b606b50ff1f11c979aad4270c8))
+
+
+
 ## [0.0.10](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.9...v0.0.10) (2023-07-13)
 
 
