@@ -98,7 +98,9 @@ const { loadResourceByLang } = setupI18n({
     })
   },
   fallbackLng,
-  query: lookupTarget,
+  query: {
+    url: lookupTarget,
+  },
 })
 
 const _changeLanguage = i18next.changeLanguage
