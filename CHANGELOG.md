@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.0...v1.0.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* lang query blink ([13ebfd3](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/13ebfd30c9ebbe4ea8d84823f1addaa91d75f42e))
+
+
+
 # [1.0.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v0.0.10...v1.0.0) (2023-10-13)
 
 
