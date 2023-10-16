@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { type PluginOption } from 'vite'
 import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
-import { LocaleDetector } from './utils/LocaleDetector'
+import { LocaleDetector } from './locale-detector/LocaleDetector'
 import { debug } from './utils/debugger'
 import { type EnableParsersType } from './parsers'
 
