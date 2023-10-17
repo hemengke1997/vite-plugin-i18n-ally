@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.2...v1.0.3) (2023-10-17)
+
+
+### Bug Fixes
+
+* hmr on locale dir/file rename or deleted ([8e826a6](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/8e826a69e97049792becdec9261e5eb0a6ecd5e0))
+
+
+
 ## [1.0.2](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.1...v1.0.2) (2023-10-13)
 
 
