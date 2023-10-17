@@ -19,6 +19,7 @@ type PathMatcherType = RegExp
 
 export interface FileInfo {
   filepath: string
+  deepDirpath: string
   dirpath: string
   locale: string
   namespace?: string
@@ -31,12 +32,13 @@ export interface ParsedFile extends FileInfo {
 
 export class LocaleDetector {
   readonly config: Config
-  private _files: Record<string, ParsedFile> = {}
-  private _localeDirs: string[] = []
   private _pathMatcher: { regex: PathMatcherType; matcher: string }
   private _localesPaths: string[]
   private _rootPath: string
+  private _localeDirs: string[] = []
 
+  // need reset on init
+  private _files: Record<string, ParsedFile> = {}
   private _localeModules: {
     modules: Record<string, any>
     virtualModules: Record<string, any>
@@ -66,7 +68,12 @@ export class LocaleDetector {
       debug(`🚀 Initializing loader "${this._rootPath}"`)
       debug(`🗃 Custom Path Matcher: ${this._pathMatcher.matcher}`)
       debug(`🗃 Path Matcher Regex: ${this._pathMatcher.regex}`)
+      this._files = Object.create(null)
+      this._localeModules = Object.create(null)
+
       await this.loadAll()
+
+      debug(`📂 Loaded files:`, this.files)
     }
 
     this.update()
@@ -74,10 +81,10 @@ export class LocaleDetector {
 
   private update() {
     debug('✅ Loading finished')
-    this.moduleLocale()
+    this.updateLocaleModule()
   }
 
-  private moduleLocale() {
+  private updateLocaleModule() {
     const modules: Record<string, any> = {}
     this.files.forEach((file) => {
       const keyArray = [file.locale, file.namespace].filter(Boolean) as string[]
@@ -117,6 +124,14 @@ export class LocaleDetector {
 
   get localeModules() {
     return this._localeModules
+  }
+
+  get allLocaleDirs() {
+    return new Set(this.files.map((t) => t.deepDirpath))
+  }
+
+  get allLocaleFiles() {
+    return new Set(this.files.map((t) => t.filepath))
   }
 
   async onFileChanged({ fsPath: filepath }: { fsPath: string }) {
@@ -192,16 +207,16 @@ export class LocaleDetector {
     }
   }
 
-  private async loadDirectory(searchingPath: string) {
+  private async loadDirectory(dirPath: string) {
     const files = await fg('**/*.*', {
-      cwd: searchingPath,
+      cwd: dirPath,
       onlyFiles: true,
       ignore: ['node_modules/**'],
-      deep: 2, // todo
+      deep: undefined,
     })
 
     for (const relative of files) {
-      await this.loadFile(searchingPath, relative)
+      await this.loadFile(dirPath, relative)
     }
   }
 
@@ -223,14 +238,19 @@ export class LocaleDetector {
 
       const data = await parser.load(filepath)
 
+      const deepDirpath = path.dirname(filepath)
+
       this._files[filepath] = {
         filepath,
+        deepDirpath,
         dirpath,
         locale,
         value: data,
         namespace,
         matcher,
       }
+
+      // this._allLocaleDirs.add(deepDirpath)
 
       return true
     } catch (e) {

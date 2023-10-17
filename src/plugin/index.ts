@@ -4,6 +4,8 @@ import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './uti
 import { LocaleDetector } from './locale-detector/LocaleDetector'
 import { debug } from './utils/debugger'
 import { type EnableParsersType } from './parsers'
+import { initWatcher } from './utils/file-watcher'
+import { hmr } from './utils/hmr'
 
 export interface I18nDetectorOptions {
   /**
@@ -92,7 +94,7 @@ export async function i18nDetector(options: I18nDetectorOptions) {
           let code = `export default { `
           for (const k of Object.keys(modules)) {
             // Currently rollup doesn't support inline chunkName
-            // TODO: chunk name
+            // TODO: inline chunk name
             code += `'${k}': () => import('${VIRTUAL}-${k}'),`
           }
           code += ' };'
@@ -108,25 +110,32 @@ export async function i18nDetector(options: I18nDetectorOptions) {
 
       return null
     },
+    configureServer(server) {
+      initWatcher(options.localesPaths, async (_type, p, pnext) => {
+        if (!p) return
+
+        debug('watcher', p, '=========>', pnext)
+        const _hmr = async () => {
+          await localeDetector.init()
+          hmr(server, localeDetector)
+        }
+
+        if (path.extname(p) && localeDetector.allLocaleFiles.has(p)) {
+          // file
+          _hmr()
+        }
+        if (localeDetector.allLocaleDirs.has(p)) {
+          _hmr()
+        }
+      })
+    },
     async handleHotUpdate({ file, server }) {
       const updated = await localeDetector.onFileChanged({ fsPath: file })
 
       if (updated) {
         const { resolvedIds } = localeDetector.localeModules
         debug('hmr', resolvedIds)
-        for (const [, value] of resolvedIds) {
-          const { moduleGraph, ws } = server
-          const module = moduleGraph.getModuleById(RESOLVED_VIRTUAL_PREFIX + value)
-          if (module) {
-            moduleGraph.invalidateModule(module)
-            if (ws) {
-              ws.send({
-                type: 'full-reload',
-                path: '*',
-              })
-            }
-          }
-        }
+        hmr(server, localeDetector)
       }
     },
   } as PluginOption

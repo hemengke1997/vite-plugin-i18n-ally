@@ -14,6 +14,7 @@ function App() {
       <div id='language' style={{ marginBottom: '16px' }}>
         {t('test.key')}
       </div>
+      <div>extra: {t('more.a.b.c')}</div>
       <button
         onClick={async () => {
           await i18n.changeLanguage('zh')

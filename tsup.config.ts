@@ -5,7 +5,7 @@ export const tsup = defineConfig((option) => ({
     'client/index': 'src/client/index.ts',
     'index': 'src/plugin/index.ts',
   },
-  dts: !option.watch,
+  dts: true,
   clean: true,
   format: ['cjs', 'esm'],
   platform: 'node',
