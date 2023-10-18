@@ -9,9 +9,16 @@ export default defineConfig({
   plugins: [
     react(),
     i18nDetector({
-      localesPaths: [path.join(__dirname, './src/locale')],
+      localesPaths: [path.join(__dirname, './src/locales')],
       pathMatcher: '{locale}/{namespace}.{ext}',
-      enabledParsers: ['json'],
+      parserPlugins: [
+        {
+          ext: 'properties', // just for example
+          parse() {
+            // how to parse properties file, it's up to you
+          },
+        },
+      ],
     }),
   ],
   clearScreen: false,

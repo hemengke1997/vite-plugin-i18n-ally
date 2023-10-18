@@ -4,7 +4,7 @@
 
 **NOTE：此插件跟语言框架无关，无论你使用React或Vue（或其他任意语言），只要是vite，都可以基于此插件实现国际化资源懒加载**
 
-**考虑到更好的扩展性，此插件不负责国际化资源的解析，而是提供了一个 `setupI18n` 方法，你需要基于此方法实现自己的国际化资源懒加载逻辑**
+**考虑到更好的扩展性，此插件不负责国际化资源的解析，而是提供了一个 `setupI18n` 方法，你需要基于此方法实现自己的国际化资源解析等逻辑**
 
 ## 特性
 
@@ -23,12 +23,12 @@ pnpm add vite-plugin-i18n-detector -D
 
 
 ## 配置项
-| 参数           | 类型       | 默认值              | 描述                   |
-| -------------- | ---------- | ------------------- | ---------------------- |
-| localesPaths   | `string[]` | undefined           | 存放语言资源的目录地址 |
-| pathMatcher    | `string`   | undefined           | 资源文件匹配规则       |
-| enabledParsers | `string[]` | `['json', 'json5']` | 支持的资源文件类型     |
-| cwd            | `string`   | `process.cwd()`     | 项目根目录             |
+| 参数          | 类型             | 默认值                                  | 描述                   |
+| ------------- | ---------------- | --------------------------------------- | ---------------------- |
+| localesPaths  | `string[]`       | undefined                               | 存放语言资源的目录地址 |
+| pathMatcher   | `string`         | undefined                               | 资源文件匹配规则       |
+| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | 资源文件解析插件       |
+| root          | `string`         | `process.cwd()`                         | 项目根目录             |
 
 ## 配置参考
 
@@ -42,9 +42,8 @@ import { i18nDetector } from 'vite-plugin-i18n-detector'
 export default defineConfig({
   plugins: [
     i18nDetector({
-      localesPaths: [path.join(__dirname, './src/locale')],
+      localesPaths: [path.join(__dirname, './src/locales')],
       pathMatcher: '{locale}/{namespaces}.{ext}',
-      enabledParsers: ['json', 'json5'],
     }),
   ],
 })
@@ -121,9 +120,9 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 ### .vscode => settings.json
 ``` json
 {
-  "i18n-ally.localesPaths": ["src/locale"],
+  "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.keystyle": "flat",
-  "i18n-ally.enabledParsers": ["json", "json5"],
+  "i18n-ally.enabledParsers": ["json", "json5", "yaml"],
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
@@ -132,6 +131,6 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 ```
 
 
-## ⚠️ 提示
+## ⚠️ 温馨提示
 
-目前仅支持 `json(5)` 资源文件
+目前支持 `json` / `json5` / `yaml` / `yml` 资源文件

@@ -1,16 +1,8 @@
-import { Parser } from './base'
+import { Parser } from './Parser'
 
-export class JsonParser extends Parser {
-  id = 'json'
-
-  constructor() {
-    super(['json'], 'json')
-  }
-
-  async parse(text: string) {
-    if (!text || !text.trim()) {
-      return {}
-    }
+export const jsonParser = new Parser({
+  ext: 'json',
+  parse(text) {
     return JSON.parse(text)
-  }
-}
+  },
+})

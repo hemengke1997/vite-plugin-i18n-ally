@@ -4,15 +4,16 @@ import uniq from 'uniq'
 import fg from 'fast-glob'
 import { normalizePath } from 'vite'
 import cloneDeep from 'clone-deep'
-import { AvailableParsers, DefaultEnabledParsers } from '../parsers'
+import { DefaultEnabledParsers } from '../parsers'
 import { type I18nDetectorOptions } from '..'
 import { ParsePathMatcher } from '../path-matcher/PathMatcher'
 import { PKGNAME, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
+import { Parser } from '../parsers/Parser'
 
 export interface Config extends I18nDetectorOptions {
-  cwd: string
+  root: string
 }
 
 type PathMatcherType = RegExp
@@ -35,9 +36,8 @@ export class LocaleDetector {
   private _pathMatcher: { regex: PathMatcherType; matcher: string }
   private _localesPaths: string[]
   private _rootPath: string
-  private _localeDirs: string[] = []
 
-  // need reset on init
+  private _localeDirs: string[] = []
   private _files: Record<string, ParsedFile> = {}
   private _localeModules: {
     modules: Record<string, any>
@@ -48,7 +48,7 @@ export class LocaleDetector {
   constructor(c: Config) {
     this.config = c
 
-    this._rootPath = c.cwd
+    this._rootPath = c.root
     const pathMatcher = c.pathMatcher
     this._pathMatcher = {
       regex: ParsePathMatcher(pathMatcher, this.enabledParserExts()),
@@ -68,8 +68,6 @@ export class LocaleDetector {
       debug(`🚀 Initializing loader "${this._rootPath}"`)
       debug(`🗃 Custom Path Matcher: ${this._pathMatcher.matcher}`)
       debug(`🗃 Path Matcher Regex: ${this._pathMatcher.regex}`)
-      this._files = Object.create(null)
-      this._localeModules = Object.create(null)
 
       await this.loadAll()
 
@@ -250,8 +248,6 @@ export class LocaleDetector {
         matcher,
       }
 
-      // this._allLocaleDirs.add(deepDirpath)
-
       return true
     } catch (e) {
       this.unsetFile(relativePath)
@@ -303,28 +299,29 @@ export class LocaleDetector {
     }
   }
 
-  getMatchedParser(ext: string) {
+  private getMatchedParser(ext: string) {
     if (!ext.startsWith('.') && ext.includes('.')) {
       ext = path.extname(ext)
     }
 
     // resolve parser
-    return this.getEnabledParsers().find((parser) => parser.supports(ext))
+    return this.getParsers().find((parser) => parser.supports(ext))
   }
 
   private enabledParserExts() {
-    const enabledParsers = this.getEnabledParsers().map((item) => item.id)
+    const enabledParsers = this.getParsers().map((item) => item.supportedExts)
     return enabledParsers.filter(Boolean).join('|')
   }
 
-  getEnabledParsers() {
-    let ids = this.config.enabledParsers
+  private getParsers() {
+    const _parsers = this.config.parserPlugins?.filter(Boolean)
 
-    if (!ids?.length) {
-      ids = DefaultEnabledParsers
+    const parsers: Parser[] = DefaultEnabledParsers
+    if (_parsers?.length) {
+      parsers.push(..._parsers.filter(Boolean).map((parser) => new Parser(parser!)))
     }
 
-    return AvailableParsers.filter((i) => ids!.includes(i.id))
+    return parsers
   }
 
   get pathMatcher() {
@@ -336,6 +333,10 @@ export class LocaleDetector {
   }
 
   async findLocaleDirs() {
+    this._files = Object.create(null)
+    this._localeModules = Object.create(null)
+    this._localeDirs = []
+
     if (this._localesPaths?.length) {
       try {
         const _locale_dirs = await fg(this._localesPaths, {

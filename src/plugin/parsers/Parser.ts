@@ -1,12 +1,17 @@
 import fs from 'fs-extra'
 
-export abstract class Parser {
-  abstract readonly id: string
+export type ParserConstructor = {
+  ext: string
+  parse: (text: string) => Promise<object> | object
+}
+
+export class Parser {
   private supportedExtsRegex: RegExp
-  constructor(
-    public readonly languageIds: string[],
-    public readonly supportedExts: string,
-  ) {
+
+  public readonly supportedExts: string
+
+  constructor(public readonly parser: ParserConstructor) {
+    this.supportedExts = parser.ext
     this.supportedExtsRegex = new RegExp(`.?(${this.supportedExts})$`)
   }
 
@@ -22,5 +27,12 @@ export abstract class Parser {
     const res = await this.parse(raw)
     return res
   }
-  abstract parse(text: string): Promise<object>
+
+  parse(text: string): Promise<object> | object {
+    if (!text || !text.trim()) {
+      return {}
+    }
+
+    return this.parser.parse(text)
+  }
 }

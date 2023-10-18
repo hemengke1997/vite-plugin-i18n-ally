@@ -3,18 +3,22 @@ import { type PluginOption } from 'vite'
 import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { LocaleDetector } from './locale-detector/LocaleDetector'
 import { debug } from './utils/debugger'
-import { type EnableParsersType } from './parsers'
 import { initWatcher } from './utils/file-watcher'
 import { hmr } from './utils/hmr'
+import { type ParserConstructor } from './parsers/Parser'
+
+export type ParserPlugin = ParserConstructor | undefined
 
 export interface I18nDetectorOptions {
   /**
+   * @description locales directory paths
    * @example
    * [path.resolve(__dirname, './src/locales')]
    * ['./src/locales']
    */
   localesPaths: string[]
   /**
+   * @description rule of matching locale file
    * @example
    * `{locale}/{namespaces}.{ext}`
    * `{locale}/{namespace}.json`
@@ -23,27 +27,35 @@ export interface I18nDetectorOptions {
    */
   pathMatcher: string
   /**
-   * @default
-   * ['json', 'json5']
    * @description
-   * Currently support `['json', 'json5']` only
+   * parser plugins
+   *
+   * you can add custom parser plugin if there is no built-in parser for your file extension
+   * @example
+   * ```js
+   * [{
+   *    ext: 'json',
+   *    parser: (text) => JSON.parse(text),
+   * }]
+   * ```
    */
-  enabledParsers?: EnableParsersType
+  parserPlugins?: ParserPlugin[]
   /**
+   * @description root path
    * @default
    * process.cwd()
    */
-  cwd?: string
+  root?: string
 }
 
 export async function i18nDetector(options: I18nDetectorOptions) {
   debug('i18nDetector options:', options)
 
   const localeDetector = new LocaleDetector({
-    cwd: options.cwd || process.cwd(),
+    root: options.root || process.cwd(),
     localesPaths: options.localesPaths,
     pathMatcher: options.pathMatcher,
-    enabledParsers: options.enabledParsers,
+    parserPlugins: options.parserPlugins,
   })
 
   await localeDetector.init()
