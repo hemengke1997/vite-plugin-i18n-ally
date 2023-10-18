@@ -1,3 +1,12 @@
+# [2.0.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.3...v2.0.0) (2023-10-18)
+
+
+### Features
+
+* support user-custom parser plugin ([19d1b49](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/19d1b49015e6940e894a7f2abda2eab207c5224c))
+
+
+
 ## [1.0.3](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.2...v1.0.3) (2023-10-17)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-i18n-detector",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "packageManager": "pnpm@8.9.0",
   "description": "vite plugin for lazyload i18n resources. 懒加载国际化资源的 vite 插件",
   "type": "module",
