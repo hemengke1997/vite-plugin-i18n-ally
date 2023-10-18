@@ -135,9 +135,11 @@ export async function i18nDetector(options: I18nDetectorOptions) {
         if (path.extname(p) && localeDetector.allLocaleFiles.has(p)) {
           // file
           _hmr()
+          return
         }
         if (localeDetector.allLocaleDirs.has(p)) {
           _hmr()
+          return
         }
       })
     },
