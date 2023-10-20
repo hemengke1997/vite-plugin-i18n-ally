@@ -23,12 +23,12 @@ pnpm add vite-plugin-i18n-detector -D
 
 
 ## 配置项
-| 参数          | 类型             | 默认值                                  | 描述                   |
-| ------------- | ---------------- | --------------------------------------- | ---------------------- |
-| localesPaths  | `string[]`       | undefined                               | 存放语言资源的目录地址 |
-| pathMatcher   | `string`         | undefined                               | 资源文件匹配规则       |
-| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | 资源文件解析插件       |
-| root          | `string`         | `process.cwd()`                         | 项目根目录             |
+| 参数          | 类型             | 默认值          | 描述                   |
+| ------------- | ---------------- | --------------- | ---------------------- |
+| localesPaths  | `string[]`       | undefined       | 存放语言资源的目录地址 |
+| pathMatcher   | `string`         | undefined       | 资源文件匹配规则       |
+| parserPlugins | `ParserPlugin[]` | `[]`            | 资源文件解析插件       |
+| root          | `string`         | `process.cwd()` | 项目根目录             |
 
 ## 配置参考
 

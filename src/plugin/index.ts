@@ -6,26 +6,34 @@ import { debug } from './utils/debugger'
 import { initWatcher } from './utils/file-watcher'
 import { hmr } from './utils/hmr'
 import { type ParserConstructor } from './parsers/Parser'
+import { initOptions } from './utils/init-options'
 
 export type ParserPlugin = ParserConstructor | undefined
 
 export interface I18nDetectorOptions {
   /**
    * @description locales directory paths
+   * @default
+   * ```js
+   * [path.resolve(root, './src/locales')]
+   * ```
    * @example
-   * [path.resolve(__dirname, './src/locales')]
    * ['./src/locales']
    */
-  localesPaths: string[]
+  localesPaths?: string[]
   /**
    * @description rule of matching locale file
+   * @default
+   * ```js
+   * '{locale}/{namespaces}.{ext}'
+   * ```
    * @example
    * `{locale}/{namespaces}.{ext}`
    * `{locale}/{namespace}.json`
    * `{namespaces}/{locale}`
    * `something/{locale}/{namespace}`
    */
-  pathMatcher: string
+  pathMatcher?: string
   /**
    * @description
    * parser plugins
@@ -48,11 +56,13 @@ export interface I18nDetectorOptions {
   root?: string
 }
 
-export async function i18nDetector(options: I18nDetectorOptions) {
+export async function i18nDetector(opts?: I18nDetectorOptions) {
+  const options = initOptions(opts)
+
   debug('i18nDetector options:', options)
 
   const localeDetector = new LocaleDetector({
-    root: options.root || process.cwd(),
+    root: options.root,
     localesPaths: options.localesPaths,
     pathMatcher: options.pathMatcher,
     parserPlugins: options.parserPlugins,

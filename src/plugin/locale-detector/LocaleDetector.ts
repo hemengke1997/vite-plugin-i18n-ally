@@ -12,7 +12,7 @@ import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
 import { Parser } from '../parsers/Parser'
 
-export interface Config extends I18nDetectorOptions {
+export interface Config extends Required<I18nDetectorOptions> {
   root: string
 }
 
