@@ -6,11 +6,9 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 import App from './App'
 import './index.css'
+import { fallbackLng, lookupTarget } from './const'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
-
-const lookupTarget = 'lang'
-const fallbackLng = 'en'
 
 i18next
   .use(LanguageDetector)

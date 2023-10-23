@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "jsx": "preserve",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "paths": {
+      "~utils": ["./test-utils.ts"]
+    },
+    "types": ["vite/client"],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
+  },
+  "include": ["."],
+  "exclude": ["**/dist/**"]
+}

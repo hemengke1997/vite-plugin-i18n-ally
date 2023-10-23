@@ -2,13 +2,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    onConsoleLog(log) {
-      if (log.includes('Generated an empty chunk')) {
-        return false
-      }
-      return undefined
-    },
-    globals: true,
-    environment: 'jsdom',
+    exclude: ['**/node_modules/**', '**/dist/**', './playground/**/*.*', './playground-temp/**/*.*'],
+    testTimeout: 20000,
   },
 })

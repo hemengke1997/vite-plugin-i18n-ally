@@ -1,7 +1,6 @@
 {
   "extends": "@minko-fe/tsconfig/tsconfig.lib",
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vitest/globals"]
+    "lib": ["DOM", "DOM.Iterable", "ESNext"]
   }
 }

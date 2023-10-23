@@ -3,5 +3,8 @@
     "b": {
       "c": "more info default"
     }
+  },
+  "key": {
+    "key-1": "value-1"
   }
 }
