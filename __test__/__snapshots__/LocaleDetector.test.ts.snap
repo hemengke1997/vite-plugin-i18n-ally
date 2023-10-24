@@ -1,0 +1,87 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LocaleDetector - Dir mode > locale modules 1`] = `
+{
+  "de": {
+    "more": {
+      "a": {
+        "b": {
+          "c": "more info",
+        },
+      },
+    },
+    "test": {
+      "key": "Deutsch",
+    },
+  },
+  "en": {
+    "more": {
+      "a": {
+        "b": {
+          "c": "more info default",
+        },
+      },
+      "key": {
+        "key-1": "value-1",
+      },
+    },
+    "test": {
+      "key": "en",
+    },
+    "unused": {},
+  },
+  "zh": {
+    "test": {
+      "key": "中文",
+    },
+  },
+  "zh-tw": {
+    "test": {
+      "key": "繁体中文",
+    },
+  },
+}
+`;
+
+exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
+{
+  "virtual:i18n-de": {
+    "more": {
+      "a": {
+        "b": {
+          "c": "more info",
+        },
+      },
+    },
+    "test": {
+      "key": "Deutsch",
+    },
+  },
+  "virtual:i18n-en": {
+    "more": {
+      "a": {
+        "b": {
+          "c": "more info default",
+        },
+      },
+      "key": {
+        "key-1": "value-1",
+      },
+    },
+    "test": {
+      "key": "en",
+    },
+    "unused": {},
+  },
+  "virtual:i18n-zh": {
+    "test": {
+      "key": "中文",
+    },
+  },
+  "virtual:i18n-zh-tw": {
+    "test": {
+      "key": "繁体中文",
+    },
+  },
+}
+`;

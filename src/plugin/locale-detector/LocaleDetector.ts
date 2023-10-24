@@ -147,6 +147,10 @@ export class LocaleDetector {
 
   private loadFileWaitingList: [string, string][] = []
 
+  get loadFileWaitingListLength() {
+    return this.loadFileWaitingList.length
+  }
+
   private loadFileExecutor = async () => {
     const list = this.loadFileWaitingList
     this.loadFileWaitingList = []

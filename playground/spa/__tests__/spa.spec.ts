@@ -1,5 +1,17 @@
 import { describe, expect, test } from 'vitest'
-import { addFile, editFile, isBuild, isServe, page, removeDir, removeFile, renameDir, untilUpdated } from '~utils'
+import {
+  addFile,
+  editFile,
+  isBuild,
+  isServe,
+  page,
+  removeDir,
+  removeFile,
+  renameDir,
+  untilBrowserLogAfter,
+  untilUpdated,
+  viteTestUrl,
+} from '~utils'
 
 describe('e2e', () => {
   test('should render en by default', async () => {
@@ -32,6 +44,41 @@ describe('e2e', () => {
     await untilUpdated(() => page.textContent('#language'), 'Deutsch')
 
     await page.click('#en')
+  })
+
+  test('should set html attribute lang', async () => {
+    expect(await page.getAttribute('html', 'lang')).toBe('en')
+
+    await page.click('#zh')
+
+    expect(await page.getAttribute('html', 'lang')).toBe('zh')
+
+    await page.click('#de')
+
+    expect(await page.getAttribute('html', 'lang')).toBe('de')
+
+    await page.click('#en')
+  })
+
+  test('should set url query', async () => {
+    await page.click('#zh')
+    let currentUrl = page.url()
+    let urlSearchParams = new URLSearchParams(currentUrl.split('?')[1])
+    let lang = urlSearchParams.get('lang')
+    expect(lang).toBe('zh')
+
+    await page.click('#en')
+    currentUrl = page.url()
+    urlSearchParams = new URLSearchParams(currentUrl.split('?')[1])
+    lang = urlSearchParams.get('lang')
+    expect(lang).toBe('en')
+  })
+
+  test('should fallback to fallbackLng when language is not found', async () => {
+    await untilBrowserLogAfter(
+      () => page.goto(`${viteTestUrl}/?lang=not-exist`),
+      /.*Language 'not-exist' is detected.*/,
+    )
   })
 })
 

@@ -25,10 +25,10 @@ describe('PathMatching', () => {
       const result = re.exec(path)
 
       if (!result) {
-        expect(expectedNamespace).to.eql(null)
+        expect(expectedNamespace).toStrictEqual(null)
       } else {
-        expect(result.groups?.namespace).to.eql(expectedNamespace)
-        expect(result.groups?.locale).to.eql(expectedLocale)
+        expect(result.groups?.namespace).toStrictEqual(expectedNamespace)
+        expect(result.groups?.locale).toStrictEqual(expectedLocale)
       }
     })
   }
