@@ -1,12 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { setupI18n } from 'vite-plugin-i18n-detector/client'
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
+import { setupI18n } from 'vite-plugin-i18n-detector/client'
 import App from './App'
-import './index.css'
 import { fallbackLng, lookupTarget } from './const'
+import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 

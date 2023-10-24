@@ -1,11 +1,11 @@
 import path from 'node:path'
 import { type PluginOption } from 'vite'
-import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { LocaleDetector } from './locale-detector/LocaleDetector'
+import { type ParserConstructor } from './parsers/Parser'
+import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { debug } from './utils/debugger'
 import { initWatcher } from './utils/file-watcher'
 import { hmr } from './utils/hmr'
-import { type ParserConstructor } from './parsers/Parser'
 import { initOptions } from './utils/init-options'
 
 export type ParserPlugin = ParserConstructor | undefined

@@ -1,12 +1,12 @@
 // test utils used in e2e tests for playgrounds.
 // `import { getColor } from '~utils'`
 
-import path from 'node:path'
+import { type ExecaChildProcess } from 'execa'
 import fs from 'fs-extra'
+import path from 'node:path'
+import { type ConsoleMessage } from 'playwright-chromium'
 import { type Manifest, normalizePath } from 'vite'
 import { expect } from 'vitest'
-import { type ConsoleMessage } from 'playwright-chromium'
-import { type ExecaChildProcess } from 'execa'
 import { isBuild, isWindows, page, testDir } from './vitestSetup'
 
 export * from './vitestSetup'

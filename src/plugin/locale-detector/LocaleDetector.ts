@@ -1,16 +1,16 @@
+import cloneDeep from 'clone-deep'
+import fg from 'fast-glob'
 import path from 'node:path'
 import trimEnd from 'string.prototype.trimend'
 import uniq from 'uniq'
-import fg from 'fast-glob'
 import { normalizePath } from 'vite'
-import cloneDeep from 'clone-deep'
-import { DefaultEnabledParsers } from '../parsers'
 import { type I18nDetectorOptions } from '..'
+import { DefaultEnabledParsers } from '../parsers'
+import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher/PathMatcher'
 import { PKGNAME, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
-import { Parser } from '../parsers/Parser'
 
 export interface Config extends Required<I18nDetectorOptions> {
   root: string
