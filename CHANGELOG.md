@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.0.0...v2.0.1) (2023-10-24)
+
+
+### Features
+
+* support no-option ([01f76b4](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/01f76b47351b115267e573e3db59475724e1bcd2))
+
+
+
 # [2.0.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v1.0.3...v2.0.0) (2023-10-18)
 
 
