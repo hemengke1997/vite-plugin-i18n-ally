@@ -48,7 +48,7 @@ export function removeFile(filename: string): void {
 }
 
 export function removeDir(dirname: string) {
-  fs.rmSync(path.resolve(testDir, dirname), { recursive: true })
+  fs.rmSync(path.resolve(testDir, dirname), { recursive: true, force: true })
 }
 
 export function listFiles(dir = ''): string[] {
