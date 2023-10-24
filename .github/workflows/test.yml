@@ -28,15 +28,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        # node_version: [16, 18, 20]
-        node-version: [18]
-        # include:
-        #   # Active LTS + other OS
-        #   - os: macos-latest
-        #     node_version: 18
-        #   - os: windows-latest
-        #     node_version: 18
+        os: [ubuntu-latest]
+        node_version: [16, 18, 20]
+        include:
+          # Active LTS + other OS
+          - os: macos-latest
+            node_version: 18
+          - os: windows-latest
+            node_version: 18
       fail-fast: true
 
     name: 'Build&Test: node-${{ matrix.node_version }}, ${{ matrix.os }}'
