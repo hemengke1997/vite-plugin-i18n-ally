@@ -20,7 +20,6 @@
     "CHANGELOG.md",
     "README.md",
     "dist",
-    "i18n.d.ts",
     "virtual.d.ts"
   ],
   "main": "./dist/index.cjs",
@@ -36,6 +35,9 @@
       "types": "./dist/client/index.d.ts",
       "require": "./dist/client/index.cjs",
       "import": "./dist/client/index.js"
+    },
+    "./virtual": {
+      "types": "./virtual.d.ts"
     }
   },
   "typesVersions": {
@@ -46,7 +48,7 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch",
+    "dev": "simple-git-hooks && tsup --watch",
     "build": "tsup",
     "build:pages": "pnpm run build && cd playground/spa && pnpm run build",
     "test": "run-s test:unit test:serve test:build",
@@ -54,7 +56,6 @@
     "test:serve": "vitest run -c vitest.config.e2e.ts",
     "test:build": "cross-env VITE_TEST_BUILD=1 vitest run -c vitest.config.e2e.ts",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "pnpx simple-git-hooks",
     "lint": "eslint .",
     "up": "taze -I -w -r",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
@@ -100,7 +101,7 @@
     "typescript": "^5.2.2",
     "vite-plugin-i18n-detector": "workspace:*",
     "vitest": "^0.34.5",
-    "vitest-e2e": "^0.0.5"
+    "vitest-e2e": "^0.0.6"
   },
   "engines": {
     "node": ">=16.0.0"
