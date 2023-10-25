@@ -1,11 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "sourceMap": true,
     "noEmit": true,
     "verbatimModuleSyntax": false,
-    "noImplicitAny": false,
+    "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false
   }

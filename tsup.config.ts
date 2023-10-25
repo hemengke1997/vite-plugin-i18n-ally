@@ -1,18 +1,32 @@
-import { defineConfig } from 'tsup'
+import { type Options, defineConfig } from 'tsup'
 
-export const tsup = defineConfig((option) => ({
-  entry: {
-    'client/index': 'src/client/index.ts',
-    'index': 'src/plugin/index.ts',
+const commonConfig = (option: Options): Options => {
+  return {
+    dts: true,
+    clean: true,
+    minify: false,
+    format: ['cjs', 'esm'],
+    sourcemap: !!option.watch,
+    treeshake: true,
+    tsconfig: option.watch ? './tsconfig.dev.json' : './tsconfig.json',
+    external: [/^virtual:.*/],
+  }
+}
+
+export const tsup = defineConfig((option) => [
+  {
+    entry: {
+      'client/index': 'src/client/index.ts',
+    },
+    platform: 'browser',
+    ...commonConfig(option),
   },
-  dts: true,
-  clean: true,
-  format: ['cjs', 'esm'],
-  platform: 'node',
-  splitting: false,
-  treeshake: true,
-  minify: false,
-  sourcemap: !!option.watch,
-  tsconfig: option.watch ? 'tsconfig.dev.json' : 'tsconfig.json',
-  external: [/^virtual:.*/],
-}))
+  {
+    entry: {
+      index: 'src/plugin/index.ts',
+    },
+    platform: 'node',
+    target: 'node16',
+    ...commonConfig(option),
+  },
+])

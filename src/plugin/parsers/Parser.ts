@@ -1,4 +1,4 @@
-import fs from 'fs-extra'
+import fs from 'node:fs'
 
 export type ParserConstructor = {
   ext: string
