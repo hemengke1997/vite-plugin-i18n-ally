@@ -101,7 +101,7 @@
     "typescript": "^5.2.2",
     "vite-plugin-i18n-detector": "workspace:*",
     "vitest": "^0.34.5",
-    "vitest-e2e": "^0.0.6"
+    "vitest-e2e": "^0.0.8"
   },
   "engines": {
     "node": ">=16.0.0"
