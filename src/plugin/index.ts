@@ -15,10 +15,8 @@ export interface I18nDetectorOptions {
    * @description locales directory paths
    * @default
    * ```js
-   * [path.resolve(root, './src/locales')]
+   * ['./src/locales', './locales']
    * ```
-   * @example
-   * ['./src/locales']
    */
   localesPaths?: string[]
   /**

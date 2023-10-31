@@ -1,5 +1,3 @@
-// Taken from https://github.com/lokalise/i18n-ally/blob/HEAD/src/utils/PathMatcher.ts
-
 // Examples
 // {namespaces}/{locale}.json
 // {locale}/{namespace}.{ext}

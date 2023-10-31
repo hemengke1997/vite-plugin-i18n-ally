@@ -1,3 +1,16 @@
+
+<p align="center">
+  <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
+    <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo" />
+  </a>
+</p>
+<br/>
+<p align="center">
+  <a href="https://npmjs.com/package/vite-plugin-i18n-detector"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-detector.svg" alt="npm package"></a>
+  <a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/vite-plugin-i18n-detector.svg" alt="node compatibility"></a>
+</p>
+
+
 # vite-plugin-i18n-detector
 
 > 懒加载i18n国际化资源的 vite 插件
@@ -23,12 +36,12 @@ pnpm add vite-plugin-i18n-detector -D
 
 
 ## 配置项
-| 参数          | 类型             | 默认值          | 描述                   |
-| ------------- | ---------------- | --------------- | ---------------------- |
-| localesPaths  | `string[]`       | undefined       | 存放语言资源的目录地址 |
-| pathMatcher   | `string`         | undefined       | 资源文件匹配规则       |
-| parserPlugins | `ParserPlugin[]` | `[]`            | 资源文件解析插件       |
-| root          | `string`         | `process.cwd()` | 项目根目录             |
+| 参数          | 类型             | 默认值                                  | 描述                   |
+| ------------- | ---------------- | --------------------------------------- | ---------------------- |
+| localesPaths  | `string[]`       | `['./src/locales', './locales']`        | 存放语言资源的目录地址 |
+| pathMatcher   | `string`         | `{locale}/{namespaces}.{ext}`           | 资源文件匹配规则       |
+| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | 资源文件解析插件       |
+| root          | `string`         | `process.cwd()`                         | 项目根目录             |
 
 ## 配置参考
 
@@ -42,8 +55,7 @@ import { i18nDetector } from 'vite-plugin-i18n-detector'
 export default defineConfig({
   plugins: [
     i18nDetector({
-      localesPaths: [path.join(__dirname, './src/locales')],
-      pathMatcher: '{locale}/{namespaces}.{ext}',
+      localesPaths: ['./src/locales'],
     }),
   ],
 })
@@ -115,7 +127,7 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 ## 完整示例
 请参考 [i18next example](./playground/spa/src/main.tsx)
 
-## vscode国际化配置
+## vscode国际化配置参考
 
 ### .vscode => settings.json
 ``` json
@@ -126,7 +138,6 @@ i18next.changeLanguage = async (lang: string, ...args) => {
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
-  "i18n-ally.sourceLanguage": "en"
 }
 ```
 
