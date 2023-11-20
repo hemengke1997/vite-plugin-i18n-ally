@@ -36,7 +36,7 @@ jobs:
             node_version: 18
           - os: windows-latest
             node_version: 18
-      fail-fast: true
+      fail-fast: false
 
     name: 'Build&Test: node-${{ matrix.node_version }}, ${{ matrix.os }}'
 
@@ -76,7 +76,7 @@ jobs:
 
       - name: Install Playwright
         # does not need to explicitly set chromium after https://github.com/microsoft/playwright/issues/14862 is solved
-        run: pnpx playwright install chromium
+        run: pnpx playwright@1.39.0 install chromium
 
       - name: Build
         run: pnpm run build
