@@ -3,7 +3,7 @@ import { type Options, defineConfig } from 'tsup'
 const commonConfig = (option: Options): Options => {
   return {
     dts: true,
-    clean: true,
+    clean: !option.watch,
     minify: false,
     format: ['cjs', 'esm'],
     sourcemap: !!option.watch,

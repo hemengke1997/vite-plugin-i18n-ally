@@ -13,6 +13,8 @@
 
 # vite-plugin-i18n-detector
 
+**中文** | [English](./README-en.md)
+
 > 懒加载i18n国际化资源的 vite 插件
 
 **NOTE：此插件跟语言框架无关，无论你使用React或Vue（或其他任意语言），只要是vite，都可以基于此插件实现国际化资源懒加载**
@@ -150,3 +152,7 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 
 - [i18n-ally](https://github.com/lokalise/i18n-ally)
 - [vite](https://github.com/vitejs/vite)
+
+## License
+
+MIT

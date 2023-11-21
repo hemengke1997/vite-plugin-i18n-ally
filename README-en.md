@@ -13,6 +13,8 @@
 
 # vite-plugin-i18n-detector
 
+**English** | [中文](./README.md)
+
 > A vite plugin for lazy loading i18n resources
 
 **NOTE: This plugin is independent of the language framework. Whether you use React or Vue (or any other language), as long as it is vite, you can implement lazy loading of internationalization resources based on this plugin**
@@ -149,3 +151,7 @@ Built-in support for `json` / `json5` / `yaml` / `yml` resource files, customiza
 
 - [i18n-ally](https://github.com/lokalise/i18n-ally)
 - [vite](https://github.com/vitejs/vite)
+
+## License
+
+MIT
