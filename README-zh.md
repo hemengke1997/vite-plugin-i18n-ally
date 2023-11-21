@@ -13,37 +13,39 @@
 
 # vite-plugin-i18n-detector
 
-**English** | [中文](./README.md)
+**中文** | [English](./README.md)
 
-> A vite plugin for lazy loading i18n resources
+> 懒加载i18n国际化资源的 vite 插件
 
-**NOTE: This plugin is independent of the language framework. Whether you use React or Vue (or any other language), as long as it is vite, you can implement lazy loading of internationalization resources based on this plugin**
+**NOTE：此插件跟语言框架无关，无论你使用React或Vue（或其他任意语言），只要是vite，都可以基于此插件实现国际化资源懒加载**
 
-## Features
+**考虑到更好的扩展性，此插件不负责国际化资源的解析，而是提供了一个 `setupI18n` 方法，你需要基于此方法实现自己的国际化资源解析等逻辑**
 
-- Seamless development experience, no need to manually import resource files
-- **Lazy loading** language resource files to reduce the size of the first screen resource
-- Configuration items similar to `i18n-ally`, easier to get started
+## 特性
 
-## Install
+- 无感知的开发体验，不需手动引入资源文件
+- **懒加载**语言资源文件，减少首屏资源体积
+- 类 `i18n-ally` 的配置项，更易上手
+
+## 安装
 
 ```bash
 pnpm add vite-plugin-i18n-detector -D
 ```
 
-## Online Demo
+## 在线示例
 [Demo](https://hemengke1997.github.io/vite-plugin-i18n-detector/)
 
-## Options
 
-| Option        | Type             | Default                                 | Description                                                   |
-| ------------- | ---------------- | --------------------------------------- | ------------------------------------------------------------- |
-| localesPaths  | `string[]`       | `['./src/locales', './locales']`        | The directory address where the language resources are stored |
-| pathMatcher   | `string`         | `{locale}/{namespaces}.{ext}`           | Resource file matching rule                                   |
-| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | Resource file parsing plugin                                  |
-| root          | `string`         | `process.cwd()`                         | Project root directory                                        |
+## 配置项
+| 参数          | 类型             | 默认值                                  | 描述                   |
+| ------------- | ---------------- | --------------------------------------- | ---------------------- |
+| localesPaths  | `string[]`       | `['./src/locales', './locales']`        | 存放语言资源的目录地址 |
+| pathMatcher   | `string`         | `{locale}/{namespaces}.{ext}`           | 资源文件匹配规则       |
+| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | 资源文件解析插件       |
+| root          | `string`         | `process.cwd()`                         | 项目根目录             |
 
-## Config Reference
+## 配置参考
 
 ### vite.config.ts
 ```ts
@@ -61,10 +63,9 @@ export default defineConfig({
 })
 ```
 
-## Use with React-i18next
+## 与React-i18next配合使用
 
 ### main.tsx
-
 ```tsx
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
@@ -83,14 +84,14 @@ i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources: {}, // !!! important: No resources are added at initialization, otherwise what's lazy loading :)
+    resources: {}, // !!! 初始化时不添加资源，不然何来懒加载:)
     nsSeparator: '.',
     fallbackLng,
-    detection: {
+    detection: { // 探测浏览器语言
       order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator'],
       caches: ['localStorage', 'sessionStorage', 'cookie'],
       lookupQuerystring: lookupTarget,
-      // ... For more configurations, please refer to `i18next-browser-languagedetector`
+      // ... 更多配置请查阅 i18next-browser-languagedetector
     },
   })
 
@@ -104,7 +105,7 @@ const { loadResourceByLang } = setupI18n({
       </React.StrictMode>,
     )
   },
-  onResourceLoaded: (langs, currentLang) => { // Once the resource is loaded, add it to i18next
+  onResourceLoaded: (langs, currentLang) => { // 资源加载完成后，添加到i18next
     Object.keys(langs).forEach((ns) => {
       i18next.addResourceBundle(currentLang, ns, langs[ns])
     })
@@ -119,17 +120,16 @@ const _changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   const currentLng = lang
 
-  // Load resources before language change
+  // 语言改变之前，先加载资源
   await loadResourceByLang(currentLng)
   return _changeLanguage(currentLng, ...args)
 }
 ```
 
-## Full Example
+## 完整示例
+请参考 [i18next example](./playground/spa/src/main.tsx)
 
-Please refer to [i18next example](./playground/spa/src/main.tsx)
-
-## vscode i18n-ally configuration reference
+## vscode国际化配置参考
 
 ### .vscode => settings.json
 ``` json
@@ -143,11 +143,12 @@ Please refer to [i18next example](./playground/spa/src/main.tsx)
 }
 ```
 
-## ⚠️ Warm Tips
 
-Built-in support for `json` / `json5` / `yaml` / `yml` resource files, customizable plugin parsing language
+## ⚠️ 温馨提示
 
-## Thanks
+目前内置支持 `json` / `json5` / `yaml` / `yml` 资源文件，可自定义插件解析语言
+
+## 感谢
 
 - [i18n-ally](https://github.com/lokalise/i18n-ally)
 - [vite](https://github.com/vitejs/vite)
