@@ -17,7 +17,7 @@ function getDefaultOptions(root: string): Required<I18nDetectorOptions> {
 
     if (Array.isArray(localesPaths)) {
       localesPaths = localesPaths.map((p) => {
-        if (process.env.VITEST || process.env.CI) {
+        if (process.env.E2E) {
           p = p.replace('playground', 'playground-temp')
         }
         return path.resolve(i18AllyConfig.i18nRootPath, p)

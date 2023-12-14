@@ -20,6 +20,7 @@ describe('LocaleDetector - Dir mode', () => {
   })
 
   test('should localeDetector find locales', () => {
+    console.log(localeDetector, 'localeDetector.files')
     expect(localeDetector.files.length).toBeGreaterThan(0)
   })
 
@@ -42,13 +43,13 @@ describe('LocaleDetector - Dir mode', () => {
   test('should virtualModules has every locale', () => {
     const { virtualModules } = localeDetector.localeModules
     expect(Object.keys(virtualModules).sort()).toMatchInlineSnapshot(`
-    [
-      "virtual:i18n-de",
-      "virtual:i18n-en",
-      "virtual:i18n-zh",
-      "virtual:i18n-zh-tw",
-    ]
-  `)
+      [
+        "virtual:i18n-de",
+        "virtual:i18n-en",
+        "virtual:i18n-zh",
+        "virtual:i18n-zh-tw",
+      ]
+    `)
   })
 
   test('should resolvedIds has every locale', () => {

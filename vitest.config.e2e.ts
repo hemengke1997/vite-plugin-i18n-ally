@@ -27,5 +27,8 @@ export default defineConfig({
         fallbackCJS: true,
       },
     },
+    env: {
+      E2E: '1',
+    },
   },
 })
