@@ -1,3 +1,22 @@
+# [2.1.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.0.1...v2.1.0) (2023-12-14)
+
+
+### Bug Fixes
+
+* ci ([71be11a](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/71be11aa67c3775d3855270d2218963f038fe61c))
+
+
+### Features
+
+* use i18n-ally config by default ([aefe672](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/aefe67203eed30b5d92e3a477b030d34c9bc6244))
+
+
+### Performance Improvements
+
+* improve infrastructure ([d055c11](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/d055c11ac3abd41f28ce559ea60c9693f3ced20c))
+
+
+
 ## [2.0.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.0.0...v2.0.1) (2023-10-24)
 
 
