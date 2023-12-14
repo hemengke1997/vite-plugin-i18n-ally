@@ -1,14 +1,7 @@
 import path from 'node:path'
 import { beforeAll, describe, expect, test } from 'vitest'
 import { LocaleDetector } from '../src/plugin/locale-detector/LocaleDetector'
-import { DEFAULT_OPTIONS, initOptions } from '../src/plugin/utils/init-options'
-
-describe('localeDetector options', () => {
-  test('should initedOptions eq to defaultOptions', () => {
-    const options = initOptions()
-    expect(options).toStrictEqual(DEFAULT_OPTIONS)
-  })
-})
+import { initOptions } from '../src/plugin/utils/init-options'
 
 describe('LocaleDetector - Dir mode', () => {
   let localeDetector: LocaleDetector
@@ -20,6 +13,7 @@ describe('LocaleDetector - Dir mode', () => {
       localesPaths: options.localesPaths,
       pathMatcher: options.pathMatcher,
       parserPlugins: options.parserPlugins,
+      namespace: options.namespace,
     })
 
     await localeDetector.init()

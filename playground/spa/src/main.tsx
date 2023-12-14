@@ -25,7 +25,7 @@ i18next
     interpolation: {
       escapeValue: false,
     },
-    lowerCaseLng: true, // up to you
+    lowerCaseLng: true,
     fallbackLng,
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator'],
@@ -52,8 +52,9 @@ const { loadResourceByLang } = setupI18n({
     })
   },
   fallbackLng,
-  query: {
-    url: lookupTarget,
+  cache: {
+    querystring: lookupTarget,
+    htmlTag: true,
   },
 })
 

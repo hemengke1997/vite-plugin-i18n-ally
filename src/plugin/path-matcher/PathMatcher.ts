@@ -1,4 +1,6 @@
 // Examples
+// {locale}.{ext}
+// {locale}/**/*.{ext}
 // {namespaces}/{locale}.json
 // {locale}/{namespace}.{ext}
 // {locale}/{namespace}/**/*.json

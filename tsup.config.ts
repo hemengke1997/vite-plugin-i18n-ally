@@ -4,7 +4,7 @@ const commonConfig = (option: Options): Options => {
   return {
     dts: true,
     clean: !option.watch,
-    minify: false,
+    minify: !option.watch,
     format: ['cjs', 'esm'],
     sourcemap: !!option.watch,
     treeshake: true,

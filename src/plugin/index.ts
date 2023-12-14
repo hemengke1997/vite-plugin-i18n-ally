@@ -20,12 +20,19 @@ export interface I18nDetectorOptions {
    */
   localesPaths?: string[]
   /**
+   * @default false
+   */
+  namespace?: boolean
+  /**
    * @description rule of matching locale file
-   * @default
-   * ```js
-   * '{locale}/{namespaces}.{ext}'
-   * ```
+   *
+   * auto detect dir structure
+   * if file, default is `{locale}.{ext}`
+   * if dir, default is `{locale}/**\/*.{ext}`
+   * if namespace is true, default is `{locale}/**\/{namespaces}.{ext}`
+   *
    * @example
+   * `{locale}.{ext}`
    * `{locale}/{namespaces}.{ext}`
    * `{locale}/{namespace}.json`
    * `{namespaces}/{locale}`
@@ -48,13 +55,12 @@ export interface I18nDetectorOptions {
   parserPlugins?: ParserPlugin[]
   /**
    * @description root path
-   * @default
-   * process.cwd()
+   * @default process.cwd()
    */
   root?: string
 }
 
-export async function i18nDetector(opts?: I18nDetectorOptions) {
+export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
   const options = initOptions(opts)
 
   debug('i18nDetector options:', options)
@@ -64,6 +70,7 @@ export async function i18nDetector(opts?: I18nDetectorOptions) {
     localesPaths: options.localesPaths,
     pathMatcher: options.pathMatcher,
     parserPlugins: options.parserPlugins,
+    namespace: options.namespace,
   })
 
   await localeDetector.init()
@@ -156,6 +163,7 @@ export async function i18nDetector(opts?: I18nDetectorOptions) {
 
       if (updated) {
         const { resolvedIds } = localeDetector.localeModules
+
         debug('hmr', resolvedIds)
         hmr(server, localeDetector)
       }

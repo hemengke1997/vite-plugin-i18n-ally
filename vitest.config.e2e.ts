@@ -21,5 +21,11 @@ export default defineConfig({
     hookTimeout: timeout,
     setupFiles: ['./playground/vitestSetup.ts'],
     globalSetup: ['./playground/vitestGlobalSetup.ts'],
+    server: {
+      deps: {
+        inline: ['vitest-e2e'],
+        fallbackCJS: true,
+      },
+    },
   },
 })

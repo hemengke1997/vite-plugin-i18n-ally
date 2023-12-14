@@ -87,6 +87,7 @@ describe.skipIf(isBuild)('server related tests', () => {
     test('should trigger hmr when locale files changed', async () => {
       await page.click('#en')
       editFile('src/locales/en/test.json', (text) => text.replace('en', 'updated en'))
+
       await untilUpdated(() => page.textContent('#language'), 'updated en')
     })
 

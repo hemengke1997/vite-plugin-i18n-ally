@@ -4,28 +4,46 @@ import { name as PKGNAME } from '../../package.json'
 export interface I18nSetupOptions {
   language: string
   fallbackLng: string
+  /**
+   * triggered when resource is loaded first time
+   */
   onResourceLoaded: (langHelper: Record<string, string>, currentLang: string) => Promise<void> | void
+  /**
+   * triggered when i18n is inited
+   */
   onInited: (langs: String[], currentLang: string) => Promise<void> | void
-  query?: {
-    html?: string
-    url?: string
+  /**
+   * cache user language on
+   */
+  cache?: {
+    /**
+     * @default 'lang'
+     * @example
+     * htmlTag: 'lang' ===> <html lang="en">
+     */
+    htmlTag?: string | boolean
+    /**
+     * @example
+     * querystring: 'lang' ===> https://example.com?lang=en
+     */
+    querystring?: string
   }
 }
 
 const langs = Object.keys(resources)
 
 function setupI18n(options: I18nSetupOptions) {
-  const { onResourceLoaded, onInited, query, language, fallbackLng } = options || {}
+  const { onResourceLoaded, onInited, cache, language, fallbackLng } = options || {}
 
   const lng = language || fallbackLng
 
   async function loadResourceByLang(
     lang: string,
     options?: {
-      setQuery?: boolean
+      setCache?: boolean
     },
   ) {
-    const { setQuery = true } = options || {}
+    const { setCache = true } = options || {}
 
     if (!lang) {
       console.warn(`[${PKGNAME}]: Language is undefined, fallback to '${fallbackLng}'`)
@@ -54,10 +72,30 @@ function setupI18n(options: I18nSetupOptions) {
 
     await onResourceLoaded(resource, lang)
 
-    setQuery && _setQuery(lang)
+    setCache && _setCache(lang)
   }
 
-  async function _setQuery(lang: string) {
+  async function _setCache(lang: string) {
+    function setHtmlTag(lang: string) {
+      const { htmlTag } = cache || {}
+
+      if (htmlTag) {
+        const defaultTag = 'lang'
+        const tag = typeof htmlTag === 'boolean' ? 'lang' : htmlTag
+        document.querySelector('html')?.setAttribute(tag || defaultTag, lang)
+      }
+    }
+
+    function setQuerystring(lang: string) {
+      const { querystring } = cache || {}
+
+      if (querystring) {
+        const currentURL = new URL(window.location.href)
+        currentURL.searchParams.set(querystring, lang)
+        window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
+      }
+    }
+
     /**
      * NOTE:
      * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
@@ -66,21 +104,17 @@ function setupI18n(options: I18nSetupOptions) {
      * axios.defaults.headers.common['Accept-Language'] = lang
      */
 
-    document.querySelector('html')?.setAttribute(query?.html || 'lang', lang)
+    setHtmlTag(lang)
 
-    if (query?.url) {
-      const currentURL = new URL(window.location.href)
-      currentURL.searchParams.set(query.url, lang)
-      window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
-    }
+    setQuerystring(lang)
   }
 
   async function _init() {
-    await loadResourceByLang(fallbackLng, { setQuery: false })
+    await loadResourceByLang(fallbackLng, { setCache: false })
     if (lng !== fallbackLng) {
-      await loadResourceByLang(lng, { setQuery: false })
+      await loadResourceByLang(lng, { setCache: false })
     }
-    _setQuery(lng)
+    _setCache(lng)
   }
 
   _init().then(async () => {

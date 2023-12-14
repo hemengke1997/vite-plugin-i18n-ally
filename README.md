@@ -7,7 +7,6 @@
 <br/>
 <p align="center">
   <a href="https://npmjs.com/package/vite-plugin-i18n-detector"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-detector.svg" alt="npm package"></a>
-  <a href="https://npmjs.com/package/vite-plugin-i18n-detector"><img src="https://img.shields.io/npm/dm/vite-plugin-i18n-detector.svg" alt="downloads"></a>
 </p>
 
 

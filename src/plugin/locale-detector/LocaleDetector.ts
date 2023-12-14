@@ -1,5 +1,6 @@
 import cloneDeep from 'clone-deep'
 import fg from 'fast-glob'
+import tags from 'language-tags'
 import path from 'node:path'
 import trimEnd from 'string.prototype.trimend'
 import uniq from 'uniq'
@@ -18,6 +19,8 @@ export interface Config extends Required<I18nDetectorOptions> {
 
 type PathMatcherType = RegExp
 
+type DirStructure = 'file' | 'dir'
+
 export interface FileInfo {
   filepath: string
   deepDirpath: string
@@ -33,9 +36,11 @@ export interface ParsedFile extends FileInfo {
 
 export class LocaleDetector {
   readonly config: Config
-  private _pathMatcher: { regex: PathMatcherType; matcher: string }
+  private _dirStructure: DirStructure = 'file'
+  private _pathMatcher: { regex: PathMatcherType; matcher: string } | undefined
   private _localesPaths: string[]
   private _rootPath: string
+  private _namespace: boolean
 
   private _localeDirs: string[] = []
   private _files: Record<string, ParsedFile> = {}
@@ -47,12 +52,14 @@ export class LocaleDetector {
 
   constructor(c: Config) {
     this.config = c
-
     this._rootPath = c.root
+    this._namespace = c.namespace
     const pathMatcher = c.pathMatcher
-    this._pathMatcher = {
-      regex: ParsePathMatcher(pathMatcher, this.enabledParserExts()),
-      matcher: pathMatcher,
+    if (pathMatcher) {
+      this._pathMatcher = {
+        regex: ParsePathMatcher(pathMatcher, this.enabledParserExts()),
+        matcher: pathMatcher,
+      }
     }
 
     this._localesPaths = c.localesPaths.map((item) =>
@@ -66,8 +73,18 @@ export class LocaleDetector {
   async init() {
     if (await this.findLocaleDirs()) {
       debug(`🚀 Initializing loader "${this._rootPath}"`)
-      debug(`🗃 Custom Path Matcher: ${this._pathMatcher.matcher}`)
-      debug(`🗃 Path Matcher Regex: ${this._pathMatcher.regex}`)
+
+      if (this._pathMatcher) {
+        debug(`🗃 Custom Path Matcher: ${this._pathMatcher.matcher}`)
+        debug(`🗃 Path Matcher Regex: ${this._pathMatcher.regex}`)
+      } else {
+        const pathMatcherGussed = await this.resolvePathMatcherByDirStructure()
+        this._pathMatcher = {
+          regex: ParsePathMatcher(pathMatcherGussed, this.enabledParserExts()),
+          matcher: pathMatcherGussed,
+        }
+        debug(`🗃 Path Matcher: ${this._pathMatcher.matcher}`)
+      }
 
       await this.loadAll()
 
@@ -136,6 +153,7 @@ export class LocaleDetector {
     filepath = path.resolve(filepath)
 
     const { dirpath, relative } = this.getRelativePath(filepath) || {}
+
     if (!dirpath || !relative) {
       return
     }
@@ -271,9 +289,9 @@ export class LocaleDetector {
     let match: RegExpExecArray | null = null
     let matcher: string | undefined
 
-    match = this._pathMatcher.regex.exec(relativePath)
+    match = this._pathMatcher!.regex.exec(relativePath)
     if (match && match.length > 0) {
-      matcher = this._pathMatcher.matcher
+      matcher = this._pathMatcher!.matcher
     }
 
     if (!match || match.length < 1) {
@@ -358,10 +376,48 @@ export class LocaleDetector {
       }
     }
     if (this._localeDirs.length === 0) {
-      logger.info('\n⚠ No locales paths.')
+      logger.error('\n⚠ No locales paths.')
       return false
     }
 
     return true
+  }
+
+  async guessDirStructure(): Promise<DirStructure> {
+    const POSITIVE_RATE = 0.6
+
+    const dir = this._localeDirs[0]
+
+    const dirnames = await fg('*', {
+      onlyDirectories: true,
+      cwd: dir,
+      deep: 1,
+    })
+
+    const total = dirnames.length
+    if (total === 0) return 'file'
+
+    const positives = dirnames.map((d) => tags.check(d))
+
+    const positive = positives.filter((d) => d).length
+
+    // if there are some dirs are named as locale code, guess it's dir mode
+    return positive / total >= POSITIVE_RATE ? 'dir' : 'file'
+  }
+
+  async resolvePathMatcherByDirStructure() {
+    this._dirStructure = await this.guessDirStructure()
+    debug(`📂 Directory structure: ${this._dirStructure}`)
+    return this.resolvePathMatcher(this._dirStructure)
+  }
+
+  resolvePathMatcher(dirStructure?: DirStructure): string {
+    if (dirStructure === 'file') {
+      return '{locale}.{ext}'
+    } else if (this._namespace) {
+      return '{locale}/**/{namespace}.{ext}'
+    } else {
+      return '{locale}/**/*.{ext}'
+    }
   }
 }
