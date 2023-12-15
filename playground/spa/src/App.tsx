@@ -9,18 +9,19 @@ function App() {
 
   return (
     <div className='App'>
-      <h2>请打开控制台筛选js资源，切换语言时可看到懒加载语言资源文件</h2>
+      <h2>{t('test.tip')}</h2>
 
       <div id='language' style={{ marginBottom: '16px' }}>
         {t('test.key')}
       </div>
-      <div>extra: {t('more.a.b.c')}</div>
+
       <button
         onClick={async () => {
           await i18n.changeLanguage('zh')
           update()
         }}
         id='zh'
+        style={{ marginRight: 8 }}
       >
         中文
       </button>
@@ -30,8 +31,9 @@ function App() {
           update()
         }}
         id='en'
+        style={{ marginRight: 8 }}
       >
-        英文
+        english
       </button>
       <button
         onClick={async () => {
@@ -39,8 +41,9 @@ function App() {
           update()
         }}
         id='de'
+        style={{ marginRight: 8 }}
       >
-        德文
+        Deutsch
       </button>
       <button
         onClick={async () => {
@@ -48,8 +51,9 @@ function App() {
           update()
         }}
         id='zh-tw'
+        style={{ marginRight: 8 }}
       >
-        繁体
+        繁體
       </button>
     </div>
   )
