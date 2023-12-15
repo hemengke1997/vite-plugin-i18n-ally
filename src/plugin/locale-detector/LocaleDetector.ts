@@ -86,6 +86,14 @@ export class LocaleDetector {
         debug(`🗃 Path Matcher: ${this._pathMatcher.matcher}`)
       }
 
+      debug(`\n💯 The real i18nDetector options: `, {
+        root: this._rootPath,
+        localesPaths: this._localesPaths,
+        pathMatcher: this._pathMatcher.matcher,
+        parserPlugins: this.getParsers(),
+        namespace: this._namespace,
+      })
+
       await this.loadAll()
 
       debug(`📂 Loaded files:`, this.files)

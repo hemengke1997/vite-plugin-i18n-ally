@@ -63,7 +63,7 @@ export interface I18nDetectorOptions {
 export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
   const options = initOptions(opts)
 
-  debug('i18nDetector options:', options)
+  debug('User input i18nDetector options on init:', options)
 
   const localeDetector = new LocaleDetector({
     root: options.root,
