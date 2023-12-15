@@ -12,7 +12,6 @@ exports[`LocaleDetector - Dir mode > locale modules 1`] = `
     },
     "test": {
       "key": "Deutsch",
-      "tip": "Bitte öffnen Sie die Konsole, um js-Ressourcen zu filtern. Beim Wechseln der Sprache können Sie das verzögerte Laden von Sprachressourcendateien sehen",
     },
   },
   "en": {
@@ -28,20 +27,17 @@ exports[`LocaleDetector - Dir mode > locale modules 1`] = `
     },
     "test": {
       "key": "en",
-      "tip": "Open devtool to filter js resources. When you switch languages, you can see the lazy loading of language resource files",
     },
     "unused": {},
   },
   "zh": {
     "test": {
       "key": "中文",
-      "tip": "请打开控制台筛选js资源，切换语言时可看到懒加载语言资源文件",
     },
   },
   "zh-tw": {
     "test": {
       "key": "繁体中文",
-      "tip": "請開啟控制台篩選js資源，切換語言時可看到懶載入語言資源文件",
     },
   },
 }
@@ -59,7 +55,6 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
     },
     "test": {
       "key": "Deutsch",
-      "tip": "Bitte öffnen Sie die Konsole, um js-Ressourcen zu filtern. Beim Wechseln der Sprache können Sie das verzögerte Laden von Sprachressourcendateien sehen",
     },
   },
   "virtual:i18n-en": {
@@ -75,20 +70,17 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
     },
     "test": {
       "key": "en",
-      "tip": "Open devtool to filter js resources. When you switch languages, you can see the lazy loading of language resource files",
     },
     "unused": {},
   },
   "virtual:i18n-zh": {
     "test": {
       "key": "中文",
-      "tip": "请打开控制台筛选js资源，切换语言时可看到懒加载语言资源文件",
     },
   },
   "virtual:i18n-zh-tw": {
     "test": {
       "key": "繁体中文",
-      "tip": "請開啟控制台篩選js資源，切換語言時可看到懶載入語言資源文件",
     },
   },
 }

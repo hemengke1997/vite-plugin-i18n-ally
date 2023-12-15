@@ -10,10 +10,10 @@ describe('LocaleDetector - Dir mode', () => {
     const options = initOptions()
     localeDetector = new LocaleDetector({
       root: path.resolve(__dirname, './fixtures/'),
-      localesPaths: options.localesPaths,
+      localesPaths: [path.resolve(__dirname, './fixtures/locales/')],
       pathMatcher: options.pathMatcher,
       parserPlugins: options.parserPlugins,
-      namespace: options.namespace,
+      namespace: true,
     })
 
     await localeDetector.init()
