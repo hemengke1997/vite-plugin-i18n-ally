@@ -24,7 +24,7 @@
 
 - 无感知的开发体验，不需手动引入资源文件
 - **懒加载**语言资源文件，减少首屏资源体积
-- 类 `i18n-ally` 的配置项，更易上手
+- 默认读取 `i18n-ally` 的配置项，无需额外配置
 
 ## 安装
 
@@ -37,12 +37,16 @@ pnpm add vite-plugin-i18n-detector -D
 
 
 ## 配置项
-| 参数          | 类型             | 默认值                                  | 描述                   |
-| ------------- | ---------------- | --------------------------------------- | ---------------------- |
-| localesPaths  | `string[]`       | `['./src/locales', './locales']`        | 存放语言资源的目录地址 |
-| pathMatcher   | `string`         | `{locale}/{namespaces}.{ext}`           | 资源文件匹配规则       |
-| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | 资源文件解析插件       |
-| root          | `string`         | `process.cwd()`                         | 项目根目录             |
+
+**如果已配置i18n.ally，插件会默认读取配置**
+
+| 参数          | 类型             | 默认值                                                       | 描述                   |
+| ------------- | ---------------- | ------------------------------------------------------------ | ---------------------- |
+| localesPaths  | `string[]`       | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | 存放语言资源的目录地址 |
+| namespace     | `boolean`        | `i18n-ally.namespace \|\| false`                             | 是否启用命名空间       |
+| pathMatcher   | `string`         | 自动探测                                                     | 资源文件匹配规则       |
+| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]`                      | 资源文件解析插件       |
+| root          | `string`         | `process.cwd()`                                              | 项目根目录             |
 
 ## 配置参考
 
@@ -110,8 +114,8 @@ const { loadResourceByLang } = setupI18n({
     })
   },
   fallbackLng,
-  query: {
-    url: lookupTarget,
+  cache: {
+    querystring: lookupTarget,
   },
 })
 
@@ -134,8 +138,8 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 ``` json
 {
   "i18n-ally.localesPaths": ["src/locales"],
-  "i18n-ally.keystyle": "flat",
-  "i18n-ally.enabledParsers": ["json", "json5", "yaml"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.enabledParsers": ["json"],
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",

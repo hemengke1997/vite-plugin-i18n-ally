@@ -22,7 +22,7 @@
 
 - Seamless development experience, no need to manually import resource files
 - **Lazy loading** language resource files to reduce the size of the first screen resource
-- Configuration items similar to `i18n-ally`, easier to get started
+- Read the configuration items of `i18n-ally` by default, no additional configuration is required
 
 ## Install
 
@@ -35,12 +35,15 @@ pnpm add vite-plugin-i18n-detector -D
 
 ## Options
 
-| Option        | Type             | Default                                 | Description                                                   |
-| ------------- | ---------------- | --------------------------------------- | ------------------------------------------------------------- |
-| localesPaths  | `string[]`       | `['./src/locales', './locales']`        | The directory address where the language resources are stored |
-| pathMatcher   | `string`         | `{locale}/{namespaces}.{ext}`           | Resource file matching rule                                   |
-| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]` | Resource file parsing plugin                                  |
-| root          | `string`         | `process.cwd()`                         | Project root directory                                        |
+**If `i18n.ally` is configured, the plugin will read the configuration by default**
+
+| Option        | Type             | Default                                                      | Description                                                   |
+| ------------- | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------- |
+| localesPaths  | `string[]`       | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory address where the language resources are stored |
+| namespace     | `boolean`        | `i18n-ally.namespace \|\| false`                             | Enable namespace                                              |
+| pathMatcher   | `string`         | auto detect structure                                        | Resource file matching rule                                   |
+| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                  |
+| root          | `string`         | `process.cwd()`                                              | Project root directory                                        |
 
 ## Config Reference
 
@@ -109,8 +112,8 @@ const { loadResourceByLang } = setupI18n({
     })
   },
   fallbackLng,
-  query: {
-    url: lookupTarget,
+  cache: {
+    querystring: lookupTarget,
   },
 })
 
@@ -134,8 +137,8 @@ Please refer to [i18next example](./playground/spa/src/main.tsx)
 ``` json
 {
   "i18n-ally.localesPaths": ["src/locales"],
-  "i18n-ally.keystyle": "flat",
-  "i18n-ally.enabledParsers": ["json", "json5", "yaml"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.enabledParsers": ["json"],
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
