@@ -1,3 +1,17 @@
+## [2.1.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.1.0...v2.1.1) (2023-12-15)
+
+
+### Bug Fixes
+
+* remove pnpm restriction ([6b293dc](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/6b293dc8e29d9f81cb51ceb185c27974edb881d1))
+
+
+### Performance Improvements
+
+* debug info ([e52343d](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/e52343dc3c95a0aa44e7ad61af6c1f2900585309))
+
+
+
 # [2.1.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.0.1...v2.1.0) (2023-12-14)
 
 
