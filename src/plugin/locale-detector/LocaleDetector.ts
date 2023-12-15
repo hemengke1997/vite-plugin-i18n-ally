@@ -13,9 +13,7 @@ import { PKGNAME, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
 
-export interface Config extends Required<I18nDetectorOptions> {
-  root: string
-}
+export type Config = Omit<Required<I18nDetectorOptions>, 'dotVscodePath'>
 
 type PathMatcherType = RegExp
 
@@ -63,10 +61,10 @@ export class LocaleDetector {
     }
 
     this._localesPaths = c.localesPaths.map((item) =>
-      trimEnd(normalizePath(path.isAbsolute(item) ? item : path.resolve(this._rootPath, item)), '/\\').replaceAll(
-        '\\',
-        '/',
-      ),
+      trimEnd(
+        normalizePath(path.posix.isAbsolute(item) ? item : path.posix.resolve(this._rootPath, item)),
+        '/\\',
+      ).replaceAll('\\', '/'),
     )
   }
 
@@ -384,7 +382,7 @@ export class LocaleDetector {
       }
     }
     if (this._localeDirs.length === 0) {
-      logger.error('\n⚠ No locales paths.')
+      logger.error('\n❌ No locales paths.')
       return false
     }
 

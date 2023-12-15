@@ -84,6 +84,7 @@
     "@types/debug": "^4.1.12",
     "@types/js-yaml": "^4.0.9",
     "@types/language-tags": "^1.0.4",
+    "@types/node": "^20.10.4",
     "@types/react": "^18.2.45",
     "bumpp": "^9.2.0",
     "conventional-changelog-cli": "^4.1.0",

@@ -20,9 +20,11 @@ export interface I18nDetectorOptions {
    */
   localesPaths?: string[]
   /**
-   * @default false
+   * @description localesPaths's root path
+   * localesPaths are relative to root
+   * @default process.cwd()
    */
-  namespace?: boolean
+  root?: string
   /**
    * @description rule of matching locale file
    *
@@ -54,10 +56,20 @@ export interface I18nDetectorOptions {
    */
   parserPlugins?: ParserPlugin[]
   /**
-   * @description root path
-   * @default process.cwd()
+   * @default false
    */
-  root?: string
+  namespace?: boolean
+  /**
+   * @description i18n-ally config root path
+   * @default process.cwd()
+   *
+   * if dotVscodePath is process.cwd()
+   * i18n-ally config path is
+   * path.resolve(process.cwd(), './vscode/settings.json') by default
+   *
+   * if false, will not detect i18n-ally config
+   */
+  dotVscodePath?: string | false
 }
 
 export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
@@ -162,9 +174,7 @@ export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
       const updated = await localeDetector.onFileChanged({ fsPath: file })
 
       if (updated) {
-        const { resolvedIds } = localeDetector.localeModules
-
-        debug('hmr', resolvedIds)
+        debug('hmr', file)
         hmr(server, localeDetector)
       }
     },

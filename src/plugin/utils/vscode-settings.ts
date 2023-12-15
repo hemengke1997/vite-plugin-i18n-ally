@@ -1,9 +1,11 @@
 import { findUpSync } from 'find-up'
 import JSON5 from 'json5'
 import fs from 'node:fs'
+import path from 'node:path'
 
-const SETTING_FILE = '.vscode/settings.json'
+export const SETTING_FILE = '.vscode/settings.json'
 
+// TODO: need auto findup? or user custom?
 export function findupVscodeSettings(cwd?: string) {
   const settingFile = findUpSync(SETTING_FILE, {
     type: 'file',
@@ -24,24 +26,27 @@ export function readFile(filePath?: string) {
 
 export const I18N_ALLY_KEY = 'i18n-ally.'
 
-export function readI18nAllyConfig(cwd?: string) {
-  const filePath = findupVscodeSettings(cwd)
-  const settings = readFile(filePath)
+export function readI18nAllyConfig(dotVscodePath: string) {
+  const settings = readFile(path.resolve(dotVscodePath, SETTING_FILE))
+
   if (settings) {
     const filteredConfig = Object.keys(settings)
       .filter((key) => key.startsWith(I18N_ALLY_KEY))
       .reduce(
         (obj, key) => {
-          obj[key] = settings[key]
+          if (key === `${I18N_ALLY_KEY}localesPaths`) {
+            if (Array.isArray(settings[key])) {
+              obj[key] = settings[key].map((p: string) => path.resolve(dotVscodePath, p))
+            }
+          } else {
+            obj[key] = settings[key]
+          }
           return obj
         },
         {} as Record<string, any>,
       )
     if (Object.keys(filteredConfig).length) {
-      return {
-        ...filteredConfig,
-        i18nRootPath: filePath?.replace(new RegExp(`${SETTING_FILE}$`), '') ?? '',
-      }
+      return filteredConfig
     }
   }
   return undefined
