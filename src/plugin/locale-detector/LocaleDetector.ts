@@ -61,10 +61,10 @@ export class LocaleDetector {
     }
 
     this._localesPaths = c.localesPaths.map((item) =>
-      trimEnd(
-        normalizePath(path.posix.isAbsolute(item) ? item : path.posix.resolve(this._rootPath, item)),
-        '/\\',
-      ).replaceAll('\\', '/'),
+      trimEnd(normalizePath(path.isAbsolute(item) ? item : path.resolve(this._rootPath, item)), '/\\').replaceAll(
+        '\\',
+        '/',
+      ),
     )
   }
 

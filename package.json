@@ -52,7 +52,7 @@
     "build": "rm -rf dist && tsup",
     "build:pages": "pnpm run build && cd playground/spa && pnpm run build",
     "test": "run-s test:unit test:serve test:build",
-    "test:unit": "vitest run",
+    "test:unit": "cross-env DEBUG=vite-plugin-i18n* vitest run",
     "test:serve": "vitest run -c vitest.config.e2e.ts",
     "test:build": "cross-env VITE_TEST_BUILD=1 vitest run -c vitest.config.e2e.ts",
     "lint": "eslint .",
