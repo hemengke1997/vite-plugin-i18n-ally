@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.1.1...v2.1.2) (2023-12-16)
+
+
+### Bug Fixes
+
+* missing dts after ci build ([f4bc828](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/f4bc828218aefcb2727b9681524996eab2a7f6a5))
+
+
+
 ## [2.1.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.1.0...v2.1.1) (2023-12-15)
 
 
