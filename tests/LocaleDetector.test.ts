@@ -7,14 +7,14 @@ describe('LocaleDetector - Dir mode', () => {
   let localeDetector: LocaleDetector
 
   beforeAll(async () => {
-    const options = initOptions()
-    localeDetector = new LocaleDetector({
+    const options = initOptions({
       root: path.resolve(__dirname, './fixtures/'),
       localesPaths: [path.resolve(__dirname, './fixtures/locales/')],
-      pathMatcher: options.pathMatcher,
-      parserPlugins: options.parserPlugins,
       namespace: true,
+      dotVscodePath: false,
     })
+
+    localeDetector = new LocaleDetector(options)
 
     await localeDetector.init()
   })
