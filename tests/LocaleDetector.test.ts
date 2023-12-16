@@ -20,7 +20,6 @@ describe('LocaleDetector - Dir mode', () => {
   })
 
   test('should localeDetector find locales', () => {
-    console.log(localeDetector, 'localeDetector.files')
     expect(localeDetector.files.length).toBeGreaterThan(0)
   })
 
