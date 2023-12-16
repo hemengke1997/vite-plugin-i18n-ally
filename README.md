@@ -37,13 +37,14 @@ pnpm add vite-plugin-i18n-detector -D
 
 **If `i18n.ally` is configured, the plugin will read the configuration by default**
 
-| Option        | Type             | Default                                                      | Description                                                   |
-| ------------- | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------- |
-| localesPaths  | `string[]`       | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory address where the language resources are stored |
-| namespace     | `boolean`        | `i18n-ally.namespace \|\| false`                             | Enable namespace                                              |
-| pathMatcher   | `string`         | auto detect structure                                        | Resource file matching rule                                   |
-| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                  |
-| root          | `string`         | `process.cwd()`                                              | Project root directory                                        |
+| Option        | Type              | Default                                                      | Description                                                        |
+| ------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------------ |
+| localesPaths  | `string[]`        | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory of language resources                                |
+| root          | `string`          | `process.cwd()`                                              | The root directory of language resources                           |
+| namespace     | `boolean`         | `i18n-ally.namespace \|\| false`                             | Enable namespace                                                   |
+| pathMatcher   | `string`          | auto detected by structure                                   | Resource file matching rule                                        |
+| parserPlugins | `ParserPlugin[]`  | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                       |
+| dotVscodePath | `string ｜ false` | `process.cwd()`                                              | vscode configuration file path, used for auto detect configuration |
 
 ## Config Reference
 

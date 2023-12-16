@@ -23,6 +23,7 @@ function getDefaultOptions(options?: I18nDetectorOptions): I18nDetectorOptions {
       ...DEFAULT_OPTIONS,
     }
   }
+
   return DEFAULT_OPTIONS
 }
 

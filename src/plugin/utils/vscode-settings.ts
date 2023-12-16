@@ -1,4 +1,4 @@
-import { findUpSync } from 'find-up'
+// import { findUpSync } from 'find-up'
 import JSON5 from 'json5'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -6,16 +6,16 @@ import path from 'node:path'
 export const SETTING_FILE = '.vscode/settings.json'
 
 // TODO: need auto findup? or user custom?
-export function findupVscodeSettings(cwd?: string) {
-  const settingFile = findUpSync(SETTING_FILE, {
-    type: 'file',
-    cwd,
-    // TODO: user custom
-    stopAt: '.git',
-  })
+// export function findupVscodeSettings(cwd?: string) {
+//   const settingFile = findUpSync(SETTING_FILE, {
+//     type: 'file',
+//     cwd,
+//     // TODO: user custom
+//     stopAt: '.git',
+//   })
 
-  return settingFile
-}
+//   return settingFile
+// }
 
 export function readFile(filePath?: string) {
   if (filePath) {

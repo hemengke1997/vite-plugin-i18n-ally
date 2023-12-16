@@ -150,7 +150,7 @@ export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
       return null
     },
     configureServer(server) {
-      initWatcher(options.localesPaths, async (_type, p, pnext) => {
+      initWatcher(localeDetector.localeDirs, async (_type, p, pnext) => {
         if (!p) return
 
         debug('watcher', p, '=========>', pnext)

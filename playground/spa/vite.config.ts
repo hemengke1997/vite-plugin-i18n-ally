@@ -11,6 +11,7 @@ export default defineConfig({
       root: __dirname,
       localesPaths: ['./src/locales'],
       namespace: true,
+      pathMatcher: '{locale}/{namespace}.{ext}',
       dotVscodePath: false,
     }),
   ],

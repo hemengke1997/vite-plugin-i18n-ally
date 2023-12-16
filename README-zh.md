@@ -40,13 +40,14 @@ pnpm add vite-plugin-i18n-detector -D
 
 **如果已配置i18n.ally，插件会默认读取配置**
 
-| 参数          | 类型             | 默认值                                                       | 描述                   |
-| ------------- | ---------------- | ------------------------------------------------------------ | ---------------------- |
-| localesPaths  | `string[]`       | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | 存放语言资源的目录地址 |
-| namespace     | `boolean`        | `i18n-ally.namespace \|\| false`                             | 是否启用命名空间       |
-| pathMatcher   | `string`         | 自动探测                                                     | 资源文件匹配规则       |
-| parserPlugins | `ParserPlugin[]` | `[jsonParser, json5Parser, yamlParser]`                      | 资源文件解析插件       |
-| root          | `string`         | `process.cwd()`                                              | 项目根目录             |
+| 参数          | 类型              | 默认值                                                       | 描述                                            |
+| ------------- | ----------------- | ------------------------------------------------------------ | ----------------------------------------------- |
+| localesPaths  | `string[]`        | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | 存放语言资源的目录地址                          |
+| root          | `string`          | `process.cwd()`                                              | 存放语言资源的根目录地址，相对于 `localesPaths` |
+| namespace     | `boolean`         | `i18n-ally.namespace \|\| false`                             | 是否启用命名空间                                |
+| pathMatcher   | `string`          | 自动探测                                                     | 资源文件匹配规则                                |
+| parserPlugins | `ParserPlugin[]`  | `[jsonParser, json5Parser, yamlParser]`                      | 资源文件解析插件                                |
+| dotVscodePath | `string ｜ false` | `process.cwd()`                                              | vscode配置文件路径，用于自动探测配置            |
 
 ## 配置参考
 
