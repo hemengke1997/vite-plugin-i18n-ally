@@ -98,7 +98,7 @@
     "react-i18next": "13.2.2",
     "simple-git-hooks": "^2.9.0",
     "taze": "^0.11.3",
-    "tsup": "7.2.0",
+    "tsup": "6.7.0",
     "typescript": "^5.2.2",
     "vite-plugin-i18n-detector": "workspace:*",
     "vitest": "0.34.5",
