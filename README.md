@@ -120,11 +120,9 @@ const { loadResourceByLang } = setupI18n({
 
 const _changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
-  const currentLng = lang
-
   // Load resources before language change
-  await loadResourceByLang(currentLng)
-  return _changeLanguage(currentLng, ...args)
+  await loadResourceByLang(lang)
+  return _changeLanguage(lang, ...args)
 }
 ```
 

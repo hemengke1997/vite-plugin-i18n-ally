@@ -93,8 +93,6 @@ export class LocaleDetector {
       })
 
       await this.loadAll()
-
-      debug(`📂 Loaded files:`, this.files)
     }
 
     this.update()
@@ -377,6 +375,7 @@ export class LocaleDetector {
         }
 
         this._localeDirs = uniq(_locale_dirs.map((p) => path.resolve(this._rootPath, p)))
+        debug(`📂 Locale directories:`, this._localeDirs)
       } catch (e) {
         console.error(e)
       }

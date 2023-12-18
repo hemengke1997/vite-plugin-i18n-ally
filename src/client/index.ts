@@ -51,7 +51,7 @@ function setupI18n(options: I18nSetupOptions) {
     }
     if (!(lang in resources)) {
       console.warn(
-        `[${PKGNAME}]: Language '${lang}' is detected but which is not defined in locales, fallback to '${fallbackLng}'. Please check your locales folder`,
+        `[${PKGNAME}]: Current language is '${lang}', but it is not defined in locales, fallback to '${fallbackLng}'`,
       )
       lang = fallbackLng
     }
@@ -59,14 +59,14 @@ function setupI18n(options: I18nSetupOptions) {
     const lazyload: (() => Promise<{ default: Record<string, string> | undefined }>) | undefined = resources[lang]
 
     if (!lazyload) {
-      console.error(`[${PKGNAME}]: No locales detected, please ensure 'localesPaths' and locale files exist`)
+      console.error(`[${PKGNAME}]: No locales resources found, please ensure 'localesPaths' and locale files exist`)
       return
     }
 
     const resource = (await lazyload()).default || null
 
     if (!resource) {
-      console.warn(`[${PKGNAME}]: Resource for language '${lang}' is empty, fallback to '${fallbackLng}'`)
+      console.warn(`[${PKGNAME}]: Resource of language '${lang}' is empty, fallback to '${fallbackLng}'`)
       return
     }
 

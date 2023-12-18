@@ -2,7 +2,6 @@ import {
   addFile,
   editFile,
   isBuild,
-  isServe,
   page,
   removeDir,
   removeFile,
@@ -18,15 +17,15 @@ describe('e2e', () => {
     expect(await page.textContent('#language')).toBe('en')
   })
 
-  test.runIf(isServe)('should lazyload locale js after click', async () => {
-    let request = page.waitForResponse((res) => res.url().includes('@i18n/virtual:i18n-zh'), {
+  test('Server: should lazyload locale js after click', async () => {
+    let request = page.waitForResponse((res) => res.url().includes('i18n-zh'), {
       timeout: 500,
     })
     await page.click('#zh')
     let response = await request.then(() => ({ status: () => 1 }))
     expect(response.status()).toBe(1)
 
-    request = page.waitForResponse((res) => res.url().includes('@i18n/virtual:i18n-de'), {
+    request = page.waitForResponse((res) => res.url().includes('i18n-de'), {
       timeout: 500,
     })
     await page.click('#de')
