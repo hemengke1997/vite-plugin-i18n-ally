@@ -12,7 +12,7 @@ export default defineConfig({
       localesPaths: ['./src/locales'],
       namespace: true,
       pathMatcher: '{locale}/{namespace}.{ext}',
-      dotVscodePath: false,
+      autoDetectI18nConfig: false,
     }),
   ],
 })

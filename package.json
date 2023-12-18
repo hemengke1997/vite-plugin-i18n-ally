@@ -67,6 +67,7 @@
     "clone-deep": "^4.0.1",
     "debug": "^4.3.4",
     "fast-glob": "^3.3.1",
+    "find-up": "^7.0.0",
     "js-yaml": "^4.1.0",
     "json5": "^2.2.3",
     "language-tags": "^1.0.9",

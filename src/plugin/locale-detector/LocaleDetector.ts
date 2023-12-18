@@ -13,7 +13,7 @@ import { PKGNAME, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
 
-export type Config = Omit<Required<I18nDetectorOptions>, 'dotVscodePath'>
+export type Config = Omit<Required<I18nDetectorOptions>, 'dotVscodePath' | 'autoDetectI18nConfig'>
 
 type PathMatcherType = RegExp
 

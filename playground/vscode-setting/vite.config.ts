@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     i18nDetector({
       root: __dirname,
-      dotVscodePath: __dirname,
+      autoDetectI18nConfig: true,
     }),
   ],
 })

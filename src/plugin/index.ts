@@ -13,6 +13,8 @@ export type ParserPlugin = ParserConstructor | undefined
 export interface I18nDetectorOptions {
   /**
    * @description locales directory paths
+   *
+   * localesPaths are relative to root
    * @default
    * ```js
    * ['./src/locales', './locales']
@@ -20,8 +22,7 @@ export interface I18nDetectorOptions {
    */
   localesPaths?: string[]
   /**
-   * @description localesPaths's root path
-   * localesPaths are relative to root
+   * @description root path
    * @default process.cwd()
    */
   root?: string
@@ -63,13 +64,25 @@ export interface I18nDetectorOptions {
    * @description i18n-ally config root path
    * @default process.cwd()
    *
-   * if dotVscodePath is process.cwd()
+   * if dotVscodePath is truly,
    * i18n-ally config path is
-   * path.resolve(process.cwd(), './vscode/settings.json') by default
+   * path.resolve(process.cwd(), './vscode/settings.json')
    *
    * if false, will not detect i18n-ally config
+   *
+   * @deprecated
+   * use `root` instead
    */
   dotVscodePath?: string | false
+  /**
+   * @description auto detect config of vscode extension `i18n-ally`
+   * @default true
+   */
+  autoDetectI18nConfig?:
+    | boolean
+    | {
+        stopAt: string
+      }
 }
 
 export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {

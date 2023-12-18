@@ -11,7 +11,7 @@ describe('LocaleDetector - Dir mode', () => {
       root: path.resolve(__dirname, './fixtures/'),
       localesPaths: [path.resolve(__dirname, './fixtures/locales/')],
       namespace: true,
-      dotVscodePath: false,
+      autoDetectI18nConfig: false,
     })
 
     localeDetector = new LocaleDetector(options)

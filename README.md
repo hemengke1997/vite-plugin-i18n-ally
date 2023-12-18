@@ -37,14 +37,14 @@ pnpm add vite-plugin-i18n-detector -D
 
 **If `i18n.ally` is configured, the plugin will read the configuration by default**
 
-| Option        | Type              | Default                                                      | Description                                                        |
-| ------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------------ |
-| localesPaths  | `string[]`        | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory of language resources                                |
-| root          | `string`          | `process.cwd()`                                              | The root directory of language resources                           |
-| namespace     | `boolean`         | `i18n-ally.namespace \|\| false`                             | Enable namespace                                                   |
-| pathMatcher   | `string`          | auto detected by structure                                   | Resource file matching rule                                        |
-| parserPlugins | `ParserPlugin[]`  | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                       |
-| dotVscodePath | `string ｜ false` | `process.cwd()`                                              | vscode configuration file path, used for auto detect configuration |
+| Option               | Type                                    | Default                                                      | Description                                                                                                                        |
+| -------------------- | --------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| localesPaths         | `string[]`                              | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory of language resources, relative to `root`                                                                            |
+| root                 | `string`                                | `process.cwd()`                                              | The project root path                                                                                                              |
+| namespace            | `boolean`                               | `i18n-ally.namespace \|\| false`                             | Enable namespace                                                                                                                   |
+| pathMatcher          | `string`                                | auto detected by structure                                   | Resource file matching rule                                                                                                        |
+| parserPlugins        | `ParserPlugin[]`                        | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                                                                                       |
+| autoDetectI18nConfig | `boolean         \| { stopAt: string }` | `true`                                                       | Whether to automatically detect i18n-ally configuration, if stopAt is passed in, it will stop detecting in the specified directory |
 
 ## Config Reference
 

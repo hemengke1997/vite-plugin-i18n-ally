@@ -1,26 +1,30 @@
 import { type I18nDetectorOptions } from '..'
-import { getI18nAllyConfigByKey, readI18nAllyConfig } from './vscode-settings'
+import { I18nAllyVscodeSetting } from './I18nAllyVscodeSetting'
+import { debug } from './debugger'
 
 const DEFAULT_OPTIONS: I18nDetectorOptions = {
   localesPaths: ['./src/locales', './locales'],
   root: process.cwd(),
   namespace: false,
-  dotVscodePath: process.cwd(),
+  autoDetectI18nConfig: true,
 }
 
 function getDefaultOptions(options?: I18nDetectorOptions): I18nDetectorOptions {
-  let i18AllyConfig: Record<string, any> | undefined = undefined
-  if (options?.dotVscodePath !== false) {
-    // detect vscode settings of i18n-ally
-    i18AllyConfig = readI18nAllyConfig(options?.dotVscodePath || (DEFAULT_OPTIONS.dotVscodePath as string))
+  if (options?.dotVscodePath !== undefined) {
+    console.warn(`dotVscodePath is deprecated, please use 'root' instead`)
   }
 
-  if (i18AllyConfig) {
+  if (options?.autoDetectI18nConfig) {
+    const stopAt = typeof options.autoDetectI18nConfig === 'object' ? options.autoDetectI18nConfig.stopAt : undefined
+    const i18nAlly = new I18nAllyVscodeSetting(options?.root || (DEFAULT_OPTIONS.root as string), stopAt).init()
+
+    debug('i18n-ally config:', i18nAlly)
+
     return {
-      localesPaths: getI18nAllyConfigByKey(i18AllyConfig, 'localesPaths') ?? DEFAULT_OPTIONS.localesPaths,
-      pathMatcher: getI18nAllyConfigByKey(i18AllyConfig, 'pathMatcher'),
-      namespace: getI18nAllyConfigByKey(i18AllyConfig, 'namespace') ?? DEFAULT_OPTIONS.namespace,
       ...DEFAULT_OPTIONS,
+      localesPaths: i18nAlly?.['localesPaths'] ?? DEFAULT_OPTIONS.localesPaths,
+      pathMatcher: i18nAlly?.['pathMatcher'] ?? DEFAULT_OPTIONS.pathMatcher,
+      namespace: i18nAlly?.['namespace'] ?? DEFAULT_OPTIONS.namespace,
     }
   }
 
