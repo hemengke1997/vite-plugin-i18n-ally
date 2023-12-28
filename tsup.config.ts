@@ -22,11 +22,22 @@ export const tsup = defineConfig((option) => [
     ...commonConfig(option),
   },
   {
+    ...commonConfig(option),
     entry: {
       index: 'src/plugin/index.ts',
     },
     platform: 'node',
     target: 'node16',
+    noExternal: ['watcher', 'find-up'],
+    format: ['cjs'],
+  },
+  {
     ...commonConfig(option),
+    entry: {
+      index: 'src/plugin/index.ts',
+    },
+    platform: 'node',
+    target: 'node16',
+    format: ['esm'],
   },
 ])
