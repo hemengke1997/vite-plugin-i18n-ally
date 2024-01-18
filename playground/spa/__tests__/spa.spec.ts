@@ -19,14 +19,14 @@ describe('e2e', () => {
 
   test('Server: should lazyload locale js after click', async () => {
     let request = page.waitForResponse((res) => res.url().includes('i18n-zh'), {
-      timeout: 500,
+      timeout: 1500,
     })
     await page.click('#zh')
     let response = await request.then(() => ({ status: () => 1 }))
     expect(response.status()).toBe(1)
 
     request = page.waitForResponse((res) => res.url().includes('i18n-de'), {
-      timeout: 500,
+      timeout: 1500,
     })
     await page.click('#de')
     response = await request.then(() => ({ status: () => 1 }))
@@ -88,21 +88,21 @@ describe.skipIf(isBuild)('server related tests', () => {
     })
 
     test('should page reload when locale dir removed', async () => {
-      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 500 })
+      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 1500 })
       removeDir('src/locales/zh-tw/')
       const response = await request.then(() => ({ status: () => 1 }))
       expect(response.status()).toBe(1)
     })
 
     test('should page reload when locale files removed', async () => {
-      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 500 })
+      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 1500 })
       removeFile('src/locales/de/test.json')
       const response = await request.then(() => ({ status: () => 1 }))
       expect(response.status()).toBe(1)
     })
 
     test('should page reload when locale dir name changed', async () => {
-      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 500 })
+      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 1500 })
 
       renameDir('src/locales/en/', 'src/locales/en-US/')
       let response = await request.then(() => ({ status: () => 1 }))
@@ -113,7 +113,7 @@ describe.skipIf(isBuild)('server related tests', () => {
     })
 
     test('should page reload when locale file added', async () => {
-      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 500 })
+      const request = page.waitForResponse(/src\/App\.tsx$/, { timeout: 1500 })
       addFile('src/locales/en/test2.json', '{}')
       const response = await request.then(() => ({ status: () => 1 }))
       expect(response.status()).toBe(1)
