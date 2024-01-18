@@ -1,3 +1,19 @@
+## [2.2.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.2.0...v2.2.1) (2024-01-18)
+
+
+### Bug Fixes
+
+* downgrade `tsup` to fix missing dts bug ([54c5ec2](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/54c5ec2ccbbb58645ec66d75246b70b230eb3929))
+* test case ([8a6fbfb](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/8a6fbfb2bc6aa4c134fecb4c141b1b3ee2c65147))
+* typo ([5fcfb3f](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/5fcfb3fce718163f3ed0ec59146402285c16e776))
+
+
+### Features
+
+* cjs support ([7f015d9](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/7f015d9525989004744e4a1410dea3339735570f))
+
+
+
 # [2.2.0](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.1.2...v2.2.0) (2023-12-18)
 
 
