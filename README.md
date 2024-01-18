@@ -1,16 +1,20 @@
 
 <p align="center">
   <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-    <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo" />
+    <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo" style="margin-right:16px" />
   </a>
+  <span>
+    <img width="180" src="./assets/i18n.svg" alt="i18n logo" />
+  </span>
 </p>
 <br/>
+
+
+<h1 align="center">vite-plugin-i18n-detector</h1>
+
 <p align="center">
   <a href="https://npmjs.com/package/vite-plugin-i18n-detector"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-detector.svg" alt="npm package"></a>
 </p>
-
-
-# vite-plugin-i18n-detector
 
 **English** | [中文](./README-zh.md)
 
