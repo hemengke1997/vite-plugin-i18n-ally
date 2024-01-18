@@ -75,7 +75,7 @@ describe('e2e', () => {
   })
 
   test('should fallback to fallbackLng when language is not found', async () => {
-    await untilBrowserLogAfter(() => page.goto(`${viteTestUrl}/?lang=not-exist`), /.*Current language is 'not-exist'*/)
+    await untilBrowserLogAfter(() => page.goto(`${viteTestUrl}/?lang=not-exist`), /.*Current language 'not-exist' not found*/)
   })
 })
 

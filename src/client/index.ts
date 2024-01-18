@@ -2,18 +2,24 @@ import resources from 'virtual:i18n-helper'
 import { name as PKGNAME } from '../../package.json'
 
 export interface I18nSetupOptions {
+  /**
+   * Current language
+   */
   language: string
+  /**
+   * If no resource of current language, fallback to `fallbackLng`
+   */
   fallbackLng: string
   /**
-   * triggered when resource is loaded first time
+   * Triggered when resource is loaded first time
    */
   onResourceLoaded: (langHelper: Record<string, string>, currentLang: string) => Promise<void> | void
   /**
-   * triggered when i18n is inited
+   * Triggered when i18n is inited
    */
-  onInited: (langs: String[], currentLang: string) => Promise<void> | void
+  onInited: (langs: string[], currentLang: string) => Promise<void> | void
   /**
-   * cache user language on
+   * Cache user language on
    */
   cache?: {
     /**
@@ -46,12 +52,13 @@ function setupI18n(options: I18nSetupOptions) {
     const { setCache = true } = options || {}
 
     if (!lang) {
-      console.warn(`[${PKGNAME}]: Language is undefined, fallback to '${fallbackLng}'`)
+      console.warn(`[${PKGNAME}]: 'language' undefined, fallback to '${fallbackLng}'`)
       lang = fallbackLng
     }
+
     if (!(lang in resources)) {
       console.warn(
-        `[${PKGNAME}]: Current language is '${lang}', but it is not defined in locales, fallback to '${fallbackLng}'`,
+        `[${PKGNAME}]: Current language '${lang}' not found in locale resources, fallback to '${fallbackLng}'`,
       )
       lang = fallbackLng
     }
@@ -59,7 +66,7 @@ function setupI18n(options: I18nSetupOptions) {
     const lazyload: (() => Promise<{ default: Record<string, string> | undefined }>) | undefined = resources[lang]
 
     if (!lazyload) {
-      console.error(`[${PKGNAME}]: No locales resources found, please ensure 'localesPaths' and locale files exist`)
+      console.error(`[${PKGNAME}]: No locale resources found. Please check config`)
       return
     }
 
@@ -96,16 +103,7 @@ function setupI18n(options: I18nSetupOptions) {
       }
     }
 
-    /**
-     * NOTE:
-     * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
-     * The following is an example for axios.
-     *
-     * axios.defaults.headers.common['Accept-Language'] = lang
-     */
-
     setHtmlTag(lang)
-
     setQuerystring(lang)
   }
 
@@ -118,7 +116,11 @@ function setupI18n(options: I18nSetupOptions) {
   }
 
   _init().then(async () => {
-    await onInited?.(langs, lng)
+    try {
+      await onInited?.(langs, lng)
+    } catch (e) {
+      console.error(`[${PKGNAME}]: onInited error`, e)
+    }
   })
 
   return {

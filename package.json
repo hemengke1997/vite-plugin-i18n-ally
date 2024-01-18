@@ -1,7 +1,6 @@
 {
   "name": "vite-plugin-i18n-detector",
   "version": "2.2.0",
-  "packageManager": "pnpm@8.12.1",
   "description": "vite plugin for lazyload i18n resources. 懒加载国际化资源的 vite 插件",
   "type": "module",
   "keywords": [
@@ -50,7 +49,7 @@
   "scripts": {
     "dev": "simple-git-hooks && tsup --watch",
     "build": "rm -rf dist && tsup",
-    "build:pages": "pnpm run build && cd playground/spa && pnpm run build",
+    "build:pages": "npm run build && cd playground/spa && npm run build",
     "test": "run-s test:unit test:serve test:build",
     "test:unit": "cross-env DEBUG=vite-plugin-i18n* vitest run",
     "test:serve": "cross-env DEBUG=vite-plugin-i18n* vitest run -c vitest.config.e2e.ts",
@@ -58,7 +57,7 @@
     "lint": "eslint .",
     "up": "taze -I -w -r",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "bump": "bumpp package.json -c -p -t --all -x \"pnpm run changelog\""
+    "bump": "bumpp package.json -c -p -t --all -x \"npm run changelog\""
   },
   "peerDependencies": {
     "vite": ">=4.0.0"
@@ -108,6 +107,6 @@
     "node": ">=16.0.0"
   },
   "simple-git-hooks": {
-    "commit-msg": "pnpm exec commitlint -e"
+    "commit-msg": "npx commitlint -e"
   }
 }
