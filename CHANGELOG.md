@@ -1,3 +1,12 @@
+## [2.2.2](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.2.1...v2.2.2) (2024-02-04)
+
+
+### Bug Fixes
+
+* detect vscode config ([c7069e8](https://github.com/hemengke1997/vite-plugin-i18n-detector/commit/c7069e810a7aa0b0822f01389e39908bb8282a20))
+
+
+
 ## [2.2.1](https://github.com/hemengke1997/vite-plugin-i18n-detector/compare/v2.2.0...v2.2.1) (2024-01-18)
 
 
