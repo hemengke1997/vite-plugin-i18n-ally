@@ -11,7 +11,7 @@ export class I18nAllyVscodeSetting {
 
   constructor(
     private readonly _root: string,
-    private readonly _stopAt: string = _root,
+    private readonly _stopAt: string | undefined,
   ) {
     debug('I18nAllyVscodeSetting - root:', _root)
     debug('I18nAllyVscodeSetting - stopAt:', _stopAt)

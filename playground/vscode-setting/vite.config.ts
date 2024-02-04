@@ -8,7 +8,6 @@ export default defineConfig({
     react(),
     i18nDetector({
       root: __dirname,
-      autoDetectI18nConfig: true,
     }),
   ],
 })

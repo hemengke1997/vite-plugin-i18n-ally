@@ -33,7 +33,10 @@ function getDefaultOptions(options?: I18nDetectorOptions): I18nDetectorOptions {
 
 export function initOptions(options?: I18nDetectorOptions) {
   return {
-    ...getDefaultOptions(options),
+    ...getDefaultOptions({
+      ...DEFAULT_OPTIONS,
+      ...options,
+    }),
     ...options,
   } as Required<I18nDetectorOptions>
 }
