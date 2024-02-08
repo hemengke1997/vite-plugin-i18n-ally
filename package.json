@@ -19,7 +19,7 @@
     "CHANGELOG.md",
     "README.md",
     "dist",
-    "virtual.d.ts"
+    "*.d.ts"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -37,13 +37,6 @@
     },
     "./virtual": {
       "types": "./virtual.d.ts"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "client": [
-        "./dist/client/index.d.ts"
-      ]
     }
   },
   "scripts": {
