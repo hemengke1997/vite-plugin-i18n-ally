@@ -16,10 +16,10 @@
   },
   "author": "hemengke <https://github.com/hemengke1997>",
   "files": [
+    "*.d.ts",
     "CHANGELOG.md",
     "README.md",
-    "dist",
-    "*.d.ts"
+    "dist"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
