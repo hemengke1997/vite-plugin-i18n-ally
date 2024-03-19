@@ -37,7 +37,7 @@
 
 ### Features
 
-* support `autoDetectI18nConfig` option ([9ccaa91](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/9ccaa9115cf845ec73997d128aaba281baf98632))
+* support `useVscodeI18nAllyConfig` option ([9ccaa91](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/9ccaa9115cf845ec73997d128aaba281baf98632))
 
 
 

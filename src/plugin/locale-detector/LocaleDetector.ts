@@ -5,7 +5,7 @@ import path from 'node:path'
 import trimEnd from 'string.prototype.trimend'
 import uniq from 'uniq'
 import { normalizePath } from 'vite'
-import { type I18nDetectorOptions } from '..'
+import { type I18nAllyOptions } from '..'
 import { DefaultEnabledParsers } from '../parsers'
 import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher/PathMatcher'
@@ -13,7 +13,7 @@ import { PKGNAME, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
 
-export type Config = Omit<Required<I18nDetectorOptions>, 'dotVscodePath' | 'autoDetectI18nConfig'>
+export type Config = Omit<Required<I18nAllyOptions>, 'dotVscodePath' | 'useVscodeI18nAllyConfig'>
 
 type PathMatcherType = RegExp
 
@@ -84,7 +84,7 @@ export class LocaleDetector {
         debug(`🗃 Path Matcher: ${this._pathMatcher.matcher}`)
       }
 
-      debug(`\n💯 The real i18nDetector options: `, {
+      debug(`\n💯 The real I18nAlly options: `, {
         root: this._rootPath,
         localesPaths: this._localesPaths,
         pathMatcher: this._pathMatcher.matcher,

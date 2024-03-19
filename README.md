@@ -42,14 +42,14 @@ pnpm add vite-plugin-i18n-ally -D
 
 **If `i18n.ally` is configured, the plugin will read the configuration by default**
 
-| Option               | Type                                    | Default                                                      | Description                                                                                                                        |
-| -------------------- | --------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| localesPaths         | `string[]`                              | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory of language resources, relative to `root`                                                                            |
-| root                 | `string`                                | `process.cwd()`                                              | The project root path                                                                                                              |
-| namespace            | `boolean`                               | `i18n-ally.namespace \|\| false`                             | Enable namespace                                                                                                                   |
-| pathMatcher          | `string`                                | auto detected by structure                                   | Resource file matching rule                                                                                                        |
-| parserPlugins        | `ParserPlugin[]`                        | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                                                                                       |
-| autoDetectI18nConfig | `boolean         \| { stopAt: string }` | `true`                                                       | Whether to automatically detect i18n-ally configuration, if stopAt is passed in, it will stop detecting in the specified directory |
+| Option                  | Type                                    | Default                                                      | Description                                                                                                                     |
+| ----------------------- | --------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| localesPaths            | `string[]`                              | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory of language resources, relative to `root`                                                                         |
+| root                    | `string`                                | `process.cwd()`                                              | The project root path                                                                                                           |
+| namespace               | `boolean`                               | `i18n-ally.namespace \|\| false`                             | Enable namespace                                                                                                                |
+| pathMatcher             | `string`                                | auto detected by structure                                   | Resource file matching rule                                                                                                     |
+| parserPlugins           | `ParserPlugin[]`                        | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                                                                                    |
+| useVscodeI18nAllyConfig | `boolean         \| { stopAt: string }` | `true`                                                       | Whether to automatically use i18n-ally configuration, if stopAt is passed in, it will stop detecting in the specified directory |
 
 ## Config Reference
 
@@ -57,12 +57,12 @@ pnpm add vite-plugin-i18n-ally -D
 ```ts
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import { i18nDetector } from 'vite-plugin-i18n-ally'
+import { i18n } from 'vite-plugin-i18n-ally'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    i18nDetector({
+    i18n({
       localesPaths: ['./src/locales'],
     }),
   ],

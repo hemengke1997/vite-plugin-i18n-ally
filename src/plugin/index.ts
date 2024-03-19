@@ -10,7 +10,7 @@ import { initOptions } from './utils/init-options'
 
 export type ParserPlugin = ParserConstructor | undefined
 
-export interface I18nDetectorOptions {
+export interface I18nAllyOptions {
   /**
    * @description locales directory paths
    *
@@ -75,20 +75,20 @@ export interface I18nDetectorOptions {
    */
   dotVscodePath?: string | false
   /**
-   * @description auto detect config of vscode extension `i18n-ally`
+   * @description auto use config of vscode extension `i18n-ally`
    * @default true
    */
-  autoDetectI18nConfig?:
+  useVscodeI18nAllyConfig?:
     | boolean
     | {
         stopAt: string
       }
 }
 
-export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
+export async function i18n(opts?: I18nAllyOptions): Promise<any> {
   const options = initOptions(opts)
 
-  debug('User input i18nDetector options on init:', options)
+  debug('User input i18n-ally options on init:', options)
 
   const localeDetector = new LocaleDetector({
     root: options.root,
@@ -101,7 +101,7 @@ export async function i18nDetector(opts?: I18nDetectorOptions): Promise<any> {
   await localeDetector.init()
 
   return {
-    name: 'vite:i18n-detector',
+    name: 'vite:plugin-i18n-ally',
     enforce: 'pre',
     config: () => ({
       optimizeDeps: {
