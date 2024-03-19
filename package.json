@@ -1,18 +1,18 @@
 {
-  "name": "vite-plugin-i18n-detector",
+  "name": "vite-plugin-i18n-ally",
   "version": "2.2.2",
-  "description": "vite plugin for lazyload i18n resources. 懒加载国际化资源的 vite 插件",
+  "description": "vite plugin load i18n resources lazily. 懒加载国际化资源的 vite 插件",
   "type": "module",
   "keywords": [
     "vite plugin",
     "i18n",
     "lazyload",
-    "detector"
+    "vite-plugin-i18n"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hemengke1997/vite-plugin-i18n-detector.git"
+    "url": "git+https://github.com/hemengke1997/vite-plugin-i18n-ally.git"
   },
   "author": "hemengke <https://github.com/hemengke1997>",
   "files": [
@@ -92,7 +92,7 @@
     "taze": "^0.11.3",
     "tsup": "6.7.0",
     "typescript": "^5.2.2",
-    "vite-plugin-i18n-detector": "workspace:*",
+    "vite-plugin-i18n-ally": "workspace:*",
     "vitest": "0.34.5",
     "vitest-e2e": "^0.0.10"
   },

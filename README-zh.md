@@ -6,11 +6,11 @@
 </p>
 <br/>
 <p align="center">
-  <a href="https://npmjs.com/package/vite-plugin-i18n-detector"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-detector.svg" alt="npm package"></a>
+  <a href="https://npmjs.com/package/vite-plugin-i18n-ally"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-ally.svg" alt="npm package"></a>
 </p>
 
 
-# vite-plugin-i18n-detector
+# vite-plugin-i18n-ally
 
 **中文** | [English](./README.md)
 
@@ -25,15 +25,16 @@
 - 无感知的开发体验，不需手动引入资源文件
 - **懒加载**语言资源文件，减少首屏资源体积
 - 默认读取 `i18n-ally` 的配置项，无需额外配置
+- 开箱即用 vite hmr
 
 ## 安装
 
 ```bash
-pnpm add vite-plugin-i18n-detector -D
+pnpm add vite-plugin-i18n-ally -D
 ```
 
 ## 在线示例
-[Demo](https://hemengke1997.github.io/vite-plugin-i18n-detector/)
+[Demo](https://hemengke1997.github.io/vite-plugin-i18n-ally/)
 
 
 ## 配置项
@@ -55,7 +56,7 @@ pnpm add vite-plugin-i18n-detector -D
 ```ts
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import { i18nDetector } from 'vite-plugin-i18n-detector'
+import { i18nDetector } from 'vite-plugin-i18n-ally'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -76,7 +77,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import { setupI18n } from 'vite-plugin-i18n-detector/client'
+import { setupI18n } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)

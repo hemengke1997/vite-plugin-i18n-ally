@@ -10,10 +10,10 @@
 <br/>
 
 
-<h1 align="center">vite-plugin-i18n-detector</h1>
+<h1 align="center">vite-plugin-i18n-ally</h1>
 
 <p align="center">
-  <a href="https://npmjs.com/package/vite-plugin-i18n-detector"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-detector.svg" alt="npm package"></a>
+  <a href="https://npmjs.com/package/vite-plugin-i18n-ally"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-ally.svg" alt="npm package"></a>
 </p>
 
 **English** | [中文](./README-zh.md)
@@ -27,15 +27,16 @@
 - Seamless development experience, no need to manually import resource files
 - **Lazy loading** language resource files to reduce the size of the first screen resource
 - Read the configuration items of `i18n-ally` by default, no additional configuration is required
+- Support vite hmr out of the box
 
 ## Install
 
 ```bash
-pnpm add vite-plugin-i18n-detector -D
+pnpm add vite-plugin-i18n-ally -D
 ```
 
 ## Online Demo
-[Demo](https://hemengke1997.github.io/vite-plugin-i18n-detector/)
+[Demo](https://hemengke1997.github.io/vite-plugin-i18n-ally/)
 
 ## Options
 
@@ -56,7 +57,7 @@ pnpm add vite-plugin-i18n-detector -D
 ```ts
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import { i18nDetector } from 'vite-plugin-i18n-detector'
+import { i18nDetector } from 'vite-plugin-i18n-ally'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -78,7 +79,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import { setupI18n } from 'vite-plugin-i18n-detector/client'
+import { setupI18n } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
