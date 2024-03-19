@@ -1,3 +1,12 @@
+# [3.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v2.2.2...v3.0.0) (2024-03-19)
+
+
+### Performance Improvements
+
+* enhance dts exports ([dbc1c7a](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/dbc1c7a2d3a0f66ab4e01102b4da21a44567fe8e))
+
+
+
 ## [2.2.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v2.2.1...v2.2.2) (2024-02-04)
 
 
@@ -222,7 +231,7 @@
 
 ### Features
 
-* init vite-plugin-i18n-ally ([0f32089](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/0f320890a40cfb28e8a73d2fed0f93df7bacd019))
+* init vite-plugin-i18n-detector ([0f32089](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/0f320890a40cfb28e8a73d2fed0f93df7bacd019))
 
 
 
@@ -231,7 +240,7 @@
 
 ### Features
 
-* init vite-plugin-i18n-ally ([85bced5](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/85bced567e7658e6f730cd585de968f847090dfa))
+* init vite-plugin-i18n-detector ([85bced5](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/85bced567e7658e6f730cd585de968f847090dfa))
 
 
 
