@@ -1,3 +1,12 @@
+# [3.1.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v3.0.0...v3.1.0) (2024-03-19)
+
+
+### Bug Fixes
+
+* **break-change:** typo ([aa4ce4d](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/aa4ce4d4b6ef8865f149b64814bc76ac70a9493f))
+
+
+
 # [3.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v2.2.2...v3.0.0) (2024-03-19)
 
 
@@ -37,7 +46,7 @@
 
 ### Features
 
-* support `useVscodeI18nAllyConfig` option ([9ccaa91](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/9ccaa9115cf845ec73997d128aaba281baf98632))
+* support `autoDetectI18nConfig` option ([9ccaa91](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/9ccaa9115cf845ec73997d128aaba281baf98632))
 
 
 

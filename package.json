@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-i18n-ally",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "vite plugin load i18n resources lazily. 懒加载国际化资源的 vite 插件",
   "type": "module",
   "keywords": [
