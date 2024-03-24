@@ -57,12 +57,12 @@ pnpm add vite-plugin-i18n-ally -D
 ```ts
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import { i18n } from 'vite-plugin-i18n-ally'
+import { i18nAlly } from 'vite-plugin-i18n-ally'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    i18n({
+    i18nAlly({
       localesPaths: ['./src/locales'],
     }),
   ],

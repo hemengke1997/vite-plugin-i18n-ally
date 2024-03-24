@@ -85,7 +85,7 @@ export interface I18nAllyOptions {
       }
 }
 
-export async function i18n(opts?: I18nAllyOptions): Promise<any> {
+export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
   const options = initOptions(opts)
 
   debug('User input i18n-ally options on init:', options)

@@ -22,7 +22,7 @@
 
 ## 特性
 
-- 无感知的开发体验，不需手动引入资源文件
+- 丝滑的国际化开发体验，不需手动引入资源文件
 - **懒加载**语言资源文件，减少首屏资源体积
 - 默认读取 `i18n-ally` 的配置项，无需额外配置
 - 开箱即用 vite hmr
@@ -56,12 +56,12 @@ pnpm add vite-plugin-i18n-ally -D
 ```ts
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import { i18n } from 'vite-plugin-i18n-ally'
+import { i18nAlly } from 'vite-plugin-i18n-ally'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    i18n({
+    i18nAlly({
       localesPaths: ['./src/locales'],
     }),
   ],
