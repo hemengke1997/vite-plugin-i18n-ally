@@ -1,19 +1,14 @@
-import { type I18nAllyOptions } from '..'
+import { type I18nAllyOptions } from '../interface'
 import { I18nAllyVscodeSetting } from './I18nAllyVscodeSetting'
 import { debug } from './debugger'
 
 const DEFAULT_OPTIONS: I18nAllyOptions = {
-  localesPaths: ['./src/locales', './locales'],
   root: process.cwd(),
   namespace: false,
   useVscodeI18nAllyConfig: true,
 }
 
 function getDefaultOptions(options?: I18nAllyOptions): I18nAllyOptions {
-  if (options?.dotVscodePath !== undefined) {
-    console.warn(`dotVscodePath is deprecated, please use 'root' instead`)
-  }
-
   if (options?.useVscodeI18nAllyConfig) {
     const stopAt =
       typeof options.useVscodeI18nAllyConfig === 'object' ? options.useVscodeI18nAllyConfig.stopAt : undefined

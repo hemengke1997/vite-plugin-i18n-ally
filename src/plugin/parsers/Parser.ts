@@ -2,7 +2,7 @@ import fs from 'node:fs'
 
 export type ParserConstructor = {
   ext: string
-  parse: (text: string) => Promise<object> | object
+  parse: (text: string, filepath: string) => Promise<object> | object
 }
 
 export class Parser {
@@ -16,7 +16,7 @@ export class Parser {
   }
 
   supports(ext: string) {
-    return !!this.supportedExtsRegex.test(ext.toLowerCase())
+    return !!ext.toLowerCase().match(this.supportedExtsRegex)
   }
 
   async load(filepath: string): Promise<object> {
@@ -24,15 +24,15 @@ export class Parser {
     if (!raw) {
       return {}
     }
-    const res = await this.parse(raw)
+    const res = await this.parse(raw, filepath)
     return res
   }
 
-  parse(text: string): Promise<object> | object {
+  parse(text: string, filepath: string): Promise<object> | object {
     if (!text || !text.trim()) {
       return {}
     }
 
-    return this.parser.parse(text)
+    return this.parser.parse(text, filepath)
   }
 }

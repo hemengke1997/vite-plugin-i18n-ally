@@ -17,8 +17,6 @@
   "author": "hemengke <https://github.com/hemengke1997>",
   "files": [
     "*.d.ts",
-    "CHANGELOG.md",
-    "README.md",
     "dist"
   ],
   "main": "./dist/index.cjs",
@@ -40,14 +38,15 @@
     }
   },
   "scripts": {
-    "dev": "simple-git-hooks && tsup --watch",
+    "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
     "build:pages": "npm run build && cd playground/spa && npm run build",
     "test": "run-s test:unit test:serve test:build",
     "test:unit": "cross-env DEBUG=vite-plugin-i18n* vitest run",
     "test:serve": "cross-env DEBUG=vite-plugin-i18n* vitest run -c vitest.config.e2e.ts",
     "test:build": "cross-env VITE_TEST_BUILD=1 vitest run -c vitest.config.e2e.ts",
-    "lint": "eslint .",
+    "prepare": "simple-git-hooks",
+    "lint": "eslint . --fix --cache",
     "up": "taze -I -w -r",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "bump": "bumpp package.json -c -p -t --all -x \"npm run changelog\""
@@ -58,48 +57,52 @@
   "dependencies": {
     "clone-deep": "^4.0.1",
     "debug": "^4.3.4",
-    "fast-glob": "^3.3.1",
+    "fast-glob": "^3.3.2",
     "find-up": "^7.0.0",
+    "importx": "^0.3.2",
     "js-yaml": "^4.1.0",
     "json5": "^2.2.3",
     "language-tags": "^1.0.9",
-    "string.prototype.trimend": "^1.0.7",
+    "string.prototype.trimend": "^1.0.8",
     "uniq": "^1.0.1",
     "watcher": "^2.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.3",
+    "@commitlint/cli": "^18.6.1",
     "@minko-fe/commitlint-config": "^2.0.7",
-    "@minko-fe/eslint-config": "^2.0.7",
-    "@minko-fe/tsconfig": "^2.0.7",
+    "@minko-fe/eslint-config": "^3.2.0",
+    "@minko-fe/tsconfig": "^2.1.0",
     "@types/clone-deep": "^4.0.4",
     "@types/debug": "^4.1.12",
     "@types/js-yaml": "^4.0.9",
     "@types/language-tags": "^1.0.4",
-    "@types/node": "^20.10.4",
-    "@types/react": "^18.2.45",
-    "bumpp": "^9.2.0",
-    "conventional-changelog-cli": "^4.1.0",
+    "@types/node": "^20.12.13",
+    "@types/react": "^18.3.3",
+    "bumpp": "^9.4.1",
+    "conventional-changelog-cli": "^5.0.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.52.0",
+    "eslint": "^8.57.0",
     "i18next": "23.5.1",
     "jsdom": "^22.1.0",
     "npm-run-all": "^4.1.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-i18next": "13.2.2",
-    "simple-git-hooks": "^2.9.0",
-    "taze": "^0.11.3",
-    "tsup": "6.7.0",
-    "typescript": "^5.2.2",
+    "simple-git-hooks": "^2.11.1",
+    "taze": "^0.11.4",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
     "vite-plugin-i18n-ally": "workspace:*",
     "vitest": "0.34.5",
     "vitest-e2e": "^0.0.10"
   },
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "simple-git-hooks": {
-    "commit-msg": "npx commitlint -e"
+    "commit-msg": "npx commitlint -e",
+    "pre-commit": "npm run lint"
+  },
+  "commitlint": {
+    "extends": [
+      "@minko-fe/commitlint-config"
+    ]
   }
 }

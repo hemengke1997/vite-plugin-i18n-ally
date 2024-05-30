@@ -1,89 +1,12 @@
 import path from 'node:path'
 import { type PluginOption } from 'vite'
+import { type I18nAllyOptions } from './interface'
 import { LocaleDetector } from './locale-detector/LocaleDetector'
-import { type ParserConstructor } from './parsers/Parser'
 import { RESOLVED_VIRTUAL_PREFIX, RESOURCE_VIRTURL_HELPER, VIRTUAL } from './utils/constant'
 import { debug } from './utils/debugger'
 import { initWatcher } from './utils/file-watcher'
 import { hmr } from './utils/hmr'
 import { initOptions } from './utils/init-options'
-
-export type ParserPlugin = ParserConstructor | undefined
-
-export interface I18nAllyOptions {
-  /**
-   * @description locales directory paths
-   *
-   * localesPaths are relative to root
-   * @default
-   * ```js
-   * ['./src/locales', './locales']
-   * ```
-   */
-  localesPaths?: string[]
-  /**
-   * @description root path
-   * @default process.cwd()
-   */
-  root?: string
-  /**
-   * @description rule of matching locale file
-   *
-   * auto detect dir structure
-   * if file, default is `{locale}.{ext}`
-   * if dir, default is `{locale}/**\/*.{ext}`
-   * if namespace is true, default is `{locale}/**\/{namespaces}.{ext}`
-   *
-   * @example
-   * `{locale}.{ext}`
-   * `{locale}/{namespaces}.{ext}`
-   * `{locale}/{namespace}.json`
-   * `{namespaces}/{locale}`
-   * `something/{locale}/{namespace}`
-   */
-  pathMatcher?: string
-  /**
-   * @description
-   * parser plugins
-   *
-   * you can add custom parser plugin if there is no built-in parser for your file extension
-   * @example
-   * ```js
-   * [{
-   *    ext: 'json',
-   *    parser: (text) => JSON.parse(text),
-   * }]
-   * ```
-   */
-  parserPlugins?: ParserPlugin[]
-  /**
-   * @default false
-   */
-  namespace?: boolean
-  /**
-   * @description i18n-ally config root path
-   * @default process.cwd()
-   *
-   * if dotVscodePath is truly,
-   * i18n-ally config path is
-   * path.resolve(process.cwd(), './vscode/settings.json')
-   *
-   * if false, will not detect i18n-ally config
-   *
-   * @deprecated
-   * use `root` instead
-   */
-  dotVscodePath?: string | false
-  /**
-   * @description auto use config of vscode extension `i18n-ally`
-   * @default true
-   */
-  useVscodeI18nAllyConfig?:
-    | boolean
-    | {
-        stopAt: string
-      }
-}
 
 export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
   const options = initOptions(opts)
@@ -112,7 +35,7 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
       const { virtualModules, resolvedIds } = localeDetector.localeModules
 
       if (id in virtualModules) {
-        return RESOLVED_VIRTUAL_PREFIX + id
+        return RESOLVED_VIRTUAL_PREFIX + id // e.g. \0/@i18n-ally/virtual:i18n-ally-en
       }
 
       if (importer) {
@@ -126,7 +49,7 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
       }
 
       if (id === RESOURCE_VIRTURL_HELPER) {
-        return RESOLVED_VIRTUAL_PREFIX + RESOURCE_VIRTURL_HELPER
+        return RESOLVED_VIRTUAL_PREFIX + RESOURCE_VIRTURL_HELPER // \0/@i18n/virtual:i18n-ally-helper
       }
 
       return null

@@ -4,11 +4,10 @@ const commonConfig = (option: Options): Options => {
   return {
     dts: true,
     clean: !option.watch,
-    minify: !option.watch,
+    minify: false,
     format: ['cjs', 'esm'],
     sourcemap: !!option.watch,
     treeshake: true,
-    tsconfig: option.watch ? './tsconfig.dev.json' : './tsconfig.json',
     external: [/^virtual:.*/],
   }
 }

@@ -16,7 +16,7 @@
   <a href="https://npmjs.com/package/vite-plugin-i18n-ally"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-ally.svg" alt="npm package"></a>
 </p>
 
-**English** | [中文](./README-zh.md)
+**English** | [中文](./README.zh.md)
 
 > A vite plugin for lazy loading i18n resources
 
@@ -42,14 +42,14 @@ pnpm add vite-plugin-i18n-ally -D
 
 **If `i18n.ally` is configured, the plugin will read the configuration by default**
 
-| Option                  | Type                                    | Default                                                      | Description                                                                                                                     |
-| ----------------------- | --------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| localesPaths            | `string[]`                              | `i18n-ally.localesPaths \|\| ['./src/locales', './locales']` | The directory of language resources, relative to `root`                                                                         |
-| root                    | `string`                                | `process.cwd()`                                              | The project root path                                                                                                           |
-| namespace               | `boolean`                               | `i18n-ally.namespace \|\| false`                             | Enable namespace                                                                                                                |
-| pathMatcher             | `string`                                | auto detected by structure                                   | Resource file matching rule                                                                                                     |
-| parserPlugins           | `ParserPlugin[]`                        | `[jsonParser, json5Parser, yamlParser]`                      | Resource file parsing plugin                                                                                                    |
-| useVscodeI18nAllyConfig | `boolean         \| { stopAt: string }` | `true`                                                       | Whether to automatically use i18n-ally configuration, if stopAt is passed in, it will stop detecting in the specified directory |
+| Option                  | Type                                    | Default                          | Description                                                                                                                     |
+| ----------------------- | --------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| localesPaths            | `string[]`                              | `i18n-ally.localesPaths`         | The directory of language resources, relative to `root`                                                                         |
+| root                    | `string`                                | `process.cwd()`                  | The project root path                                                                                                           |
+| namespace               | `boolean`                               | `i18n-ally.namespace \|\| false` | Enable namespace                                                                                                                |
+| pathMatcher             | `string`                                | auto detected by structure       | Resource file matching rule                                                                                                     |
+| parserPlugins           | `ParserPlugin[]`                        | Built-in plugins                 | Resource file parsing plugin                                                                                                    |
+| useVscodeI18nAllyConfig | `boolean         \| { stopAt: string }` | `true`                           | Whether to automatically use i18n-ally configuration, if stopAt is passed in, it will stop detecting in the specified directory |
 
 ## Config Reference
 
@@ -62,14 +62,12 @@ import { i18nAlly } from 'vite-plugin-i18n-ally'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    i18nAlly({
-      localesPaths: ['./src/locales'],
-    }),
+    i18nAlly(),
   ],
 })
 ```
 
-## Use with React-i18next
+## Use with i18next
 
 ### main.tsx
 
@@ -79,7 +77,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import { setupI18n } from 'vite-plugin-i18n-ally/client'
+import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
@@ -92,18 +90,17 @@ i18next
   .use(initReactI18next)
   .init({
     resources: {}, // !!! important: No resources are added at initialization, otherwise what's lazy loading :)
-    nsSeparator: '.',
+    nsSeparator: '.', // namespace separator. If you use `namespace`, you need to configure this
+    keySeparator: false, // key separator.
     fallbackLng,
     detection: {
-      order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator'],
-      caches: ['localStorage', 'sessionStorage', 'cookie'],
       lookupQuerystring: lookupTarget,
       // ... For more configurations, please refer to `i18next-browser-languagedetector`
     },
   })
 
 
-const { loadResourceByLang } = setupI18n({
+const { beforeLanguageChange } = i18nAlly({
   language: i18next.language,
   onInited() {
     root.render(
@@ -112,9 +109,9 @@ const { loadResourceByLang } = setupI18n({
       </React.StrictMode>,
     )
   },
-  onResourceLoaded: (langs, currentLang) => { // Once the resource is loaded, add it to i18next
-    Object.keys(langs).forEach((ns) => {
-      i18next.addResourceBundle(currentLang, ns, langs[ns])
+  onResourceLoaded: (resource, currentLang) => { // Once the resource is loaded, add it to i18next
+    Object.keys(resource).forEach((ns) => {
+      i18next.addResourceBundle(currentLang, ns, resource[ns])
     })
   },
   fallbackLng,
@@ -126,7 +123,7 @@ const { loadResourceByLang } = setupI18n({
 const _changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   // Load resources before language change
-  await loadResourceByLang(lang)
+  await beforeLanguageChange(lang)
   return _changeLanguage(lang, ...args)
 }
 ```
@@ -142,16 +139,14 @@ Please refer to [i18next example](./playground/spa/src/main.tsx)
 {
   "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.enabledParsers": ["json"],
-  "i18n-ally.enabledFrameworks": ["react", "i18next"],
-  "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
+  "i18n-ally.namespace": true,  // If you use `namespace` above, you need to configure
 }
 ```
 
 ## ⚠️ Warm Tips
 
-Built-in support for `json` / `json5` / `yaml` / `yml` resource files, customizable plugin parsing language
+Built-in support for `json` / `json5` / `yaml` / `yml` / `ts` / `js` resource files, customizable plugin parsing language
 
 ## Thanks
 

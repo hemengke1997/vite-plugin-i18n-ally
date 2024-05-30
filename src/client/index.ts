@@ -1,55 +1,61 @@
-import resources from 'virtual:i18n-helper'
+import resources from 'virtual:i18n-ally-helper'
 import { name as PKGNAME } from '../../package.json'
 
 export interface I18nSetupOptions {
   /**
    * Current language
    */
-  language: string
+  language?: string
   /**
    * If no resource of current language, fallback to `fallbackLng`
    */
   fallbackLng: string
   /**
+   * Triggered when i18n-ally is inited
+   */
+  onInited: (langs: string[], lang: string) => Promise<void> | void
+  /**
    * Triggered when resource is loaded first time
    */
-  onResourceLoaded: (langHelper: Record<string, string>, currentLang: string) => Promise<void> | void
+  onResourceLoaded: (resource: Record<string, string>, lang: string) => Promise<void> | void
   /**
-   * Triggered when i18n is inited
+   * Cache user language on html tag or querystring
+   * i18next-browser-languagedetector will detect language from querystring or html tag,
+   * but it will not set language to html tag or querystring.
+   * so you can enable this option to set language to html tag or querystring
+   *
+   * @default true
    */
-  onInited: (langs: string[], currentLang: string) => Promise<void> | void
-  /**
-   * Cache user language on
-   */
-  cache?: {
-    /**
-     * @default 'lang'
-     * @example
-     * htmlTag: 'lang' ===> <html lang="en">
-     */
-    htmlTag?: string | boolean
-    /**
-     * @example
-     * querystring: 'lang' ===> https://example.com?lang=en
-     */
-    querystring?: string
-  }
+  cache?:
+    | {
+        /**
+         * @example
+         * htmlTag: 'data-lang' ===> <html data-lang="en">
+         */
+        htmlTag?: string | boolean
+        /**
+         * @example
+         * querystring: 'lang' ===> https://example.com?lang=en
+         */
+        querystring?: string
+      }
+    | boolean
 }
 
 const langs = Object.keys(resources)
 
-function setupI18n(options: I18nSetupOptions) {
-  const { onResourceLoaded, onInited, cache, language, fallbackLng } = options || {}
+function i18nAlly(options: I18nSetupOptions) {
+  const { onResourceLoaded, onInited, cache = true, language, fallbackLng } = options || {}
 
   const lng = language || fallbackLng
 
-  async function loadResourceByLang(
+  async function loadResource(
     lang: string,
     options?: {
-      setCache?: boolean
+      enableCahe?: boolean // avoid querystring blink
     },
   ) {
-    const { setCache = true } = options || {}
+    const { enableCahe = true } = options || {}
 
     if (!lang) {
       console.warn(`[${PKGNAME}]: 'language' undefined, fallback to '${fallbackLng}'`)
@@ -79,22 +85,24 @@ function setupI18n(options: I18nSetupOptions) {
 
     await onResourceLoaded(resource, lang)
 
-    setCache && _setCache(lang)
+    enableCahe && setCache(lang)
   }
 
-  async function _setCache(lang: string) {
+  async function setCache(lang: string) {
+    const cacheObj = typeof cache === 'boolean' ? {} : cache
+
     function setHtmlTag(lang: string) {
-      const { htmlTag } = cache || {}
+      const { htmlTag } = cacheObj || {}
 
       if (htmlTag) {
         const defaultTag = 'lang'
-        const tag = typeof htmlTag === 'boolean' ? 'lang' : htmlTag
-        document.querySelector('html')?.setAttribute(tag || defaultTag, lang)
+        const tag = typeof htmlTag === 'boolean' ? defaultTag : htmlTag
+        document.querySelector('html')?.setAttribute(tag, lang)
       }
     }
 
     function setQuerystring(lang: string) {
-      const { querystring } = cache || {}
+      const { querystring } = cacheObj || {}
 
       if (querystring) {
         const currentURL = new URL(window.location.href)
@@ -107,15 +115,15 @@ function setupI18n(options: I18nSetupOptions) {
     setQuerystring(lang)
   }
 
-  async function _init() {
-    await loadResourceByLang(fallbackLng, { setCache: false })
+  async function init() {
+    await loadResource(fallbackLng, { enableCahe: false })
     if (lng !== fallbackLng) {
-      await loadResourceByLang(lng, { setCache: false })
+      await loadResource(lng, { enableCahe: false })
     }
-    _setCache(lng)
+    cache && setCache(lng)
   }
 
-  _init().then(async () => {
+  init().then(async () => {
     try {
       await onInited?.(langs, lng)
     } catch (e) {
@@ -123,10 +131,14 @@ function setupI18n(options: I18nSetupOptions) {
     }
   })
 
+  async function beforeLanguageChange(lng: string) {
+    await loadResource(lng)
+  }
+
   return {
-    loadResourceByLang,
+    beforeLanguageChange,
     langs,
   }
 }
 
-export { setupI18n }
+export { i18nAlly }

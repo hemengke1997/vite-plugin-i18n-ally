@@ -5,7 +5,7 @@ import path from 'node:path'
 import trimEnd from 'string.prototype.trimend'
 import uniq from 'uniq'
 import { normalizePath } from 'vite'
-import { type I18nAllyOptions } from '..'
+import { type I18nAllyOptions } from '../interface'
 import { DefaultEnabledParsers } from '../parsers'
 import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher/PathMatcher'
@@ -13,7 +13,7 @@ import { PKGNAME, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { logger } from '../utils/logger'
 
-export type Config = Omit<Required<I18nAllyOptions>, 'dotVscodePath' | 'useVscodeI18nAllyConfig'>
+export type Config = Omit<Required<I18nAllyOptions>, 'useVscodeI18nAllyConfig'>
 
 type PathMatcherType = RegExp
 

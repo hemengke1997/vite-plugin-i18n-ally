@@ -3,14 +3,14 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import { setupI18n } from 'vite-plugin-i18n-ally/client'
+import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 import { fallbackLng, lookupTarget } from './const'
 import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-i18next
+await i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -20,24 +20,25 @@ i18next
     },
     debug: import.meta.env.DEV,
     resources: {},
-    nsSeparator: '.',
-    keySeparator: false,
+    keySeparator: '.',
     interpolation: {
       escapeValue: false,
     },
     lowerCaseLng: true,
     fallbackLng,
+    supportedLngs: ['en', 'zh', 'zh-tw', 'de'],
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator'],
-      caches: ['localStorage', 'sessionStorage', 'cookie'],
+      caches: ['cookie', 'localStorage', 'sessionStorage'],
       lookupQuerystring: lookupTarget,
       lookupLocalStorage: lookupTarget,
       lookupSessionStorage: lookupTarget,
       lookupCookie: lookupTarget,
+      htmlTag: document.documentElement,
     },
   })
 
-const { loadResourceByLang } = setupI18n({
+const { beforeLanguageChange } = i18nAlly({
   language: i18next.language,
   onInited() {
     root.render(
@@ -46,21 +47,18 @@ const { loadResourceByLang } = setupI18n({
       </React.StrictMode>,
     )
   },
-  onResourceLoaded: (langs, currentLang) => {
-    Object.keys(langs).forEach((ns) => {
-      i18next.addResourceBundle(currentLang, ns, langs[ns])
-    })
+  onResourceLoaded: (langHelper, currentLang) => {
+    i18next.addResourceBundle(currentLang, i18next.options.defaultNS[0], langHelper)
   },
   fallbackLng,
   cache: {
     querystring: lookupTarget,
-    htmlTag: true,
   },
 })
 
 const _changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   // 语言改变之前，先加载资源
-  await loadResourceByLang(lang)
+  await beforeLanguageChange(lang)
   return _changeLanguage(lang, ...args)
 }
