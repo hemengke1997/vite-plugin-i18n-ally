@@ -18,14 +18,14 @@ describe('e2e', () => {
   })
 
   test('Server: should lazyload locale js after click', async () => {
-    let request = page.waitForResponse((res) => res.url().includes('i18n-zh'), {
+    let request = page.waitForResponse((res) => res.url().includes('i18n-ally-zh'), {
       timeout: 1500,
     })
     await page.click('#zh')
     let response = await request.then(() => ({ status: () => 1 }))
     expect(response.status()).toBe(1)
 
-    request = page.waitForResponse((res) => res.url().includes('i18n-de'), {
+    request = page.waitForResponse((res) => res.url().includes('i18n-ally-de'), {
       timeout: 1500,
     })
     await page.click('#de')

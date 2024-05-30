@@ -43,10 +43,10 @@ describe('LocaleDetector - Dir mode', () => {
     const { virtualModules } = localeDetector.localeModules
     expect(Object.keys(virtualModules).sort()).toMatchInlineSnapshot(`
       [
-        "virtual:i18n-de",
-        "virtual:i18n-en",
-        "virtual:i18n-zh",
-        "virtual:i18n-zh-tw",
+        "virtual:i18n-ally-de",
+        "virtual:i18n-ally-en",
+        "virtual:i18n-ally-zh",
+        "virtual:i18n-ally-zh-tw",
       ]
     `)
   })
@@ -56,10 +56,10 @@ describe('LocaleDetector - Dir mode', () => {
     const resolvedIdsValues = Array.from(resolvedIds.values()).sort()
     expect(resolvedIdsValues).toMatchInlineSnapshot(`
       [
-        "virtual:i18n-de",
-        "virtual:i18n-en",
-        "virtual:i18n-zh",
-        "virtual:i18n-zh-tw",
+        "virtual:i18n-ally-de",
+        "virtual:i18n-ally-en",
+        "virtual:i18n-ally-zh",
+        "virtual:i18n-ally-zh-tw",
       ]
     `)
   })

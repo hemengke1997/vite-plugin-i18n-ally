@@ -49,7 +49,7 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
       }
 
       if (id === RESOURCE_VIRTURL_HELPER) {
-        return RESOLVED_VIRTUAL_PREFIX + RESOURCE_VIRTURL_HELPER // \0/@i18n/virtual:i18n-ally-helper
+        return RESOLVED_VIRTUAL_PREFIX + RESOURCE_VIRTURL_HELPER // \0/@i18n-ally/virtual:i18n-ally-helper
       }
 
       return null
