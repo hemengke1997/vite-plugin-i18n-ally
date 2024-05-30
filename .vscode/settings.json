@@ -1,5 +1,5 @@
 {
-  "i18n-ally.localesPaths": ["playground/spa/src/locales"],
+  "i18n-ally.localesPaths": ["playground/spa-with-namespace/src/locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.enabledParsers": ["json", "json5", "yaml", "ts"],
   "i18n-ally.enabledFrameworks": ["react", "i18next", "react-i18next"],

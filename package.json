@@ -40,7 +40,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
-    "build:pages": "npm run build && cd playground/spa && npm run build",
+    "build:pages": "npm run build && cd playground/spa-with-namespace && npm run build",
     "test": "run-s test:unit test:serve test:build",
     "test:unit": "cross-env DEBUG=vite-plugin-i18n* vitest run",
     "test:serve": "cross-env DEBUG=vite-plugin-i18n* vitest run -c vitest.config.e2e.ts",
