@@ -1,3 +1,7 @@
+# [4.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v3.2.0...v4.0.0) (2024-05-30)
+
+
+
 # [3.2.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v3.1.0...v3.2.0) (2024-03-24)
 
 
