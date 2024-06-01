@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.0.0...v4.0.1) (2024-06-01)
+
+
+### Bug Fixes
+
+* kill file watcher when vite server closed to avoid duplicate watcher ([c23601d](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/c23601d307915fd4634701eee6cd2ae8989db94b))
+
+
+
 # [4.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v3.2.0...v4.0.0) (2024-05-30)
 
 
