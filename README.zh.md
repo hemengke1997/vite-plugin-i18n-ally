@@ -88,8 +88,8 @@ await i18next
   .use(initReactI18next)
   .init({
     resources: {}, // !!! 初始化时不添加资源，不然何来懒加载:)
-    nsSeparator: '.', // 如果你使用namespace，就需要配置此项
-    keySeparator: false, // 或者你不使用namespace，可以配置此项为你的key分隔符
+    nsSeparator: '.',
+    keySeparator: '.',
     fallbackLng,
     detection: { // 探测浏览器语言
       lookupQuerystring: lookupTarget,
@@ -121,11 +121,11 @@ const { beforeLanguageChange } = i18nAlly({
   },
 })
 
-const _changeLanguage = i18next.changeLanguage
+const i18nextChangeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   // 语言改变之前，先加载资源
   await beforeLanguageChange(lang)
-  return _changeLanguage(lang, ...args)
+  return i18nextChangeLanguage(lang, ...args)
 }
 ```
 

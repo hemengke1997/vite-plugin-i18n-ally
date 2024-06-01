@@ -21,7 +21,7 @@ i18next
     debug: import.meta.env.DEV,
     resources: {},
     nsSeparator: '.',
-    keySeparator: false,
+    keySeparator: '.',
     interpolation: {
       escapeValue: false,
     },

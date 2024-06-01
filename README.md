@@ -90,8 +90,8 @@ i18next
   .use(initReactI18next)
   .init({
     resources: {}, // !!! important: No resources are added at initialization, otherwise what's lazy loading :)
-    nsSeparator: '.', // namespace separator. If you use `namespace`, you need to configure this
-    keySeparator: false, // key separator.
+    nsSeparator: '.',
+    keySeparator: '.',
     fallbackLng,
     detection: {
       lookupQuerystring: lookupTarget,
@@ -120,11 +120,11 @@ const { beforeLanguageChange } = i18nAlly({
   },
 })
 
-const _changeLanguage = i18next.changeLanguage
+const i18nextChangeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   // Load resources before language change
   await beforeLanguageChange(lang)
-  return _changeLanguage(lang, ...args)
+  return i18nextChangeLanguage(lang, ...args)
 }
 ```
 
