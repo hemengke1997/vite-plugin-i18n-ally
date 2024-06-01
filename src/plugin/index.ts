@@ -35,7 +35,7 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
       const { virtualModules, resolvedIds } = localeDetector.localeModules
 
       if (id in virtualModules) {
-        return RESOLVED_VIRTUAL_PREFIX + id // e.g. \0/@i18n-ally/virtual:i18n-ally-en
+        return RESOLVED_VIRTUAL_PREFIX + id // E.g. \0/@i18n-ally/virtual:i18n-ally-en
       }
 
       if (importer) {
@@ -87,10 +87,10 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
     },
     configureServer(server) {
       debug('Watch target:', localeDetector.localeDirs)
-      initWatcher(localeDetector.localeDirs, async (_type, p, pnext) => {
+      const watcher = initWatcher(localeDetector.localeDirs, async (_type, p, pnext) => {
         if (!p) return
 
-        debug('watcher', p, '=========>', pnext)
+        debug('Watcher', p, '=========>', pnext)
         const _hmr = async () => {
           await localeDetector.init()
           hmr(server, localeDetector)
@@ -106,12 +106,15 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
           return
         }
       })
+      server.httpServer?.addListener('close', () => {
+        watcher?.close()
+      })
     },
     async handleHotUpdate({ file, server }) {
       const updated = await localeDetector.onFileChanged({ fsPath: file })
 
       if (updated) {
-        debug('hmr', file)
+        debug('Hmr', file)
         hmr(server, localeDetector)
       }
     },

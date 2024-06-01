@@ -19,6 +19,8 @@ export function initWatcher(target: string[], cb: Callback) {
     watcher.on('renameDir', (...args) => onChange('renameDir', ...args))
     watcher.on('unlinkDir', (...args) => onChange('unlinkDir', ...args))
     watcher.on('unlink', (...args) => onChange('unlink', ...args))
+
+    return watcher
   } catch (error) {
     console.error(error)
   }

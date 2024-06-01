@@ -14,7 +14,7 @@ function getDefaultOptions(options?: I18nAllyOptions): I18nAllyOptions {
       typeof options.useVscodeI18nAllyConfig === 'object' ? options.useVscodeI18nAllyConfig.stopAt : undefined
     const i18nAlly = new I18nAllyVscodeSetting(options?.root || (DEFAULT_OPTIONS.root as string), stopAt).init()
 
-    debug('i18n-ally config:', i18nAlly)
+    debug('I18n-ally config:', i18nAlly)
 
     return {
       ...DEFAULT_OPTIONS,
