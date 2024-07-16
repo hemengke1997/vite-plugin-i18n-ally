@@ -1,4 +1,3 @@
-
 <p align="center">
   <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
     <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo" style="margin-right:16px" />
@@ -8,7 +7,6 @@
   </span>
 </p>
 <br/>
-
 
 <h1 align="center">vite-plugin-i18n-ally</h1>
 
@@ -36,9 +34,10 @@ pnpm add vite-plugin-i18n-ally -D
 ```
 
 ## Online Demo
+
 [Demo](https://hemengke1997.github.io/vite-plugin-i18n-ally/)
 
-## Options
+## Plugin Options
 
 **If `i18n.ally` is configured, the plugin will read the configuration by default**
 
@@ -54,51 +53,51 @@ pnpm add vite-plugin-i18n-ally -D
 ## Config Reference
 
 ### vite.config.ts
+
 ```ts
-import path from 'node:path'
-import { defineConfig } from 'vite'
-import { i18nAlly } from 'vite-plugin-i18n-ally'
+import path from 'node:path';
+import { defineConfig } from 'vite';
+import { i18nAlly } from 'vite-plugin-i18n-ally';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    i18nAlly(),
-  ],
-})
+  plugins: [i18nAlly()],
+});
 ```
+
+## Client Options
+
+| Option           | Type                   | Description                                                                                                      |
+| ---------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| language         | `string`\| `undefined` | The current language                                                                                             |
+| onInited         | `Function`             | Callback after initialization                                                                                    |
+| onResourceLoaded | `Function`             | Callback after resource loaded                                                                                   |
+| fallbackLng      | `string`               | Fallback language                                                                                                |
+| cache            | `object`               | Cache configuration. You can cache the language on `html`/`querystring`/`cookie`/`sessionStorage`/`localStorage` |
 
 ## Use with i18next
 
 ### main.tsx
 
 ```tsx
-import i18next from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { initReactI18next } from 'react-i18next'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
-import App from './App'
+import i18next from 'i18next';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { initReactI18next } from 'react-i18next';
+import { i18nAlly } from 'vite-plugin-i18n-ally/client';
+import App from './App';
 
-const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
+const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement);
 
-const lookupTarget = 'lang'
-const fallbackLng = 'en'
+const lookupTarget = 'lang';
+const fallbackLng = 'en';
 
-i18next
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources: {}, // !!! important: No resources are added at initialization, otherwise what's lazy loading :)
-    nsSeparator: '.',
-    keySeparator: '.',
-    fallbackLng,
-    detection: {
-      lookupQuerystring: lookupTarget,
-      // ... For more configurations, please refer to `i18next-browser-languagedetector`
-    },
-  })
-
+i18next.use(initReactI18next).init({
+  resources: {}, // !!! important: No resources are added at initialization, otherwise what's lazy loading :)
+  nsSeparator: '.',
+  keySeparator: '.',
+  fallbackLng,
+});
 
 const { beforeLanguageChange } = i18nAlly({
   language: i18next.language,
@@ -107,25 +106,32 @@ const { beforeLanguageChange } = i18nAlly({
       <React.StrictMode>
         <App />
       </React.StrictMode>,
-    )
+    );
   },
-  onResourceLoaded: (resource, currentLang) => { // Once the resource is loaded, add it to i18next
+  onResourceLoaded: (resource, currentLang) => {
+    // Once the resource is loaded, add it to i18next
     Object.keys(resource).forEach((ns) => {
-      i18next.addResourceBundle(currentLang, ns, resource[ns])
-    })
+      i18next.addResourceBundle(currentLang, ns, resource[ns]);
+    });
   },
   fallbackLng,
+  /**
+   * Cache configuration
+   * You can cache the current language to `html`/`querystring`/`cookie`/`sessionStorage`/`localStorage`
+   * If this does not meet your needs, you can use the Detector plugin provided by the i18n library to replace this functionality.
+   */
   cache: {
-    querystring: lookupTarget,
+    querystring: lookupTarget, // If you want to cache on querystring
+    cookie: 'lang-cookie', // If you want to cache on cookie
   },
-})
+});
 
-const i18nextChangeLanguage = i18next.changeLanguage
+const i18nextChangeLanguage = i18next.changeLanguage;
 i18next.changeLanguage = async (lang: string, ...args) => {
   // Load resources before language change
-  await beforeLanguageChange(lang)
-  return i18nextChangeLanguage(lang, ...args)
-}
+  await beforeLanguageChange(lang);
+  return i18nextChangeLanguage(lang, ...args);
+};
 ```
 
 ## Full Example
@@ -135,12 +141,13 @@ Please refer to [i18next example](./playground/spa-with-namespace/src/main.tsx)
 ## vscode i18n-ally configuration reference
 
 ### .vscode => settings.json
-``` json
+
+```json
 {
   "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
-  "i18n-ally.namespace": true,  // If you use `namespace` above, you need to configure
+  "i18n-ally.namespace": true // If you use `namespace` above, you need to configure
 }
 ```
 

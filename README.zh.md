@@ -1,4 +1,3 @@
-
 <p align="center">
   <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
     <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo" />
@@ -8,7 +7,6 @@
 <p align="center">
   <a href="https://npmjs.com/package/vite-plugin-i18n-ally"><img src="https://img.shields.io/npm/v/vite-plugin-i18n-ally.svg" alt="npm package"></a>
 </p>
-
 
 # vite-plugin-i18n-ally
 
@@ -34,10 +32,10 @@ pnpm add vite-plugin-i18n-ally -D
 ```
 
 ## 在线示例
+
 [Demo](https://hemengke1997.github.io/vite-plugin-i18n-ally/)
 
-
-## 配置项
+## vite插件配置项
 
 **如果已配置i18n.ally，插件会默认读取配置**
 
@@ -53,50 +51,51 @@ pnpm add vite-plugin-i18n-ally -D
 ## 配置参考
 
 ### vite.config.ts
+
 ```ts
-import path from 'node:path'
-import { defineConfig } from 'vite'
-import { i18nAlly } from 'vite-plugin-i18n-ally'
+import path from 'node:path';
+import { defineConfig } from 'vite';
+import { i18nAlly } from 'vite-plugin-i18n-ally';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    i18nAlly(),
-  ],
-})
+  plugins: [i18nAlly()],
+});
 ```
+
+## 客户端配置项
+
+| 参数             | 类型                    | 描述                                                                                              |
+| ---------------- | ----------------------- | ------------------------------------------------------------------------------------------------- |
+| language         | `string` \| `undefined` | 当前语言                                                                                          |
+| onInited         | `Function`              | 初始化完成后的回调                                                                                |
+| onResourceLoaded | `Function`              | 资源加载完成后的回调，参数为资源和当前语言                                                        |
+| fallbackLng      | `string`                | 回退语言                                                                                          |
+| cache            | `object`                | 缓存配置。你可以把当前语言缓存到 `html`/`querystring`/`cookie`/`sessionStorage`/`localStorage` 上 |
 
 ## 与i18next配合使用
 
 ### main.tsx
+
 ```tsx
-import i18next from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { initReactI18next } from 'react-i18next'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
-import App from './App'
+import i18next from 'i18next';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { initReactI18next } from 'react-i18next';
+import { i18nAlly } from 'vite-plugin-i18n-ally/client'; // 注意是 client
+import App from './App';
 
-const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
+const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement);
 
-const lookupTarget = 'lang'
-const fallbackLng = 'en'
+const lookupTarget = 'lang';
+const fallbackLng = 'en';
 
-await i18next
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources: {}, // !!! 初始化时不添加资源，不然何来懒加载:)
-    nsSeparator: '.',
-    keySeparator: '.',
-    fallbackLng,
-    detection: { // 探测浏览器语言
-      lookupQuerystring: lookupTarget,
-      // ... 更多配置请查阅 i18next-browser-languagedetector
-    },
-  })
-
+await i18next.use(initReactI18next).init({
+  resources: {}, // !!! 初始化时不添加资源，不然何来懒加载:)
+  nsSeparator: '.',
+  keySeparator: '.',
+  fallbackLng,
+});
 
 const { beforeLanguageChange } = i18nAlly({
   language: i18next.language,
@@ -105,45 +104,54 @@ const { beforeLanguageChange } = i18nAlly({
       <React.StrictMode>
         <App />
       </React.StrictMode>,
-    )
+    );
   },
-  onResourceLoaded: (resource, currentLang) => { // 资源加载完成后，添加到i18next
+  onResourceLoaded: (resource, currentLang) => {
+    // 资源加载完成后，添加到i18next
     // 如果你使用namespace
     Object.keys(resource).forEach((ns) => {
-      i18next.addResourceBundle(currentLang, ns, resource[ns])
-    })
+      i18next.addResourceBundle(currentLang, ns, resource[ns]);
+    });
     // 如果你不使用namespace
     // i18next.addResourceBundle(currentLang, 'translation', resource)
   },
   fallbackLng,
+  /**
+   * 缓存配置
+   * vite-plugin-i18n-ally 实现了一套简单易用的缓存机制
+   * 你可以把当前语言缓存到 `html`/`querystring`/`cookie`/`sessionStorage`/`localStorage` 上
+   * 如果不满足你的需求，可以使用i18n库提供的Detector插件来替代此功能
+   */
   cache: {
-    querystring: lookupTarget,
+    querystring: lookupTarget, // 如果你想缓存到url querystring上
+    cookie: 'lang-cookie', // 如果你想缓存到cookie
   },
-})
+});
 
-const i18nextChangeLanguage = i18next.changeLanguage
+const i18nextChangeLanguage = i18next.changeLanguage;
 i18next.changeLanguage = async (lang: string, ...args) => {
   // 语言改变之前，先加载资源
-  await beforeLanguageChange(lang)
-  return i18nextChangeLanguage(lang, ...args)
-}
+  await beforeLanguageChange(lang);
+  return i18nextChangeLanguage(lang, ...args);
+};
 ```
 
 ## 完整示例
+
 请参考 [i18next example](./playground/spa-with-namespace/src/main.tsx)
 
 ## vscode国际化配置参考
 
 ### .vscode => settings.json
-``` json
+
+```json
 {
   "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
-  "i18n-ally.namespace": true, // 如果你的pathMatcher使用了`namepaces`，需要开启此配置
+  "i18n-ally.namespace": true // 如果你的pathMatcher使用了`namepaces`，需要开启此配置
 }
 ```
-
 
 ## ⚠️ 温馨提示
 
