@@ -57,7 +57,7 @@ jobs:
           cache-dependency-path: '**/pnpm-lock.yaml'
 
       - name: Install deps
-        run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
+        run: pnpm install --prefer-offline --ignore-scripts
 
       # Install playwright's binary under custom directory to cache
       - name: Set Playwright path (non-windows)
