@@ -1,3 +1,12 @@
+# [4.1.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.0.1...v4.1.0) (2024-07-16)
+
+
+### Features
+
+* enhance caching functionality to additionally support cookie/sessionStorage/localStorage ([fc79069](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/fc79069eacd5e6af66f293a61ec09baaeeb2a1d9))
+
+
+
 ## [4.0.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.0.0...v4.0.1) (2024-06-01)
 
 
