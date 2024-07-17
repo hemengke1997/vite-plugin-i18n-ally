@@ -1,3 +1,12 @@
+## [4.1.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.1.0...v4.1.1) (2024-07-17)
+
+
+### Bug Fixes
+
+* resolve current language bug ([1378e41](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/1378e4149c769a4de304a79d3be4ad0395706c6e))
+
+
+
 # [4.1.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.0.1...v4.1.0) (2024-07-16)
 
 
