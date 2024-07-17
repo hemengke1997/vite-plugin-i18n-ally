@@ -358,7 +358,7 @@ class I18nAlly {
   static mount(options: I18nSetupOptions) {
     this.options = options
 
-    this.currentLng = !this.options.language ? this.resolveCurrentLng() : this.options.fallbackLng
+    this.currentLng = this.options.language || this.resolveCurrentLng()
 
     this.init().then(async () => {
       try {
