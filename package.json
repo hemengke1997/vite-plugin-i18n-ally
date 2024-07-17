@@ -72,6 +72,7 @@
     "@minko-fe/commitlint-config": "^2.1.0",
     "@minko-fe/eslint-config": "^3.2.0",
     "@minko-fe/tsconfig": "^2.1.0",
+    "@swc/core": "^1.6.13",
     "@types/clone-deep": "^4.0.4",
     "@types/debug": "^4.1.12",
     "@types/js-yaml": "^4.0.9",
