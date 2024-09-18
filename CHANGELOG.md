@@ -1,3 +1,13 @@
+# [5.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.1.1...v5.0.0) (2024-09-18)
+
+
+### Features
+
+* load resource by namespace ([a5c2c9f](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/a5c2c9f07d3e414032c4c8ba722ef94c5af85071))
+* tree-shaking ([31e9770](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/31e97700c5fd8079afd80d78d6977b5ab30f5310))
+
+
+
 ## [4.1.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.1.0...v4.1.1) (2024-07-17)
 
 
