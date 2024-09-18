@@ -60,7 +60,7 @@
     "husky": "^9.1.6",
     "postcss": "^8.4.47",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "remix-development-tools": "^4.5.1",
+    "remix-development-tools": "^4.5.2",
     "remix-flat-routes": "^0.6.5",
     "simple-git-hooks": "^2.11.1",
     "tailwind-antd-preset": "^0.0.4",
@@ -71,7 +71,7 @@
     "vite-plugin-i18n-ally": "workspace:*",
     "vite-plugin-istanbul-widget": "^1.9.0",
     "vite-plugin-public-typescript": "^4.0.0",
-    "vite-plugin-remix-flat-routes": "^3.5.0"
+    "vite-plugin-remix-flat-routes": "^3.5.4"
   },
   "simple-git-hooks": {
     "commit-msg": "npm run commitlint",

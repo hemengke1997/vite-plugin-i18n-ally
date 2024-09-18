@@ -11,7 +11,7 @@ const i18nChangeLanguage = i18next.changeLanguage
 
 async function hydrate() {
   const { asyncLoadResource } = i18nAlly({
-    namespaces: [...resolveNamespace(), ...i18nOptions.defaultNS],
+    namespaces: [...resolveNamespace()],
     fallbackLng: i18nOptions.fallbackLng,
     async onInit({ language }) {
       await i18next.use(initReactI18next).init({
@@ -20,7 +20,7 @@ async function hydrate() {
         fallbackLng: i18nOptions.fallbackLng,
         keySeparator: i18nOptions.keySeparator,
         nsSeparator: i18nOptions.nsSeparator,
-        ns: [...resolveNamespace(), ...i18nOptions.defaultNS] as string[],
+        ns: [...resolveNamespace()] as string[],
         debug: import.meta.env.DEV,
       })
     },
@@ -54,7 +54,7 @@ async function hydrate() {
 
   i18next.changeLanguage = async (lng?: string, ...args) => {
     await asyncLoadResource(lng || i18next.language, {
-      namespaces: [...resolveNamespace(), ...i18nOptions.defaultNS],
+      namespaces: [...resolveNamespace()],
     })
     return i18nChangeLanguage(lng, ...args)
   }

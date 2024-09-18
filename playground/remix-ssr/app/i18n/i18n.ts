@@ -17,6 +17,7 @@ export function resolveNamespace(pathname = window.location.pathname): string[] 
       ?.map((route) => route.route.handle)
       .filter((t) => t?.i18n)
       .map((t) => t.i18n)
-      .flat() || []
+      .flat()
+      .concat(defaultNS) || defaultNS
   )
 }

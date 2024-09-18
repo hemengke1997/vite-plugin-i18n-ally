@@ -7,7 +7,7 @@ import { debug } from './utils/debugger'
 import { fullReload } from './utils/hmr'
 import { initI18nAlly } from './utils/init-i18n-ally'
 
-export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
+export function i18nAlly(opts?: I18nAllyOptions) {
   const { options, vscodeSetting } = initI18nAlly(opts)
 
   debug('User input i18n-ally options on init:', options)
@@ -20,18 +20,20 @@ export async function i18nAlly(opts?: I18nAllyOptions): Promise<any> {
     namespace: options.namespace,
   })
 
-  await localeDetector.init()
-
   let server: ViteDevServer
 
   return {
     name: 'vite:plugin-i18n-ally',
     enforce: 'pre',
-    config: () => ({
-      optimizeDeps: {
-        exclude: [`${VIRTUAL}-*`],
-      },
-    }),
+    async config() {
+      await localeDetector.init()
+
+      return {
+        optimizeDeps: {
+          exclude: [`${VIRTUAL}-*`],
+        },
+      }
+    },
     async resolveId(id: string, importer: string) {
       const { virtualModules, resolvedIds } = localeDetector.localeModules
 

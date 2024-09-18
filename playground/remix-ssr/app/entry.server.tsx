@@ -21,13 +21,18 @@ export default async function handleRequest(
   const callbackName = isbotRequest ? 'onAllReady' : 'onShellReady'
 
   const i18nInstance = createInstance()
-  const lng = new URL(request.url).pathname.split('/').filter(Boolean)[0] || (await i18nServer.getLocale(request))
-  const ns = i18nServer.getRouteNamespaces(remixContext)
+
+  const localeFromPath = new URL(request.url).pathname.split('/').filter(Boolean)[0]
+  const lng = i18nServerOptions.supportedLngs.includes(localeFromPath)
+    ? localeFromPath
+    : await i18nServer.getLocale(request)
 
   await i18nInstance.use(initReactI18next).init({
     ...i18nServerOptions,
     lng,
-    ns: [...ns, ...i18nServerOptions.defaultNS],
+    ns: i18nServerOptions.resources[lng]
+      ? Object.keys(i18nServerOptions.resources[lng])
+      : [...i18nServerOptions.defaultNS],
   })
 
   return new Promise((resolve, reject) => {
