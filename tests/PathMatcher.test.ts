@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { ParsePathMatcher } from '../src/plugin/path-matcher/PathMatcher'
+import { ParsePathMatcher } from '../src/node/path-matcher'
 
 describe('PathMatching', () => {
   const cases = [

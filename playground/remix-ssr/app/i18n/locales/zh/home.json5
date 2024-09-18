@@ -1,0 +1,7 @@
+{
+  title: '首页',
+  description: '这是首页',
+  theme: '主题色',
+  language: '语言',
+  route: '路由',
+}

@@ -1,0 +1,7 @@
+{
+  title: 'Home',
+  description: 'this is home desc',
+  theme: 'Theme',
+  language: 'Language',
+  route: 'Route',
+}

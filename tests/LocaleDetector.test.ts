@@ -1,13 +1,13 @@
 import path from 'node:path'
 import { beforeAll, describe, expect, test } from 'vitest'
-import { LocaleDetector } from '../src/plugin/locale-detector/LocaleDetector'
-import { initOptions } from '../src/plugin/utils/init-options'
+import { LocaleDetector } from '../src/node/locale-detector'
+import { initI18nAlly } from '../src/node/utils/init-i18n-ally'
 
 describe('LocaleDetector - Dir mode', () => {
   let localeDetector: LocaleDetector
 
   beforeAll(async () => {
-    const options = initOptions({
+    const { options } = initI18nAlly({
       root: path.resolve(__dirname, './fixtures/'),
       localesPaths: [path.resolve(__dirname, './fixtures/locales/')],
       namespace: true,
@@ -44,9 +44,16 @@ describe('LocaleDetector - Dir mode', () => {
     expect(Object.keys(virtualModules).sort()).toMatchInlineSnapshot(`
       [
         "virtual:i18n-ally-de",
+        "virtual:i18n-ally-de/more",
+        "virtual:i18n-ally-de/test",
         "virtual:i18n-ally-en",
+        "virtual:i18n-ally-en/more",
+        "virtual:i18n-ally-en/test",
+        "virtual:i18n-ally-en/unused",
         "virtual:i18n-ally-zh",
         "virtual:i18n-ally-zh-tw",
+        "virtual:i18n-ally-zh-tw/test",
+        "virtual:i18n-ally-zh/test",
       ]
     `)
   })
@@ -57,9 +64,16 @@ describe('LocaleDetector - Dir mode', () => {
     expect(resolvedIdsValues).toMatchInlineSnapshot(`
       [
         "virtual:i18n-ally-de",
+        "virtual:i18n-ally-de/more",
+        "virtual:i18n-ally-de/test",
         "virtual:i18n-ally-en",
+        "virtual:i18n-ally-en/more",
+        "virtual:i18n-ally-en/test",
+        "virtual:i18n-ally-en/unused",
         "virtual:i18n-ally-zh",
         "virtual:i18n-ally-zh-tw",
+        "virtual:i18n-ally-zh-tw/test",
+        "virtual:i18n-ally-zh/test",
       ]
     `)
   })
@@ -74,3 +88,5 @@ describe('LocaleDetector - Dir mode', () => {
     expect(virtualModules).toMatchSnapshot()
   })
 })
+
+// TODO: non-namespace

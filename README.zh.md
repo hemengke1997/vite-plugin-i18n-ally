@@ -53,87 +53,88 @@ pnpm add vite-plugin-i18n-ally -D
 ### vite.config.ts
 
 ```ts
-import path from 'node:path';
-import { defineConfig } from 'vite';
-import { i18nAlly } from 'vite-plugin-i18n-ally';
+import path from 'node:path'
+import { defineConfig } from 'vite'
+import { i18nAlly } from 'vite-plugin-i18n-ally'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [i18nAlly()],
-});
+})
 ```
 
 ## 客户端配置项
 
-| 参数             | 类型                    | 描述                                                                                              |
-| ---------------- | ----------------------- | ------------------------------------------------------------------------------------------------- |
-| language         | `string` \| `undefined` | 当前语言                                                                                          |
-| onInited         | `Function`              | 初始化完成后的回调                                                                                |
-| onResourceLoaded | `Function`              | 资源加载完成后的回调，参数为资源和当前语言                                                        |
-| fallbackLng      | `string`                | 回退语言                                                                                          |
-| cache            | `object`                | 缓存配置。你可以把当前语言缓存到 `html`/`querystring`/`cookie`/`sessionStorage`/`localStorage` 上 |
+| 参数             | 类型       | 描述                                                    |
+| ---------------- | ---------- | ------------------------------------------------------- |
+| language         | `string`   | 当前语言                                                |
+| namespaces       | `string[]` | 当前路由所需的namespaces                                |
+| onInited         | `Function` | 初始化完成后的回调                                      |
+| onResourceLoaded | `Function` | 资源加载完成后的回调，参数为资源和当前语言              |
+| fallbackLng      | `string`   | 回退语言                                                |
+| detection        | `Array`    | 语言探测和缓存，类似 `i18next-browser-languagedetector` |
 
 ## 与i18next配合使用
 
 ### main.tsx
 
 ```tsx
-import i18next from 'i18next';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { initReactI18next } from 'react-i18next';
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'; // 注意是 client
-import App from './App';
+import React from 'react'
+import { initReactI18next } from 'react-i18next'
+import i18next from 'i18next'
+import ReactDOM from 'react-dom/client'
+import { i18nAlly } from 'vite-plugin-i18n-ally/client' // 注意是 client
+import App from './App'
 
-const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement);
+const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-const lookupTarget = 'lang';
-const fallbackLng = 'en';
-
-await i18next.use(initReactI18next).init({
-  resources: {}, // !!! 初始化时不添加资源，不然何来懒加载:)
-  nsSeparator: '.',
-  keySeparator: '.',
-  fallbackLng,
-});
-
-const { beforeLanguageChange } = i18nAlly({
-  language: i18next.language,
+const { asyncLoadResource } = i18nAlly({
+  onInit() {
+    i18next.use(initReactI18next).init({
+      resources: {}, // !!! 初始化时不添加资源，不然何来懒加载:)
+      nsSeparator: '.',
+      keySeparator: '.',
+      fallbackLng: 'en',
+    })
+  },
   onInited() {
     root.render(
       <React.StrictMode>
         <App />
       </React.StrictMode>,
-    );
+    )
   },
-  onResourceLoaded: (resource, currentLang) => {
-    // 资源加载完成后，添加到i18next
-    // 如果你使用namespace
-    Object.keys(resource).forEach((ns) => {
-      i18next.addResourceBundle(currentLang, ns, resource[ns]);
-    });
-    // 如果你不使用namespace
-    // i18next.addResourceBundle(currentLang, 'translation', resource)
+ onResourceLoaded: (resources, { language }) => {
+    Object.keys(resources).forEach((ns) => {
+      i18next.addResourceBundle(language, ns, resources[ns])
+    })
   },
-  fallbackLng,
+  fallbackLng: 'en',
   /**
-   * 缓存配置
-   * vite-plugin-i18n-ally 实现了一套简单易用的缓存机制
-   * 你可以把当前语言缓存到 `html`/`querystring`/`cookie`/`sessionStorage`/`localStorage` 上
-   * 如果不满足你的需求，可以使用i18n库提供的Detector插件来替代此功能
+   * 探测配置
+   * vite-plugin-i18n-ally 实现了一套简单易用的探测缓存机制
    */
-  cache: {
-    querystring: lookupTarget, // 如果你想缓存到url querystring上
-    cookie: 'lang-cookie', // 如果你想缓存到cookie
-  },
-});
+   detection: [
+    {
+      detect: 'querystring',
+      lookup: 'lang',
+    },
+    {
+      detect: 'cookie',
+      lookup: 'cookie-name',
+    },
+    {
+      detect: 'htmlTag',
+    },
+  ],
+})
 
-const i18nextChangeLanguage = i18next.changeLanguage;
+const i18nextChangeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   // 语言改变之前，先加载资源
-  await beforeLanguageChange(lang);
-  return i18nextChangeLanguage(lang, ...args);
-};
+  await asyncLoadResource(lang)
+  return i18nextChangeLanguage(lang, ...args)
+}
 ```
 
 ## 完整示例

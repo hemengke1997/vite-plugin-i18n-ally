@@ -1,4 +1,4 @@
-import { type Options, defineConfig } from 'tsup'
+import { defineConfig, type Options } from 'tsup'
 
 const commonConfig = (option: Options): Options => {
   return {
@@ -23,7 +23,7 @@ export const tsup = defineConfig((option) => [
   {
     ...commonConfig(option),
     entry: {
-      index: 'src/plugin/index.ts',
+      index: 'src/node/index.ts',
     },
     platform: 'node',
     target: 'node16',
@@ -33,7 +33,7 @@ export const tsup = defineConfig((option) => [
   {
     ...commonConfig(option),
     entry: {
-      index: 'src/plugin/index.ts',
+      index: 'src/node/index.ts',
     },
     platform: 'node',
     target: 'node16',

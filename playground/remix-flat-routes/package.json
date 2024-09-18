@@ -1,0 +1,35 @@
+{
+  "name": "remix-flat-routes",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "DEBUG=vite-plugin-i18n-ally* vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "antd": "^5.20.6",
+    "context-state": "^3.1.2",
+    "framer-motion": "^11.5.4",
+    "i18next": "^23.15.1",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.0.1",
+    "react-router-dom": "6.26.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@minko-fe/postcss-config": "^1.0.1",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "postcss": "^8.4.45",
+    "tailwindcss": "^3.4.11",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.4",
+    "vite-plugin-i18n-ally": "workspace:*",
+    "vite-plugin-remix-flat-routes": "^3.4.1"
+  }
+}

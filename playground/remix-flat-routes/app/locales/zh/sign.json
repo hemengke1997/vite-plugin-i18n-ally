@@ -1,0 +1,19 @@
+{
+  "signin": {
+    "title": "登录",
+    "email": "电子邮件",
+    "password": "密码",
+    "submit": "登录",
+    "forgot": "忘记密码？",
+    "register": "注册",
+    "error": "无效的电子邮件或密码"
+  },
+  "signup": {
+    "title": "注册",
+    "email": "电子邮件",
+    "password": "密码",
+    "submit": "注册",
+    "signin": "登录",
+    "error": "无效的电子邮件或密码"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "signin": {
+    "title": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign In",
+    "forgot": "Forgot Password?",
+    "register": "Register",
+    "error": "Invalid email or password"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign Up",
+    "signin": "Sign In",
+    "error": "Invalid email or password"
+  }
+}

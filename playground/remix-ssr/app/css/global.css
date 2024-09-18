@@ -1,0 +1,9 @@
+@import url('./tailwind.css');
+@import url('./antd.css');
+
+[data-theme='dark'] {
+  @apply bg-black text-white;
+}
+[data-theme='light'] {
+  @apply bg-white text-black;
+}
