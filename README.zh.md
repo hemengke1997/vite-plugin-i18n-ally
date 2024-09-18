@@ -139,7 +139,7 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 
 ## 完整示例
 
-请参考 [i18next example](./playground/spa-with-namespace/src/main.tsx)
+请参考 [i18next example](./playground/with-namespace/src/main.tsx)
 
 ## vscode国际化配置参考
 

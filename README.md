@@ -138,7 +138,7 @@ i18next.changeLanguage = async (lang: string, ...args) => {
 
 ## Full Example
 
-Please refer to [i18next example](./playground/spa-with-namespace/src/main.tsx)
+Please refer to [i18next example](./playground/with-namespace/src/main.tsx)
 
 ## vscode i18n-ally configuration reference
 
