@@ -1,3 +1,12 @@
+## [5.0.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.0.0...v5.0.1) (2024-09-18)
+
+
+### Bug Fixes
+
+* sync vite plugin ([9295289](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/92952899b42c11a2bc0902b03b73887697d5d817))
+
+
+
 # [5.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v4.1.1...v5.0.0) (2024-09-18)
 
 
