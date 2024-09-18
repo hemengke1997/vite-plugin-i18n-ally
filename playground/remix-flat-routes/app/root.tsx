@@ -2,7 +2,9 @@ import { type PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Link,
+  type LoaderFunction,
   ScrollRestoration,
+  type ShouldRevalidateFunction,
   type ShouldRevalidateFunctionArgs,
   useLocation,
   useOutlet,
@@ -34,13 +36,21 @@ const RouteAnimation = ({ children }: PropsWithChildren) => {
   )
 }
 
-export const loader = () => null
+let url: URL
 
-export const shouldRevalidate = async (args: ShouldRevalidateFunctionArgs) => {
-  await asyncLoadResource(i18next.language, {
-    namespaces: resolveNamespace(args.nextUrl.pathname),
-  })
-  return args.defaultShouldRevalidate
+export const loader: LoaderFunction = async () => {
+  console.log(url, 'url')
+  if (url) {
+    await asyncLoadResource(i18next.language, {
+      namespaces: resolveNamespace(url.pathname),
+    })
+  }
+  return null
+}
+
+export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRevalidateFunctionArgs) => {
+  url = nextUrl
+  return true
 }
 
 export function Component() {

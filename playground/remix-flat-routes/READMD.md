@@ -44,12 +44,19 @@ i18next.changeLanguage = async (lng?: string, ...args) => {
 5. 在路由变化时，重复第3步
 ```ts
 // root.tsx
-export const loader = () => null // 需要导出loader，shouldRevalidate才会生效
+let url: URL
 
-export const shouldRevalidate = async ({ nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) => {
-  await asyncLoadResource(i18next.language, {
-    namespaces: resolveNamespace(nextUrl.pathname),
-  })
-  return defaultShouldRevalidate
+export const loader: LoaderFunction = async () => {
+  if (url) {
+    await asyncLoadResource(i18next.language, {
+      namespaces: resolveNamespace(url.pathname),
+    })
+  }
+  return null
+}
+
+export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRevalidateFunctionArgs) => {
+  url = nextUrl
+  return true
 }
 ```
