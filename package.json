@@ -40,7 +40,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
-    "build:pages": "npm run build && cd playground/spa-with-namespace && npm run build",
+    "build:pages": "npm run build && cd playground/with-namespace && npm run build",
     "test": "run-s test:unit test:serve test:build",
     "test:unit": "vitest run",
     "test:serve": "vitest run -c vitest.config.e2e.ts",
@@ -48,7 +48,6 @@
     "prepare": "simple-git-hooks",
     "lint": "eslint . --fix --cache",
     "commitlint": "commitlint -e",
-    "up": "taze -I -w -r",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "bump": "bumpp package.json -c --no-push -t --all -x \"npm run changelog\""
   },
@@ -92,6 +91,7 @@
     "simple-git-hooks": "^2.11.1",
     "taze": "^0.16.9",
     "tsup": "^8.3.0",
+    "tsup-plugin-bundleless": "^0.4.0",
     "typescript": "^5.6.2",
     "vite-plugin-i18n-ally": "workspace:*",
     "vitest": "^2.1.1",

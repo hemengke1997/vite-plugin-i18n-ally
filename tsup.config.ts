@@ -1,4 +1,5 @@
 import { defineConfig, type Options } from 'tsup'
+import { bundleless } from 'tsup-plugin-bundleless'
 
 const commonConfig = (option: Options): Options => {
   return {
@@ -14,11 +15,23 @@ const commonConfig = (option: Options): Options => {
 
 export const tsup = defineConfig((option) => [
   {
-    entry: {
-      'client/index': 'src/client/index.ts',
-    },
-    platform: 'browser',
     ...commonConfig(option),
+    entry: ['./src/client/**/*.{ts,tsx}'],
+    outDir: 'dist/client',
+    format: ['esm'],
+    platform: 'browser',
+    splitting: false,
+    outExtension: () => ({ js: '.js' }),
+    plugins: [bundleless({ ext: '.js' })],
+  },
+  {
+    ...commonConfig(option),
+    entry: ['./src/client/index.ts'],
+    outDir: 'dist/client',
+    format: ['cjs'],
+    platform: 'neutral',
+    splitting: false,
+    outExtension: () => ({ js: '.cjs' }),
   },
   {
     ...commonConfig(option),
