@@ -1,3 +1,12 @@
+## [5.1.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.0...v5.1.1) (2024-09-19)
+
+
+### Bug Fixes
+
+* tree-shaking ([8aa954b](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/8aa954bee920eb635a4e6d408550564f7685ee21))
+
+
+
 # [5.1.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.0.1...v5.1.0) (2024-09-19)
 
 
