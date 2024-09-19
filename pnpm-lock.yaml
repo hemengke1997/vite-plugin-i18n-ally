@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      clone-deep:
-        specifier: ^4.0.1
-        version: 4.0.1
       debug:
         specifier: ^4.3.7
         version: 4.3.7
@@ -32,12 +29,6 @@ importers:
       language-tags:
         specifier: ^1.0.9
         version: 1.0.9
-      string.prototype.trimend:
-        specifier: ^1.0.8
-        version: 1.0.8
-      uniq:
-        specifier: ^1.0.1
-        version: 1.0.1
       vite:
         specifier: '>=5.0.0'
         version: 5.4.6(@types/node@22.5.5)
@@ -81,6 +72,9 @@ importers:
       bumpp:
         specifier: ^9.5.2
         version: 9.5.2
+      clone-deep:
+        specifier: ^4.0.1
+        version: 4.0.1
       conventional-changelog-cli:
         specifier: ^5.0.0
         version: 5.0.0(conventional-commits-filter@5.0.0)
@@ -8236,9 +8230,6 @@ packages:
 
   unified@10.1.2:
     resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
-
-  uniq@1.0.1:
-    resolution: {integrity: sha512-Gw+zz50YNKPDKXs+9d+aKAjVwpjNwqzvNpLigIruT4HA9lMZNdMqs9x07kKHB/L9WRzqp4+DlTU5s4wG2esdoA==}
 
   unique-filename@3.0.0:
     resolution: {integrity: sha512-afXhuC55wkAmZ0P18QsVE6kp8JaxrEokN2HGIoIVv2ijHQd419H0+6EigAFcIzXeMIkcIkNBpB3L/DXB3cTS/g==}
@@ -17372,8 +17363,6 @@ snapshots:
       is-plain-obj: 4.1.0
       trough: 2.2.0
       vfile: 5.3.7
-
-  uniq@1.0.1: {}
 
   unique-filename@3.0.0:
     dependencies:
