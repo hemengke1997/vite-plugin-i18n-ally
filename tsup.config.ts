@@ -20,9 +20,9 @@ export const tsup = defineConfig((option) => [
     outDir: 'dist/client',
     format: ['esm'],
     platform: 'browser',
-    splitting: false,
+    splitting: true,
     outExtension: () => ({ js: '.js' }),
-    plugins: [bundleless({ ext: '.js' })],
+    ...bundleless(),
   },
   {
     ...commonConfig(option),

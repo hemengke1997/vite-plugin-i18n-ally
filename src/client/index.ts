@@ -91,7 +91,7 @@ class I18nAlly {
     })
   }
 
-  static async init() {
+  private static async init() {
     const { fallbackLng, namespaces } = this.options
     await this.loadResource(fallbackLng, { enableCahe: false, namespaces })
     if (this.currentLng !== fallbackLng) {
@@ -100,7 +100,7 @@ class I18nAlly {
     this.options.detection && this.setCache(this.currentLng)
   }
 
-  static asyncLoadResource(
+  private static asyncLoadResource(
     language?: string,
     options?: {
       namespaces?: string[] | string
@@ -138,7 +138,7 @@ class I18nAlly {
     return lang
   }
 
-  static resolveNamespaces() {
+  private static resolveNamespaces() {
     if (this.enableNamespace) {
       const namespaceMap = new Map<string, string[]>()
       Object.keys(resources)

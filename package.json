@@ -17,7 +17,7 @@
   "author": "hemengke <https://github.com/hemengke1997>",
   "files": [
     "*.d.ts",
-    "dist"
+    "dist/"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -35,6 +35,14 @@
     },
     "./virtual": {
       "types": "./virtual.d.ts"
+    },
+    "./*": "./*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "*.d.ts"
+      ]
     }
   },
   "scripts": {
@@ -91,7 +99,7 @@
     "simple-git-hooks": "^2.11.1",
     "taze": "^0.16.9",
     "tsup": "^8.3.0",
-    "tsup-plugin-bundleless": "^0.4.0",
+    "tsup-plugin-bundleless": "^1.0.1",
     "typescript": "^5.6.2",
     "vite-plugin-i18n-ally": "workspace:*",
     "vitest": "^2.1.1",
