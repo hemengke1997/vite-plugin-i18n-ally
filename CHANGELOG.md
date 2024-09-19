@@ -1,3 +1,12 @@
+# [5.1.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.0.1...v5.1.0) (2024-09-19)
+
+
+### Features
+
+* support flat keyStyle ([c402676](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/c402676d8499475be814a9488c9930e4676e350e))
+
+
+
 ## [5.0.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.0.0...v5.0.1) (2024-09-18)
 
 
