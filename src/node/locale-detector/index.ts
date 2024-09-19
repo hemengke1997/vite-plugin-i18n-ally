@@ -1,16 +1,16 @@
 import cloneDeep from 'clone-deep'
 import fg from 'fast-glob'
 import tags from 'language-tags'
+import { trimEnd, uniq } from 'lodash-es'
 import path from 'node:path'
-import trimEnd from 'string.prototype.trimend'
-import uniq from 'uniq'
 import { normalizePath } from 'vite'
 import { DefaultEnabledParsers } from '../parsers'
 import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher'
 import { type I18nAllyOptions } from '../types'
-import { PKGNAME, VIRTUAL } from '../utils/constant'
+import { I18nAlly, VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
+import { unflatten } from '../utils/flat'
 import { logger } from '../utils/logger'
 
 export type Config = Omit<Required<I18nAllyOptions>, 'useVscodeI18nAllyConfig'>
@@ -241,7 +241,7 @@ export class LocaleDetector {
       }
     }
     if (!this.files.length) {
-      throw new Error(`[${PKGNAME}]: No locale files detected. Please check your config.`)
+      throw new Error(`[${I18nAlly}]: No locale files detected. Please check your config.`)
     }
   }
 
@@ -274,6 +274,9 @@ export class LocaleDetector {
 
       const data = await parser.load(filepath)
 
+      // support `i18n-ally.keyStyle` `nesetd` and `flat`
+      const value = unflatten(data)
+
       const deepDirpath = path.dirname(filepath)
 
       this._files[filepath] = {
@@ -281,7 +284,7 @@ export class LocaleDetector {
         deepDirpath,
         dirpath,
         locale,
-        value: data,
+        value,
         namespace,
         matcher,
       }

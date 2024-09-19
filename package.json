@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-i18n-ally",
   "version": "5.0.1",
-  "description": "vite plugin load i18n resources lazily. 懒加载国际化资源的 vite 插件",
+  "description": "vite plugin load i18n resources lazily. 懒加载国际化资源，适配vscode-i18n-ally",
   "type": "module",
   "keywords": [
     "vite plugin",
@@ -55,16 +55,13 @@
     "vite": ">=5.0.0"
   },
   "dependencies": {
-    "clone-deep": "^4.0.1",
     "debug": "^4.3.7",
     "fast-glob": "^3.3.2",
     "find-up": "^7.0.0",
     "importx": "^0.4.4",
     "js-yaml": "^4.1.0",
     "json5": "^2.2.3",
-    "language-tags": "^1.0.9",
-    "string.prototype.trimend": "^1.0.8",
-    "uniq": "^1.0.1"
+    "language-tags": "^1.0.9"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
@@ -76,14 +73,17 @@
     "@types/debug": "^4.1.12",
     "@types/js-yaml": "^4.0.9",
     "@types/language-tags": "^1.0.4",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.7",
     "bumpp": "^9.5.2",
+    "clone-deep": "^4.0.1",
     "conventional-changelog-cli": "^5.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.10.0",
     "i18next": "23.5.1",
     "jsdom": "^22.1.0",
+    "lodash-es": "^4.17.21",
     "npm-run-all": "^4.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

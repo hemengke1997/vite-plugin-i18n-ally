@@ -27,7 +27,8 @@ export class Parser {
     try {
       const res = await this.parse(raw, filepath)
       return res
-    } catch {
+    } catch (e) {
+      console.error(e)
       return {}
     }
   }

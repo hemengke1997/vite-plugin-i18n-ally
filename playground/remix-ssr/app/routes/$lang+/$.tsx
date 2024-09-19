@@ -1,3 +1,9 @@
-import NotFound from '@/components/not-found'
+import { useEffect } from 'react'
 
-export default NotFound
+export default function NotFound() {
+  useEffect(() => {
+    console.log('not found')
+  }, [])
+
+  return null
+}

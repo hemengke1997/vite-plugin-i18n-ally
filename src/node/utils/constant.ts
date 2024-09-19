@@ -1,4 +1,4 @@
-export { name as PKGNAME } from '../../../package.json'
+export { name as I18nAlly } from '../../../package.json'
 
 export const VIRTUAL = 'virtual:i18n-ally'
 
