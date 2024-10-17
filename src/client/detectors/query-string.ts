@@ -11,6 +11,8 @@ export class QueryString implements Detector {
     const { cache } = options
     const currentURL = new URL(window.location.href)
     currentURL.searchParams.set(cache, lng)
-    window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
+    setTimeout(() => {
+      window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
+    })
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
 import ReactDOM from 'react-dom/client'
 import { resources } from 'virtual:i18n-ally-resource'
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
@@ -18,25 +17,21 @@ const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 const { asyncLoadResource } = i18nAlly({
   namespaces: resolveNamespace(),
   onInit({ language }) {
-    i18next
-      .use(initReactI18next)
-      .use(LanguageDetector)
-      .init({
-        lng: language,
-        returnNull: false,
-        react: {
-          useSuspense: true,
-        },
-        resources: {},
-        nsSeparator: '.',
-        keySeparator: '.',
-        interpolation: {
-          escapeValue: false,
-        },
-        lowerCaseLng: true,
-        fallbackLng,
-        detection: {},
-      })
+    i18next.use(initReactI18next).init({
+      lng: language,
+      returnNull: false,
+      react: {
+        useSuspense: true,
+      },
+      resources: {},
+      nsSeparator: '.',
+      keySeparator: '.',
+      interpolation: {
+        escapeValue: false,
+      },
+      lowerCaseLng: true,
+      fallbackLng,
+    })
   },
   onInited(...args) {
     console.log(args, 'onInited')

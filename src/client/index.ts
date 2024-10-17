@@ -14,11 +14,11 @@ class I18nAlly {
     language?: string,
     options?: {
       namespaces?: string[]
-      enableCahe?: boolean // avoid querystring blink
+      enableCache?: boolean // avoid querystring blink
     },
   ) {
     const { fallbackLng } = this.options
-    const { enableCahe = true, namespaces } = options || {}
+    const { enableCache = true, namespaces } = options || {}
 
     if (!language) {
       language = this.currentLng || fallbackLng
@@ -74,7 +74,7 @@ class I18nAlly {
           })
         }),
       )
-      enableCahe && this.setCache(language)
+      enableCache && this.setCache(language)
     }
   }
 
@@ -93,9 +93,9 @@ class I18nAlly {
 
   private static async init() {
     const { fallbackLng, namespaces } = this.options
-    await this.loadResource(fallbackLng, { enableCahe: false, namespaces })
+    await this.loadResource(fallbackLng, { enableCache: false, namespaces })
     if (this.currentLng !== fallbackLng) {
-      await this.loadResource(this.currentLng, { enableCahe: false, namespaces })
+      await this.loadResource(this.currentLng, { enableCache: false, namespaces })
     }
     this.options.detection && this.setCache(this.currentLng)
   }

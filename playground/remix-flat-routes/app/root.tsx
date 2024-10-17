@@ -38,19 +38,18 @@ const RouteAnimation = ({ children }: PropsWithChildren) => {
 
 let url: URL
 
+export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRevalidateFunctionArgs) => {
+  url = nextUrl
+  return true
+}
+
 export const loader: LoaderFunction = async () => {
-  console.log(url, 'url')
   if (url) {
     await asyncLoadResource(i18next.language, {
       namespaces: resolveNamespace(url.pathname),
     })
   }
   return null
-}
-
-export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRevalidateFunctionArgs) => {
-  url = nextUrl
-  return true
 }
 
 export function Component() {
