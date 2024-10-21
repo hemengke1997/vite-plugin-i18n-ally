@@ -179,15 +179,23 @@ class I18nAlly {
       namespaces: allNamespaces,
     }
 
-    this.options.onInit?.(current, all)
+    {
+      ;(async () => {
+        try {
+          await this.options.onInit?.(current, all)
+        } catch (e) {
+          console.error(`[${I18nAllyName}]: onInit error`, e)
+        }
 
-    this.init().then(async () => {
-      try {
-        await this.options.onInited?.(current, all)
-      } catch (e) {
-        console.error(`[${I18nAllyName}]: onInited error`, e)
-      }
-    })
+        await this.init()
+
+        try {
+          await this.options.onInited?.(current, all)
+        } catch (e) {
+          console.error(`[${I18nAllyName}]: onInited error`, e)
+        }
+      })()
+    }
 
     return {
       asyncLoadResource: this.asyncLoadResource.bind(this),

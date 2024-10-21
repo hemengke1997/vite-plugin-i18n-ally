@@ -16,9 +16,10 @@ const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
 const { asyncLoadResource } = i18nAlly({
   namespaces: await resolveNamespace(),
-  onInit({ language }) {
+  async onInit({ language }) {
     i18next.use(initReactI18next).init({
       lng: language,
+      ns: await resolveNamespace(),
       returnNull: false,
       react: {
         useSuspense: true,
@@ -33,8 +34,7 @@ const { asyncLoadResource } = i18nAlly({
       fallbackLng,
     })
   },
-  onInited(...args) {
-    console.log(args, 'onInited')
+  onInited() {
     root.render(
       <React.StrictMode>
         <App />

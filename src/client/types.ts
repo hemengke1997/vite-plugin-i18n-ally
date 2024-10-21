@@ -21,7 +21,7 @@ export interface I18nSetupOptions {
         [lang: string]: string[]
       }
     },
-  ) => void
+  ) => Promise<void> | void
   /**
    * Triggered when i18n-ally is inited
    */
