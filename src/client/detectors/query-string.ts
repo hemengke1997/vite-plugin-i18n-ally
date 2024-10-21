@@ -9,9 +9,10 @@ export class QueryString implements Detector {
   }
   cacheUserLanguage(lng: string, options: { cache: string }) {
     const { cache } = options
-    const currentURL = new URL(window.location.href)
-    currentURL.searchParams.set(cache, lng)
+
     setTimeout(() => {
+      const currentURL = new URL(window.location.href)
+      currentURL.searchParams.set(cache, lng)
       window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
     })
   }
