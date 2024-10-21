@@ -1,3 +1,12 @@
+## [5.1.3](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.2...v5.1.3) (2024-10-21)
+
+
+### Bug Fixes
+
+* query-string cache wrong url ([59d722a](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/59d722a3e58b42ffe6f3be51784cf3196cc28746))
+
+
+
 ## [5.1.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.1...v5.1.2) (2024-10-21)
 
 
