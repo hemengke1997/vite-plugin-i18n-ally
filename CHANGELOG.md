@@ -1,3 +1,13 @@
+## [5.1.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.1...v5.1.2) (2024-10-21)
+
+
+### Bug Fixes
+
+* `onInit` does not support asynchronous ([bfc3de1](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/bfc3de1c22caea53c7fc663e916c038cab2a6d10))
+* react-router-dom navigate query cache failed ([ebcfc1e](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/ebcfc1e3dbe9a1d83a612ea9bfac490d44c3dc8c))
+
+
+
 ## [5.1.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.0...v5.1.1) (2024-09-19)
 
 
