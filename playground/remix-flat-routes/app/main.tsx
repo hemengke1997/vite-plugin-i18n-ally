@@ -15,7 +15,7 @@ console.log(resources, 'all locales')
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
 const { asyncLoadResource } = i18nAlly({
-  namespaces: resolveNamespace(),
+  namespaces: await resolveNamespace(),
   onInit({ language }) {
     i18next.use(initReactI18next).init({
       lng: language,
@@ -63,7 +63,7 @@ const { asyncLoadResource } = i18nAlly({
 const changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lng?: string, ...args) => {
   await asyncLoadResource(lng || i18next.language, {
-    namespaces: resolveNamespace(),
+    namespaces: await resolveNamespace(),
   })
   return changeLanguage(lng, ...args)
 }

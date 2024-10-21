@@ -4,12 +4,10 @@ import { resolveNamespace } from '@/i18n/i18n'
 
 let url: URL
 
-export const loader = async () => {
-  console.log(url, 'url')
-
+export const clientLoader = async () => {
   if (url) {
     await window.asyncLoadResource?.(i18next.language, {
-      namespaces: resolveNamespace(url.pathname),
+      namespaces: await resolveNamespace(url.pathname),
     })
   }
   return null

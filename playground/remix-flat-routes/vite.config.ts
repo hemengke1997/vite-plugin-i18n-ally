@@ -11,6 +11,7 @@ export default defineConfig({
       flatRoutesOptions: {
         ignoredRouteFiles: ['**/components/**', '**/hooks/**', '**/contexts/**'],
       },
+      handleAsync: true,
     }),
     i18nAlly({
       root: __dirname,

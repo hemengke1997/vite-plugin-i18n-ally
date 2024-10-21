@@ -40,7 +40,7 @@ export const tsup = defineConfig((option) => [
     },
     platform: 'node',
     target: 'node16',
-    noExternal: ['watcher', 'find-up'],
+    noExternal: ['find-up'],
     format: ['cjs'],
   },
   {

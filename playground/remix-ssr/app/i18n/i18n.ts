@@ -11,10 +11,19 @@ export const i18nOptions = {
   keySeparator: '.',
 }
 
-export function resolveNamespace(pathname = window.location.pathname): string[] {
+export async function resolveNamespace(pathname = window.location.pathname) {
+  const res = await Promise.all(
+    matchRoutes(routes as AgnosticRouteObject[], pathname)?.map(async (route) => {
+      const { handle } = route.route
+      if (typeof handle === 'function') {
+        return await handle()
+      }
+      return handle
+    }) || [],
+  )
+
   return (
-    matchRoutes(routes as AgnosticRouteObject[], pathname)
-      ?.map((route) => route.route.handle)
+    res
       .filter((t) => t?.i18n)
       .map((t) => t.i18n)
       .flat()

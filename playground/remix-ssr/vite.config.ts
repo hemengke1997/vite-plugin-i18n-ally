@@ -17,7 +17,6 @@ export default defineConfig((env) => {
     '**/images/**',
     '**/utils/**',
     '**/*.css',
-    '**/meta.ts',
     '**/types.ts',
   ]
   return preset(
@@ -37,6 +36,7 @@ export default defineConfig((env) => {
           flatRoutesOptions: {
             ignoredRouteFiles,
           },
+          handleAsync: true,
         }),
         i18nAlly({
           localesPaths: ['./app/i18n/locales'],

@@ -7,3 +7,7 @@ export default function Layout() {
     </div>
   )
 }
+
+export const handle = {
+  i18n: ['sign'],
+}

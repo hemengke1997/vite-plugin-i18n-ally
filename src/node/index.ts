@@ -7,7 +7,7 @@ import { debug } from './utils/debugger'
 import { fullReload } from './utils/hmr'
 import { initI18nAlly } from './utils/init-i18n-ally'
 
-export function i18nAlly(opts?: I18nAllyOptions) {
+export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
   const { options, vscodeSetting } = initI18nAlly(opts)
 
   debug('User input i18n-ally options on init:', options)

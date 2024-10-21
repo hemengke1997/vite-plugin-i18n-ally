@@ -42,3 +42,7 @@ export default function () {
     </>
   )
 }
+
+export const handle = {
+  i18n: ['home', 'user'],
+}
