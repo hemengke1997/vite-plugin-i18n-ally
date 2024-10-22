@@ -29,6 +29,6 @@
     "typescript": "^5.6.3",
     "vite": "^5.4.9",
     "vite-plugin-i18n-ally": "workspace:*",
-    "vite-plugin-remix-flat-routes": "^4.0.0"
+    "vite-plugin-remix-flat-routes": "^4.0.2"
   }
 }
