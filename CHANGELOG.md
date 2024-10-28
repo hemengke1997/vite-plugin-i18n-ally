@@ -1,3 +1,12 @@
+# [5.2.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.3...v5.2.0) (2024-10-28)
+
+
+### Features
+
+* reduce output files by namespace option ([45aa123](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/45aa1235e84b65de4c5ebba669346910089a54cb))
+
+
+
 ## [5.1.3](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.2...v5.1.3) (2024-10-21)
 
 
