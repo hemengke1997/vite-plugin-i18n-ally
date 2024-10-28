@@ -57,14 +57,14 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
       "key": "Deutsch",
     },
   },
-  "virtual:i18n-ally-de/more": {
+  "virtual:i18n-ally-de__more": {
     "a": {
       "b": {
         "c": "more info",
       },
     },
   },
-  "virtual:i18n-ally-de/test": {
+  "virtual:i18n-ally-de__test": {
     "key": "Deutsch",
   },
   "virtual:i18n-ally-en": {
@@ -83,7 +83,7 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
     },
     "unused": {},
   },
-  "virtual:i18n-ally-en/more": {
+  "virtual:i18n-ally-en__more": {
     "a": {
       "b": {
         "c": "more info default",
@@ -93,10 +93,10 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
       "key-1": "value-1",
     },
   },
-  "virtual:i18n-ally-en/test": {
+  "virtual:i18n-ally-en__test": {
     "key": "en",
   },
-  "virtual:i18n-ally-en/unused": {},
+  "virtual:i18n-ally-en__unused": {},
   "virtual:i18n-ally-zh": {
     "test": {
       "key": "中文",
@@ -107,10 +107,10 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
       "key": "繁体中文",
     },
   },
-  "virtual:i18n-ally-zh-tw/test": {
+  "virtual:i18n-ally-zh-tw__test": {
     "key": "繁体中文",
   },
-  "virtual:i18n-ally-zh/test": {
+  "virtual:i18n-ally-zh__test": {
     "key": "中文",
   },
 }

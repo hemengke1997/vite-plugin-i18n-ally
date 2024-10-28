@@ -44,16 +44,16 @@ describe('LocaleDetector - Dir mode', () => {
     expect(Object.keys(virtualModules).sort()).toMatchInlineSnapshot(`
       [
         "virtual:i18n-ally-de",
-        "virtual:i18n-ally-de/more",
-        "virtual:i18n-ally-de/test",
+        "virtual:i18n-ally-de__more",
+        "virtual:i18n-ally-de__test",
         "virtual:i18n-ally-en",
-        "virtual:i18n-ally-en/more",
-        "virtual:i18n-ally-en/test",
-        "virtual:i18n-ally-en/unused",
+        "virtual:i18n-ally-en__more",
+        "virtual:i18n-ally-en__test",
+        "virtual:i18n-ally-en__unused",
         "virtual:i18n-ally-zh",
         "virtual:i18n-ally-zh-tw",
-        "virtual:i18n-ally-zh-tw/test",
-        "virtual:i18n-ally-zh/test",
+        "virtual:i18n-ally-zh-tw__test",
+        "virtual:i18n-ally-zh__test",
       ]
     `)
   })
@@ -64,16 +64,16 @@ describe('LocaleDetector - Dir mode', () => {
     expect(resolvedIdsValues).toMatchInlineSnapshot(`
       [
         "virtual:i18n-ally-de",
-        "virtual:i18n-ally-de/more",
-        "virtual:i18n-ally-de/test",
+        "virtual:i18n-ally-de__more",
+        "virtual:i18n-ally-de__test",
         "virtual:i18n-ally-en",
-        "virtual:i18n-ally-en/more",
-        "virtual:i18n-ally-en/test",
-        "virtual:i18n-ally-en/unused",
+        "virtual:i18n-ally-en__more",
+        "virtual:i18n-ally-en__test",
+        "virtual:i18n-ally-en__unused",
         "virtual:i18n-ally-zh",
         "virtual:i18n-ally-zh-tw",
-        "virtual:i18n-ally-zh-tw/test",
-        "virtual:i18n-ally-zh/test",
+        "virtual:i18n-ally-zh-tw__test",
+        "virtual:i18n-ally-zh__test",
       ]
     `)
   })

@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 const { asyncLoadResource } = i18nAlly({
   namespaces: await resolveNamespace(),
   async onInit({ language }) {
-    i18next.use(initReactI18next).init({
+    await i18next.use(initReactI18next).init({
       lng: language,
       ns: await resolveNamespace(),
       returnNull: false,

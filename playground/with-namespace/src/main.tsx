@@ -36,10 +36,8 @@ const { asyncLoadResource } = i18nAlly({
       </React.StrictMode>,
     )
   },
-  onResourceLoaded: (resources, { language }) => {
-    Object.keys(resources).forEach((ns) => {
-      i18next.addResourceBundle(language, ns, resources[ns])
-    })
+  onResourceLoaded: (resource, { language, namespace }) => {
+    i18next.addResourceBundle(language, namespace, resource)
   },
   fallbackLng,
   detection: [

@@ -76,10 +76,9 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
         // \0/@i18n-ally/virtual:i18n-ally-async-resource
         if (id.endsWith(ASYNC_RESOURCE)) {
           let code = `export const resources = { `
-          for (const k of Object.keys({
-            ...modules,
-            ...modulesWithNamespace,
-          })) {
+          const _modules = options.namespace ? modulesWithNamespace : modules
+
+          for (const k of Object.keys(_modules)) {
             // Currently rollup doesn't support inline chunkName
             // TODO: inline chunk name
             code += `'${k}': () => import('${VIRTUAL}-${k}'),`

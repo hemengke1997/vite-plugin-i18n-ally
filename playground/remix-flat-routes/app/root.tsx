@@ -46,7 +46,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRe
 export const loader: LoaderFunction = async () => {
   if (url) {
     await asyncLoadResource(i18next.language, {
-      namespaces: resolveNamespace(url.pathname),
+      namespaces: await resolveNamespace(url.pathname),
     })
   }
   return null

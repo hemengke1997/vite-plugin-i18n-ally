@@ -127,7 +127,7 @@ export class LocaleDetector {
       Object.keys(modules).forEach((locale) => {
         const value = modules[locale]
         Object.keys(value).forEach((namespace) => {
-          const key = `${locale}/${namespace}`
+          const key = `${locale}__${namespace}`
           modulesWithNamespace[key] = value[namespace]
         })
       })
