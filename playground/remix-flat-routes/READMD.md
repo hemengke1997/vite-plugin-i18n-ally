@@ -13,19 +13,28 @@ export const handle = {
 
 2. 使用 react-router 的 `matchRoutes` 方法获取到当前url的路由信息，并收集到所有的 `i18n` namespaces。
 ```ts
-function resolveNamespace(pathname = window.location.pathname) {
-  return matchRoutes(routes, pathname)
-    ?.map((route) => route.route.handle)
+async function resolveNamespace(pathname = window.location.pathname) {
+  const res = await Promise.all(
+    matchRoutes(routes as RouteObject[], pathname)?.map(async (route) => {
+      const { handle } = route.route
+      if (typeof handle === 'function') {
+        return await handle()
+      }
+      return handle
+    }),
+  )
+  return res
     .filter((t) => t?.i18n)
     .map((t) => t.i18n)
     .flat()
 }
+
 ```
 
 3. 把收集到的 namespaces 传给 i18nAlly 初始化
 ```ts
 const { asyncLoadResource } = i18nAlly({
-  namespaces: resolveNamespace(),
+  namespaces: await resolveNamespace(),
   // ...
 })
 ```
@@ -44,9 +53,9 @@ i18next.changeLanguage = async (lng?: string, ...args) => {
 5. 在路由变化时，重复第3步
 ```ts
 // root.tsx
-let url: URL
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url)
   if (url) {
     await asyncLoadResource(i18next.language, {
       namespaces: resolveNamespace(url.pathname),
@@ -55,8 +64,7 @@ export const loader: LoaderFunction = async () => {
   return null
 }
 
-export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRevalidateFunctionArgs) => {
-  url = nextUrl
+export const shouldRevalidate: ShouldRevalidateFunction = () => {
   return true
 }
 ```

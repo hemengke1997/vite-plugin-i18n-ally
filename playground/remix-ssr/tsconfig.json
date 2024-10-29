@@ -9,7 +9,6 @@
     "types": [
       "@remix-run/node",
       "vite/client",
-      "vite-plugin-istanbul-widget/client",
       "vite-plugin-i18n-ally/virtual",
       "vite-plugin-public-typescript/manifest",
       "vite-plugin-remix-flat-routes/virtual"

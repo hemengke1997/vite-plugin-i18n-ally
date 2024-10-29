@@ -55,7 +55,7 @@ class I18nAlly {
         Object.keys(resources)
           .filter((key) => key.startsWith(`${language}${separator}`))
           .forEach((key) => {
-            const ns = key.split('__')[1]
+            const ns = key.split(separator)[1]
             const lazyload = resources[key]
             lazyloads.push({
               fn: lazyload,
@@ -66,7 +66,7 @@ class I18nAlly {
     } else {
       const lazyload = resources[language]
       if (!lazyload) {
-        console.warn(`[${I18nAllyName}]: No locale resources found.`)
+        console.warn(`[${I18nAllyName}]: No locale resources found`)
       } else {
         lazyloads.push({
           fn: lazyload,
@@ -129,7 +129,6 @@ class I18nAlly {
 
   /**
    * @description Resolve current language from detector
-   *
    */
   private static resolveCurrentLng() {
     const { fallbackLng, detection } = this.options
@@ -143,7 +142,7 @@ class I18nAlly {
           lookup: any
         }
       ).lookup
-      const detectedLang = detectorsMap.get(detection[i].detect)?.lookup({ lookup: lookup || 'lang' })
+      const detectedLang = detectorsMap.get(detection[i].detect)?.lookup({ lookup: lookup ?? 'lang' })
       if (detectedLang) {
         lang = detectedLang
         break
@@ -155,7 +154,9 @@ class I18nAlly {
 
   static mount(options: I18nSetupOptions) {
     this.options = options
-    this.currentLng = this.options.language || this.resolveCurrentLng()
+
+    const resolvedLng = this.options.language || this.resolveCurrentLng()
+    this.currentLng = this.allLanguages.includes(resolvedLng) ? resolvedLng : this.options.fallbackLng
 
     const current = {
       language: this.currentLng,

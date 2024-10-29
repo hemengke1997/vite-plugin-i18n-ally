@@ -5,7 +5,8 @@ import { RemixBrowser } from '@remix-run/react'
 import i18next from 'i18next'
 import { hydrateRoot } from 'react-dom/client'
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
-import { i18nOptions, resolveNamespace } from '@/i18n/i18n'
+import { i18nOptions } from '@/i18n/i18n'
+import { resolveNamespace } from './i18n/namespace.client'
 
 const i18nChangeLanguage = i18next.changeLanguage
 

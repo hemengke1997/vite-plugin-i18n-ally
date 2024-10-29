@@ -5,7 +5,6 @@ import {
   type LoaderFunction,
   ScrollRestoration,
   type ShouldRevalidateFunction,
-  type ShouldRevalidateFunctionArgs,
   useLocation,
   useOutlet,
   useRouteError,
@@ -14,7 +13,6 @@ import { Button } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
 import i18next from 'i18next'
 import { resolveNamespace } from './locales'
-import { asyncLoadResource } from './main'
 
 const RouteAnimation = ({ children }: PropsWithChildren) => {
   const location = useLocation()
@@ -36,19 +34,17 @@ const RouteAnimation = ({ children }: PropsWithChildren) => {
   )
 }
 
-let url: URL
-
-export const shouldRevalidate: ShouldRevalidateFunction = ({ nextUrl }: ShouldRevalidateFunctionArgs) => {
-  url = nextUrl
+export const shouldRevalidate: ShouldRevalidateFunction = () => {
   return true
 }
 
-export const loader: LoaderFunction = async () => {
-  if (url) {
-    await asyncLoadResource(i18next.language, {
-      namespaces: await resolveNamespace(url.pathname),
-    })
-  }
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url)
+
+  await window.__asyncLoadResource?.(i18next.language, {
+    namespaces: await resolveNamespace(url.pathname),
+  })
+
   return null
 }
 
