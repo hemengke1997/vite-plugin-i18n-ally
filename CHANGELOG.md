@@ -1,3 +1,12 @@
+## [5.2.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.0...v5.2.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* user language not in all languages ([baa93ae](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/baa93aebbef7ddf892af46a2aed349a1b279db19))
+
+
+
 # [5.2.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.1.3...v5.2.0) (2024-10-28)
 
 
