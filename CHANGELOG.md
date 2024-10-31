@@ -1,3 +1,12 @@
+## [5.2.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.1...v5.2.2) (2024-10-31)
+
+
+### Bug Fixes
+
+* path detect cache wrong index ([3f6941d](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/3f6941da8bf83f1ebb7b21124fa6e9b5db5d6499))
+
+
+
 ## [5.2.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.0...v5.2.1) (2024-10-29)
 
 
