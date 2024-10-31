@@ -8,7 +8,7 @@ import { DefaultEnabledParsers } from '../parsers'
 import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher'
 import { type I18nAllyOptions } from '../types'
-import { I18nAlly, VIRTUAL } from '../utils/constant'
+import { VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { unflatten } from '../utils/flat'
 import { logger } from '../utils/logger'
@@ -241,7 +241,7 @@ export class LocaleDetector {
       }
     }
     if (!this.files.length) {
-      throw new Error(`[${I18nAlly}]: No locale files detected. Please check your config.`)
+      logger.warn(`No locale files detected.\n`)
     }
   }
 
@@ -406,7 +406,7 @@ export class LocaleDetector {
       }
     }
     if (this._localeDirs.length === 0) {
-      logger.error('\nNo locales paths.')
+      logger.warn(`No locales paths.\n`)
       return false
     }
 

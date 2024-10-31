@@ -26,7 +26,7 @@ class I18nAlly {
       language = this.currentLng || fallbackLng
     }
 
-    if (!this.allLanguages.includes(language)) {
+    if (!this.allLanguages.includes(language) && language !== fallbackLng) {
       console.warn(
         `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${fallbackLng}'`,
       )

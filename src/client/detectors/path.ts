@@ -16,15 +16,15 @@ export class Path implements Detector {
   }
   cacheUserLanguage(lng: string, options: { cache: number }) {
     const { cache: cachePathIndex } = options
+    const index = typeof cachePathIndex === 'number' ? cachePathIndex : 0
+    const currentURL = new URL(window.location.href)
+    const language = currentURL.pathname.match(regex)
+
     setTimeout(() => {
-      const index = typeof cachePathIndex === 'number' ? cachePathIndex : 0
-      const currentURL = new URL(window.location.href)
-      const language = currentURL.pathname.match(regex)
       if (!Array.isArray(language)) return
 
       if (language[index] === `/${lng}`) return
-
-      language[index] = `/${lng}`
+      language.splice(index, 0, `/${lng}`)
       currentURL.pathname = language.join('')
       window.history.replaceState({}, '', currentURL)
     })
