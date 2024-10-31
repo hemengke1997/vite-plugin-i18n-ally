@@ -27,9 +27,7 @@ class I18nAlly {
     }
 
     if (!this.allLanguages.includes(language) && language !== fallbackLng) {
-      console.warn(
-        `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${fallbackLng}'`,
-      )
+      this.warnFallback(language)
       language = fallbackLng
     }
 
@@ -106,6 +104,12 @@ class I18nAlly {
     })
   }
 
+  private static warnFallback(language: string) {
+    console.warn(
+      `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${this.options.fallbackLng}'`,
+    )
+  }
+
   private static async init() {
     const { fallbackLng, namespaces } = this.options
     await this.loadResource(fallbackLng, { enableCache: false, namespaces })
@@ -156,7 +160,12 @@ class I18nAlly {
     this.options = options
 
     const resolvedLng = this.options.language || this.resolveCurrentLng()
-    this.currentLng = this.allLanguages.includes(resolvedLng) ? resolvedLng : this.options.fallbackLng
+    if (this.allLanguages.includes(resolvedLng)) {
+      this.currentLng = resolvedLng
+    } else {
+      this.warnFallback(resolvedLng)
+      this.currentLng = this.options.fallbackLng
+    }
 
     const current = {
       language: this.currentLng,
