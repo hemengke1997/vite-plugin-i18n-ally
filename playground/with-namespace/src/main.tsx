@@ -37,6 +37,7 @@ const { asyncLoadResource } = i18nAlly({
     )
   },
   onResourceLoaded: (resource, { language, namespace }) => {
+    console.log(namespace, '---')
     i18next.addResourceBundle(language, namespace, resource)
   },
   fallbackLng,

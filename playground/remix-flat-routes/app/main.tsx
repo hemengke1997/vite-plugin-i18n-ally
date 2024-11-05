@@ -3,7 +3,6 @@ import { initReactI18next } from 'react-i18next'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import i18next from 'i18next'
 import ReactDOM from 'react-dom/client'
-import { resources } from 'virtual:i18n-ally-resource'
 import { routes } from 'virtual:remix-flat-routes'
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 import { fallbackLng, lookupTarget } from './const'
@@ -11,8 +10,6 @@ import { GlobalContext } from './contexts/global-context'
 import { resolveNamespace } from './locales'
 import './css/tailwind.css'
 import 'antd/dist/reset.css'
-
-console.log(resources, 'all locales')
 
 async function main() {
   const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)

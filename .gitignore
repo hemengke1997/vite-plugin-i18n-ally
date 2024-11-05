@@ -6,3 +6,5 @@ playground-temp
 .tsup
 .eslintcache
 TODO.md
+docs/.vitepress/dist
+docs/.vitepress/cache 

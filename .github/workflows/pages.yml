@@ -1,40 +1,51 @@
-name: Github Pages Deploy
+name: Deploy VitePress site to Pages
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  deploy:
-    if: contains(github.event.head_commit.message, 'release') || contains(github.event.head_commit.message, 'deploy')
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          persist-credentials: false
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.0.1
+          node-version: 20
+          cache: pnpm
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Install dependencies
+        run: pnpm i
+      - name: Build with VitePress
+        run: npm run docs:build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          version: 9.7.1
+          path: docs/.vitepress/dist
 
-      - name: Install Dependencies
-        run: |
-          pnpm install
-
-      - name: Build
-        run: |
-          pnpm run build:pages
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          ACCESS_TOKEN: ${{ secrets.GHB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: playground/with-namespace/dist
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
