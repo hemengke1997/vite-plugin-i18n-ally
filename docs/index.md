@@ -5,6 +5,9 @@ layout: home
 hero:
   name: "vite-plugin-i18n-ally"
   text: "Automatic lazy loading of i18n resources"
+  image:
+    src: /i18n.svg
+    alt: vite-plugin-i18n-ally
   actions:
     - theme: brand
       text: Get Started

@@ -5,6 +5,9 @@ layout: home
 hero:
   name: "vite-plugin-i18n-ally"
   text: "自动懒加载 i18n 资源"
+  image:
+    src: /i18n.svg
+    alt: vite-plugin-i18n-ally
   actions:
     - theme: brand
       text: 开始

@@ -37,7 +37,7 @@ export default defineConfig({
     zh: {
       lang: 'zh',
       label: '简体中文',
-      description: 'Vite 插件，用于自动懒加载 i18n 资源',
+      description: '自动懒加载 i18n 资源的 Vite插件',
       themeConfig: {
         nav: [
           { text: '指南', link: '/zh/guides/getting-started' },
@@ -74,6 +74,10 @@ export default defineConfig({
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024 hemengke1997',
+    },
+    logo: '/i18n.svg',
+    search: {
+      provider: 'local',
     },
   },
 })
