@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base: '/vite-plugin-i18n-ally/',
   title: 'vite-plugin-i18n-ally',
   description: 'Vite plugin for automatic lazy loading of i18n resources',
   locales: {

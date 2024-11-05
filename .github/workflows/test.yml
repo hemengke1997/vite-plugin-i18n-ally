@@ -24,6 +24,7 @@ on:
 
 jobs:
   test:
+    if: "contains(github.event.head_commit.message, 'release')"
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
     strategy:
