@@ -75,7 +75,7 @@ export default defineConfig({
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024 hemengke1997',
     },
-    logo: '/i18n.svg',
+    logo: '/logo.svg',
     search: {
       provider: 'local',
     },
