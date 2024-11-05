@@ -15,14 +15,19 @@ hero:
 
 features:
   - title: Auto Load Resources
+    icon: 🚀
     details: Automatically collect i18n resources in the project, no need to manually import resource files
   - title: Better Performance
+    icon: ⚡️
     details: Lazy load resource files to reduce the size of initial load
   - title: I18n-ally
+    icon: 🌎
     details: Use vscode-i18n-ally configuration, no additional configuration needed
   - title: Namespaces
+    icon: 📁
     details: Fine-grained control over resource file size
   - title: Great DX
+    icon: 📦
     details: Out-of-the-box HMR support
 ---
 
