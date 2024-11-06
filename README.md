@@ -1,8 +1,5 @@
 <p align="center">
-  <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo" style="margin-right:16px" />
-  <span>
-    <img width="180" src="./assets/i18n.svg" alt="i18n logo" />
-  </span>
+  <img width="180" src="./assets/logo.svg" alt="i18n logo" />
 </p>
 <br/>
 
