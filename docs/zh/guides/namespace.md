@@ -57,19 +57,6 @@ i18nAlly({
 
 ```tsx
 import { createRoutesFromElements, Route } from 'react-router';
-
-const routes = createRoutesFromElements(
-  <Route path="/">
-    <Route path="a" lazy={() => import("./a")} handle={{ i18n: ['a'] }} />
-    <Route path="b" lazy={() => import("./b")} handle={{ i18n: ['b'] }} />
-  </Route>
-);
-```
-
-然后在 `loader` 中，加载文件
-
-```tsx
-import { createRoutesFromElements, Route } from 'react-router';
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 
 const { asyncLoadResource } = i18nAlly(

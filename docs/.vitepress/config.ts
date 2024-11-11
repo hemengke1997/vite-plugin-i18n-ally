@@ -70,7 +70,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/hemengke1997/vite-plugin-i18n-ally' }],
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024 hemengke1997',

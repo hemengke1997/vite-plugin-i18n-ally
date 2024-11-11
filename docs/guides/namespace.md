@@ -55,18 +55,6 @@ This method is simple and straightforward, but the browser will load all resourc
 
 Since it involves routes, we naturally think of `react-router`. In `react-router^6.4`, [`loader`](https://reactrouter.com/en/main/route/loader) was added to load resource files in the loader.
 
-```tsx
-import { createRoutesFromElements, Route } from 'react-router';
-
-const routes = createRoutesFromElements(
-  <Route path="/">
-    <Route path="a" lazy={() => import("./a")} handle={{ i18n: ['a'] }} />
-    <Route path="b" lazy={() => import("./b")} handle={{ i18n: ['b'] }} />
-  </Route>
-);
-```
-
-Then, load the file in the `loader`:
 
 ```tsx
 import { createRoutesFromElements, Route } from 'react-router';

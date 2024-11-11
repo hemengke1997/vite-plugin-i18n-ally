@@ -1,6 +1,9 @@
 import { matchRoutes, type RouteObject } from 'react-router-dom'
 import { routes } from 'virtual:remix-flat-routes'
 
+export const lookupTarget = 'lang'
+export const fallbackLng = 'en'
+
 export async function resolveNamespace(pathname = window.location.pathname) {
   const res = await Promise.all(
     matchRoutes(routes as RouteObject[], pathname)?.map(async (route) => {
