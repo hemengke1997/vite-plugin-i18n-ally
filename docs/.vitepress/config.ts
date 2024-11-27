@@ -80,4 +80,5 @@ export default defineConfig({
       provider: 'local',
     },
   },
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vite-plugin-i18n-ally/logo.svg' }]],
 })
