@@ -1,3 +1,13 @@
+## [5.2.3](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.2...v5.2.3) (2024-11-29)
+
+
+### Bug Fixes
+
+* make sure to load resources of fallbackLng ([06eb63d](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/06eb63d3cccbfeab09ef4c6b8d2ed80845145ca9))
+* test ([1ebbadb](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/1ebbadb8fc9502ccc7a51a243e3abff75d0c4b90))
+
+
+
 ## [5.2.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.1...v5.2.2) (2024-10-31)
 
 
