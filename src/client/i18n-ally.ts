@@ -39,7 +39,6 @@ class I18nAlly {
     }[] = []
 
     if (config.namespace) {
-      console.log(namespaces, 'namespaces')
       if (namespaces) {
         namespaces.forEach((ns) => {
           const lazyload = resources[`${language}${separator}${ns}`]
