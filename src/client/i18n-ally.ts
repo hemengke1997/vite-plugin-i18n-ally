@@ -17,7 +17,7 @@ class I18nAlly {
   private static async loadResource(
     language?: string,
     options?: {
-      namespaces?: string[]
+      namespaces?: string[] | undefined
       enableCache?: boolean // avoid querystring blink
     },
   ) {
@@ -39,6 +39,7 @@ class I18nAlly {
     }[] = []
 
     if (config.namespace) {
+      console.log(namespaces, 'namespaces')
       if (namespaces) {
         namespaces.forEach((ns) => {
           const lazyload = resources[`${language}${separator}${ns}`]

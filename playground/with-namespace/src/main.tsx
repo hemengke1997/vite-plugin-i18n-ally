@@ -28,8 +28,7 @@ const { asyncLoadResource } = i18nAlly({
       fallbackLng,
     })
   },
-  onInited(...args) {
-    console.log(args, 'onInited')
+  onInited() {
     root.render(
       <React.StrictMode>
         <App />
@@ -37,7 +36,6 @@ const { asyncLoadResource } = i18nAlly({
     )
   },
   onResourceLoaded: (resource, { language, namespace }) => {
-    console.log(namespace, '---')
     i18next.addResourceBundle(language, namespace, resource)
   },
   fallbackLng,

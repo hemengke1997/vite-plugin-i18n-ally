@@ -1,5 +1,5 @@
 export function ensureArray(arr?: string[] | string) {
-  if (!arr) return []
+  if (!arr) return undefined
   return Array.isArray(arr) ? arr : [arr]
 }
 
