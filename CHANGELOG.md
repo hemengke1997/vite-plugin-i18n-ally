@@ -1,3 +1,12 @@
+## [5.2.4](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.3...v5.2.4) (2024-11-29)
+
+
+### Bug Fixes
+
+* namespace undefined ([0add8a3](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/0add8a34ad7682584ede718e9b9abf3c8cf267d4))
+
+
+
 ## [5.2.3](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.2...v5.2.3) (2024-11-29)
 
 
