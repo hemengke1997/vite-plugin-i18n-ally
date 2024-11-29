@@ -12,6 +12,8 @@ class I18nAlly {
   private static allLanguages: string[] = getLanguages()
   private static allNamespaces: { [lang: string]: string[] } = getNamespaces()
 
+  private static loaded: { [lang: string]: Set<string> } = {}
+
   private static async loadResource(
     language?: string,
     options?: {
@@ -37,7 +39,7 @@ class I18nAlly {
     }[] = []
 
     if (config.namespace) {
-      if (namespaces?.length) {
+      if (namespaces) {
         namespaces.forEach((ns) => {
           const lazyload = resources[`${language}${separator}${ns}`]
           if (!lazyload) {
@@ -78,17 +80,26 @@ class I18nAlly {
         lazyloads.map(async (lazyload) => {
           const resources = (await lazyload.fn()).default || null
           if (!resources) {
-            console.warn(`[${I18nAllyName}]: Resource of language '${language}' is empty, fallback to '${fallbackLng}'`)
+            console.warn(`[${I18nAllyName}]: Resource of language '${language}' is empty`)
             return
           }
+
+          this.loaded[language] ||= new Set()
+          this.loaded[language].add(lazyload.namespace)
+
+          if (!this.loaded[fallbackLng]?.has(lazyload.namespace)) {
+            this.loadResource(fallbackLng, { enableCache: false, namespaces: [lazyload.namespace] })
+          }
+
           await this.options.onResourceLoaded(resources, {
             language,
             namespace: lazyload.namespace,
           })
         }),
       )
-      enableCache && this.setCache(language)
     }
+
+    enableCache && this.setCache(language)
   }
 
   private static setCache(lang: string) {

@@ -1,18 +1,8 @@
 import { type PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Link,
-  type LoaderFunction,
-  ScrollRestoration,
-  type ShouldRevalidateFunction,
-  useLocation,
-  useOutlet,
-  useRouteError,
-} from 'react-router-dom'
+import { Link, type LoaderFunction, ScrollRestoration, useLocation, useOutlet, useRouteError } from 'react-router-dom'
 import { Button } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
-import i18next from 'i18next'
-import { resolveNamespace } from './locales'
 
 const RouteAnimation = ({ children }: PropsWithChildren) => {
   const location = useLocation()
@@ -34,17 +24,9 @@ const RouteAnimation = ({ children }: PropsWithChildren) => {
   )
 }
 
-export const shouldRevalidate: ShouldRevalidateFunction = () => {
-  return true
-}
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url)
-
-  await window.__asyncLoadResource?.(i18next.language, {
-    namespaces: await resolveNamespace(url.pathname),
-  })
-
+export const shouldRevalidate = () => true
+// 确保 dataStrategy 每次路由跳转时调用
+export const loader: LoaderFunction = async () => {
   return null
 }
 

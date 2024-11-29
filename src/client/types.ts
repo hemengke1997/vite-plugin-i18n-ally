@@ -25,7 +25,7 @@ export interface I18nSetupOptions {
   /**
    * Triggered when i18n-ally is inited
    */
-  onInited: (
+  onInited?: (
     current: {
       language: string
       namespaces: string[]

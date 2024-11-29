@@ -6,19 +6,20 @@ import ReactDOM from 'react-dom/client'
 import { routes } from 'virtual:remix-flat-routes'
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 import { GlobalContext } from './contexts/global-context'
-import { fallbackLng, lookupTarget, resolveNamespace } from './locales'
+import { fallbackLng, lookupTarget } from './locales'
 import './css/tailwind.css'
 import 'antd/dist/reset.css'
 
-async function main() {
+let namespaces: string[] = []
+
+function main() {
   const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
   const { asyncLoadResource } = i18nAlly({
-    namespaces: await resolveNamespace(),
+    namespaces,
     async onInit({ language }) {
       await i18next.use(initReactI18next).init({
         lng: language,
-        ns: await resolveNamespace(),
         returnNull: false,
         react: {
           useSuspense: true,
@@ -37,7 +38,27 @@ async function main() {
       root.render(
         <React.StrictMode>
           <GlobalContext.Provider>
-            <RouterProvider router={createBrowserRouter(routes)} />
+            <RouterProvider
+              router={createBrowserRouter(routes, {
+                dataStrategy: async ({ matches }) => {
+                  const matchesToLoad = matches.filter((m) => m.shouldLoad)
+                  const results = await Promise.all(matchesToLoad.map((m) => m.resolve()))
+                  namespaces = (await Promise.all(matches.map((m) => m.route.handle)))
+                    .filter((t) => t?.i18n)
+                    .map((t) => t.i18n)
+                    .flat()
+
+                  await asyncLoadResource(i18next.language, {
+                    namespaces,
+                  })
+
+                  return results.reduce(
+                    (acc, result, i) => Object.assign(acc, { [matchesToLoad[i].route.id]: result }),
+                    {},
+                  )
+                },
+              })}
+            />
           </GlobalContext.Provider>
         </React.StrictMode>,
       )
@@ -64,14 +85,10 @@ async function main() {
   const changeLanguage = i18next.changeLanguage
   i18next.changeLanguage = async (lng?: string, ...args) => {
     await asyncLoadResource(lng || i18next.language, {
-      namespaces: await resolveNamespace(),
+      namespaces,
     })
     return changeLanguage(lng, ...args)
   }
-
-  window.__asyncLoadResource = asyncLoadResource
 }
 
-try {
-  main()
-} catch {}
+main()
