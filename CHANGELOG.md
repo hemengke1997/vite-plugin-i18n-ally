@@ -1,3 +1,12 @@
+## [5.2.5](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.4...v5.2.5) (2024-11-29)
+
+
+### Bug Fixes
+
+* typo ([d30e6b6](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/d30e6b6cc3e168efe7418bfe8c75344fe3b3c166))
+
+
+
 ## [5.2.4](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.3...v5.2.4) (2024-11-29)
 
 
