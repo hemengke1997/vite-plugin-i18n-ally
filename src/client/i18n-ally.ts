@@ -9,8 +9,8 @@ import { ensureArray, omit } from './utils'
 class I18nAlly {
   private static options: I18nSetupOptions = {} as I18nSetupOptions
   private static currentLng: string = ''
-  private static allLanguages: string[] = getLanguages()
-  private static allNamespaces: { [lang: string]: string[] } = getNamespaces()
+  static allLanguages: string[] = getLanguages()
+  static allNamespaces: { [lang: string]: string[] } = getNamespaces()
 
   private static loaded: { [lang: string]: Set<string> } = {}
 
@@ -130,7 +130,7 @@ class I18nAlly {
     this.options.detection && this.setCache(this.currentLng)
   }
 
-  private static asyncLoadResource(
+  static asyncLoadResource(
     language?: string,
     options?: {
       namespaces?: string[] | string
