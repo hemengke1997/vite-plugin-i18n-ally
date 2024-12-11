@@ -1,3 +1,12 @@
+## [5.2.6](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.5...v5.2.6) (2024-12-11)
+
+
+### Bug Fixes
+
+* dts ([21f7a76](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/21f7a7643c9126a42b24c9a96e188cc4966e0f3c))
+
+
+
 ## [5.2.5](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.4...v5.2.5) (2024-11-29)
 
 
