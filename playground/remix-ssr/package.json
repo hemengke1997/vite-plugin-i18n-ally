@@ -70,8 +70,7 @@
     "vite": "^5.4.10",
     "vite-plugin-i18n-ally": "workspace:*",
     "vite-plugin-istanbul-widget": "^1.9.1",
-    "vite-plugin-public-typescript": "^4.1.2",
-    "vite-plugin-remix-flat-routes": "^4.1.2"
+    "vite-plugin-public-typescript": "^4.1.2"
   },
   "simple-git-hooks": {
     "commit-msg": "npm run commitlint",

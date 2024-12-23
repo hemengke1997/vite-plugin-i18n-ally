@@ -4,15 +4,20 @@ import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/c
 import { RemixBrowser } from '@remix-run/react'
 import i18next from 'i18next'
 import { hydrateRoot } from 'react-dom/client'
+import { getInitialNamespaces } from 'remix-i18next/client'
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 import { i18nOptions } from '@/i18n/i18n'
 import { resolveNamespace } from './i18n/namespace.client'
 
 const i18nChangeLanguage = i18next.changeLanguage
 
+const initialNamespaces = () => {
+  return getInitialNamespaces().concat(i18nOptions.defaultNS)
+}
+
 async function hydrate() {
   const { asyncLoadResource } = i18nAlly({
-    namespaces: [...(await resolveNamespace())],
+    namespaces: initialNamespaces(),
     fallbackLng: i18nOptions.fallbackLng,
     async onInit({ language }) {
       await i18next.use(initReactI18next).init({
@@ -21,7 +26,7 @@ async function hydrate() {
         fallbackLng: i18nOptions.fallbackLng,
         keySeparator: i18nOptions.keySeparator,
         nsSeparator: i18nOptions.nsSeparator,
-        ns: [...(await resolveNamespace())] as string[],
+        ns: initialNamespaces(),
         debug: import.meta.env.DEV,
       })
     },

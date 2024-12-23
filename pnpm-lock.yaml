@@ -380,9 +380,6 @@ importers:
       vite-plugin-public-typescript:
         specifier: ^4.1.2
         version: 4.1.2(esbuild@0.17.6)(vite@5.4.10(@types/node@22.8.2))
-      vite-plugin-remix-flat-routes:
-        specifier: ^4.1.2
-        version: 4.1.2(@vitejs/plugin-react@4.3.3(vite@5.4.10(@types/node@22.8.2)))(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.28.0(react@18.3.1))(react@18.3.1)(vite@5.4.10(@types/node@22.8.2))
 
   playground/vscode-setting:
     dependencies:
@@ -19762,24 +19759,6 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-router: 6.28.0(react@18.3.1)
       react-router-dom: 6.27.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-
-  vite-plugin-remix-flat-routes@4.1.2(@vitejs/plugin-react@4.3.3(vite@5.4.10(@types/node@22.8.2)))(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router@6.28.0(react@18.3.1))(react@18.3.1)(vite@5.4.10(@types/node@22.8.2)):
-    dependencies:
-      change-case: 5.4.4
-      context-state: 3.1.2(react@18.3.1)
-      es-module-lexer: 1.5.4
-      local-pkg: 0.5.0
-      minimatch: 5.1.0
-      semver: 7.6.3
-      serialize-javascript: 6.0.2
-      type-fest: 4.26.1
-      vite: 5.4.10(@types/node@22.8.2)
-    optionalDependencies:
-      '@vitejs/plugin-react': 4.3.3(vite@5.4.10(@types/node@22.8.2))
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-router: 6.28.0(react@18.3.1)
-      react-router-dom: 6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   vite-plugin-svgr@4.2.0(rollup@4.24.2)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.2)):
     dependencies:
