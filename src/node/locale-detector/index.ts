@@ -1,17 +1,21 @@
 import cloneDeep from 'clone-deep'
 import fg from 'fast-glob'
 import tags from 'language-tags'
-import { trimEnd, uniq } from 'lodash-es'
+import { throttle, trimEnd, uniq } from 'lodash-es'
+import fs from 'node:fs'
 import path from 'node:path'
+import { type ChangeEvent } from 'rollup'
 import { normalizePath } from 'vite'
 import { DefaultEnabledParsers } from '../parsers'
 import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher'
 import { type I18nAllyOptions } from '../types'
-import { VIRTUAL } from '../utils/constant'
 import { debug } from '../utils/debugger'
 import { unflatten } from '../utils/flat'
 import { logger } from '../utils/logger'
+import { VirtualModule } from '../utils/virtual'
+
+const THROTTLE_DELAY = 1500
 
 export type Config = Omit<Required<I18nAllyOptions>, 'useVscodeI18nAllyConfig'>
 
@@ -24,6 +28,7 @@ export interface FileInfo {
   deepDirpath: string
   dirpath: string
   locale: string
+  mtime: number
   namespace?: string
   matcher?: string
 }
@@ -141,7 +146,7 @@ export class LocaleDetector {
     })
 
     Object.keys(virtualModules).forEach((k) => {
-      const id = `${VIRTUAL}-${k}`
+      const id = VirtualModule.id(k)
       virtualModules[id] = virtualModules[k]
       resolvedIds.set(id, id)
       delete virtualModules[k]
@@ -169,8 +174,19 @@ export class LocaleDetector {
     return new Set(this.files.map((t) => t.filepath))
   }
 
-  async onFileChanged({ fsPath: filepath }: { fsPath: string }) {
+  async onFileChanged(event: ChangeEvent, { fsPath: filepath }: { fsPath: string }) {
     filepath = path.resolve(filepath)
+
+    // not tracking
+    if (event !== 'create' && !this._files[filepath]) {
+      return
+    }
+
+    // already up-to-date
+    if (event !== 'update' && this._files[filepath]?.mtime === this.getMtime(filepath)) {
+      debug(`Skipped on loading "${filepath}" (same mtime)`)
+      return
+    }
 
     const { dirpath, relative } = this.getRelativePath(filepath) || {}
 
@@ -178,37 +194,51 @@ export class LocaleDetector {
       return
     }
 
-    return this.lazyLoadFile(dirpath, relative)
+    debug(`File changed (${event}) ${relative}`)
+
+    switch (event) {
+      case 'delete':
+        this.unsetFile(filepath)
+        this.throttledUpdate()
+        break
+      case 'create':
+      case 'update':
+        this.throttledLoadFile(dirpath, relative)
+        break
+    }
+
+    return relative
   }
 
-  private loadFileWaitingList: [string, string][] = []
+  private throttledUpdate = throttle(
+    () => {
+      this.update()
+    },
+    THROTTLE_DELAY,
+    { leading: true },
+  )
 
-  get loadFileWaitingListLength() {
-    return this.loadFileWaitingList.length
-  }
+  private throttledLoadFileWaitingList: [string, string][] = []
 
-  private loadFileExecutor = async () => {
-    const list = this.loadFileWaitingList
-    this.loadFileWaitingList = []
-    if (list.length) {
-      let changed = false
-      for (const [d, r] of list) changed = (await this.loadFile(d, r)) || changed
+  private throttledLoadFileExecutor = throttle(
+    async () => {
+      const list = this.throttledLoadFileWaitingList
+      this.throttledLoadFileWaitingList = []
+      if (list.length) {
+        let changed = false
+        for (const [d, r] of list) changed = (await this.loadFile(d, r)) || changed
 
-      if (changed) {
-        this.update()
-        return true
+        if (changed) this.update()
       }
-    }
-    return false
-  }
+    },
+    THROTTLE_DELAY,
+    { leading: true },
+  )
 
-  private lazyLoadFile = async (d: string, r: string) => {
-    if (!this.loadFileWaitingList.some(([a, b]) => a === d && b === r)) {
-      this.loadFileWaitingList.push([d, r])
-    }
-    const updated = await this.loadFileExecutor()
-
-    return updated
+  private throttledLoadFile = (d: string, r: string) => {
+    if (!this.throttledLoadFileWaitingList.find(([a, b]) => a === d && b === r))
+      this.throttledLoadFileWaitingList.push([d, r])
+    this.throttledLoadFileExecutor()
   }
 
   private getRelativePath(filepath: string) {
@@ -272,6 +302,10 @@ export class LocaleDetector {
         return
       }
 
+      const mtime = this.getMtime(filepath)
+
+      debug(`📑 Loading (${locale}) ${relativePath} [${mtime}]`)
+
       const data = await parser.load(filepath)
 
       // support `i18n-ally.keyStyle` `nesetd` and `flat`
@@ -284,6 +318,7 @@ export class LocaleDetector {
         deepDirpath,
         dirpath,
         locale,
+        mtime,
         value,
         namespace,
         matcher,
@@ -295,14 +330,6 @@ export class LocaleDetector {
       debug(`Failed to load ${e}`)
       console.error(e)
     }
-  }
-
-  public isLocaleFile(file: string) {
-    const { dirpath, relative } = this.getRelativePath(file) || {}
-    if (!dirpath || !relative) {
-      return false
-    }
-    return this.getFileInfo(dirpath, relative)
   }
 
   private unsetFile(filepath: string) {
@@ -381,6 +408,14 @@ export class LocaleDetector {
 
   get localeDirs() {
     return this._localeDirs
+  }
+
+  private getMtime(filepath: string) {
+    try {
+      return fs.statSync(filepath).mtimeMs
+    } catch {
+      return 0
+    }
   }
 
   async findLocaleDirs() {

@@ -27,4 +27,3 @@ Read the [documentation](https://hemengke1997.github.io/vite-plugin-i18n-ally/) 
 ## License
 
 Distributed under the [MIT license](/LICENSE.md).
-

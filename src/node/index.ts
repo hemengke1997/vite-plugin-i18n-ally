@@ -1,11 +1,13 @@
 import path from 'node:path'
+import colors from 'picocolors'
 import { type PluginOption, type ViteDevServer } from 'vite'
 import { LocaleDetector } from './locale-detector'
 import { type I18nAllyOptions } from './types'
-import { ASYNC_RESOURCE, CONFIG, RESOLVED_VIRTUAL_PREFIX, RESOURCE, VIRTUAL } from './utils/constant'
 import { debug } from './utils/debugger'
 import { fullReload } from './utils/hmr'
 import { initI18nAlly } from './utils/init-i18n-ally'
+import { logger } from './utils/logger'
+import { VirtualModule } from './utils/virtual'
 
 export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
   const { options, vscodeSetting } = initI18nAlly(opts)
@@ -30,7 +32,7 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
 
       return {
         optimizeDeps: {
-          exclude: [`${VIRTUAL}-*`],
+          exclude: [VirtualModule.id('*')],
         },
       }
     },
@@ -38,32 +40,32 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
       const { virtualModules, resolvedIds } = localeDetector.localeModules
 
       if (id in virtualModules) {
-        return RESOLVED_VIRTUAL_PREFIX + id // E.g. \0/@i18n-ally/virtual:i18n-ally-en
+        return VirtualModule.resolve(id) // E.g. \0/@i18n-ally/virtual:i18n-ally-en
       }
 
       if (importer) {
-        const importerNoPrefix = importer.startsWith(RESOLVED_VIRTUAL_PREFIX)
-          ? importer.slice(RESOLVED_VIRTUAL_PREFIX.length)
+        const importerNoPrefix = importer.startsWith(VirtualModule.resolvedPrefix)
+          ? importer.slice(VirtualModule.resolvedPrefix.length)
           : importer
         const resolved = path.resolve(path.dirname(importerNoPrefix), id)
         if (resolvedIds.has(resolved)) {
-          return RESOLVED_VIRTUAL_PREFIX + resolved
+          return VirtualModule.resolvedPrefix + resolved
         }
       }
 
-      if ([ASYNC_RESOURCE, RESOURCE, CONFIG].includes(id)) {
+      if (Object.values(VirtualModule.Mods).includes(id)) {
         // E.g. \0/@i18n-ally/virtual:i18n-ally-async-resource
         // E.g. \0/@i18n-ally/virtual:i18n-ally-resource
         // E.g. \0/@i18n-ally/virtual:i18n-ally-config
-        return RESOLVED_VIRTUAL_PREFIX + id
+        return VirtualModule.resolvedPrefix + id
       }
 
       return null
     },
     async load(id) {
       const { virtualModules, resolvedIds, modules, modulesWithNamespace } = localeDetector.localeModules
-      if (id.startsWith(RESOLVED_VIRTUAL_PREFIX)) {
-        const idNoPrefix = id.slice(RESOLVED_VIRTUAL_PREFIX.length)
+      if (id.startsWith(VirtualModule.resolvedPrefix)) {
+        const idNoPrefix = id.slice(VirtualModule.resolvedPrefix.length)
 
         const resolvedId = idNoPrefix in virtualModules ? idNoPrefix : resolvedIds.get(idNoPrefix)
 
@@ -74,14 +76,14 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
         }
 
         // \0/@i18n-ally/virtual:i18n-ally-async-resource
-        if (id.endsWith(ASYNC_RESOURCE)) {
+        if (id.endsWith(VirtualModule.Mods.asyncResource)) {
           let code = `export const resources = { `
           const _modules = options.namespace ? modulesWithNamespace : modules
 
           for (const k of Object.keys(_modules)) {
             // Currently rollup doesn't support inline chunkName
             // TODO: inline chunk name
-            code += `'${k}': () => import('${VIRTUAL}-${k}'),`
+            code += `'${k}': () => import('${VirtualModule.id(k)}'),`
           }
           code += ' };'
 
@@ -94,7 +96,7 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
         }
 
         // \0/@i18n-ally/virtual:i18n-ally-resource
-        if (id.endsWith(RESOURCE)) {
+        if (id.endsWith(VirtualModule.Mods.resource)) {
           const code = `export const resources = ${JSON.stringify(modules)}`
 
           debug('resources:', code)
@@ -106,7 +108,7 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
         }
 
         // \0/@i18n-ally/virtual:i18n-ally-config
-        if (id.endsWith(CONFIG)) {
+        if (id.endsWith(VirtualModule.Mods.config)) {
           const code = `export const config = ${JSON.stringify({
             namespace: options.namespace,
           })}`
@@ -126,34 +128,21 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
       server = _server
     },
     watchChange(id, { event }) {
-      const reInit = async () => {
-        await localeDetector.init()
-        debug('Reinit', id)
-        fullReload(server, localeDetector)
-      }
-
-      if (event === 'create' || event === 'delete') {
-        if (localeDetector.isLocaleFile(id)) {
-          reInit()
-          return
+      localeDetector.onFileChanged(event, { fsPath: id }).then((updated) => {
+        if (updated) {
+          logger.info(colors.green(`${event}: `) + colors.gray(updated))
+          fullReload(server, localeDetector)
         }
-      }
+      })
 
-      if (id === vscodeSetting?.findUp()) {
-        reInit()
-        return
+      const vscodeFile = vscodeSetting?.findUp()
+      if (id === vscodeFile) {
+        logger.info(colors.green(`${event}: `) + colors.gray(path.relative(options.root, vscodeFile)))
+        fullReload(server, localeDetector)
       }
     },
     closeBundle() {
       server?.httpServer?.close()
-    },
-    async handleHotUpdate({ file, server }) {
-      const updated = await localeDetector.onFileChanged({ fsPath: file })
-
-      if (updated) {
-        debug('Hmr', file)
-        fullReload(server, localeDetector)
-      }
     },
   } as PluginOption
 }

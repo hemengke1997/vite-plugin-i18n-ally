@@ -23,10 +23,6 @@ describe('LocaleDetector - Dir mode', () => {
     expect(localeDetector.files.length).toBeGreaterThan(0)
   })
 
-  test('should no loadFileWaitingList', () => {
-    expect(localeDetector.loadFileWaitingListLength).toBe(0)
-  })
-
   test('should localeModules has every locale', () => {
     const { modules } = localeDetector.localeModules
     expect(Object.keys(modules).sort()).toMatchInlineSnapshot(`

@@ -116,9 +116,11 @@ class I18nAlly {
   }
 
   private static warnFallback(language: string) {
-    console.warn(
-      `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${this.options.fallbackLng}'`,
-    )
+    if (language !== this.options.fallbackLng) {
+      console.warn(
+        `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${this.options.fallbackLng}'`,
+      )
+    }
   }
 
   private static async init() {

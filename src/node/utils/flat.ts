@@ -1,6 +1,6 @@
 import { get, isObject, set } from 'lodash-es'
 
-export const ROOT_KEY = '__i18n_ally_root__'
+const ROOT_KEY = '__i18n_ally_root__'
 
 export function flatten(data: any) {
   const output: any = {}
