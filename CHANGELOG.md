@@ -1,3 +1,12 @@
+## [5.2.7](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.6...v5.2.7) (2024-12-24)
+
+
+### Performance Improvements
+
+* hmr ([2c76d34](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/2c76d342a02dd41446c0aaf181545ac4b98d2f5d))
+
+
+
 ## [5.2.6](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.5...v5.2.6) (2024-12-11)
 
 
