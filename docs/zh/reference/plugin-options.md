@@ -122,7 +122,7 @@ export default defineConfig({
         {
           ext: 'txt',
           parse: (text) => {
-            // parse text
+            // 自行解析 txt 文件
           },
         }
       ],

@@ -124,7 +124,7 @@ export default defineConfig({
         {
           ext: 'txt',
           parse: (text) => {
-            // 自行解析文件内容
+            // Parse txt file yourself
           },
         }
       ],
@@ -148,7 +148,7 @@ export default defineConfig({
   plugins: [
     i18nAlly({
       useVscodeI18nAllyConfig: false, // [!code highlight]
-      // 其他插件选项
+      // Other options
     }),
   ],
 })
