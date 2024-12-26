@@ -1,3 +1,12 @@
+## [5.2.8](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.7...v5.2.8) (2024-12-26)
+
+
+### Bug Fixes
+
+* pkg dts exports ([b0b541e](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/b0b541e8a4257c43d61541bb130c8ccb44d70737))
+
+
+
 ## [5.2.7](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.6...v5.2.7) (2024-12-24)
 
 
