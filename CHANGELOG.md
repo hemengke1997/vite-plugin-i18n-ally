@@ -1,3 +1,12 @@
+## [5.2.9](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.8...v5.2.9) (2024-12-31)
+
+
+### Bug Fixes
+
+* url path cache ([de953c1](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/de953c1314c0fbe34e6eab1a54377c6f67889b4b))
+
+
+
 ## [5.2.8](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.7...v5.2.8) (2024-12-26)
 
 
