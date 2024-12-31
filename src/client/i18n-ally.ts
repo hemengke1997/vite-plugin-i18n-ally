@@ -111,6 +111,7 @@ class I18nAlly {
       detectorsMap.get(d.detect)?.cacheUserLanguage?.(lang, {
         cache: d.lookup || 'lang',
         ...omit(d, ['detect', 'lookup', 'cache']),
+        languages: this.allLanguages,
       })
     })
   }

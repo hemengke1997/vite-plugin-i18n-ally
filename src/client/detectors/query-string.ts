@@ -10,10 +10,12 @@ export class QueryString implements Detector {
   cacheUserLanguage(lng: string, options: { cache: string }) {
     const { cache } = options
 
+    // setTimeout for next tick
+    // useful in react-router-dom
     setTimeout(() => {
       const currentURL = new URL(window.location.href)
       currentURL.searchParams.set(cache, lng)
-      window.history.replaceState({ path: currentURL.href }, '', currentURL.href)
+      window.history.replaceState({}, '', currentURL)
     })
   }
 }

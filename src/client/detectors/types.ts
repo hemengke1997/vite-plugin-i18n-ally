@@ -12,6 +12,7 @@ export interface Detector<
     lng: string,
     options: {
       cache: any
+      languages: string[]
     } & C,
   ) => void
 }
