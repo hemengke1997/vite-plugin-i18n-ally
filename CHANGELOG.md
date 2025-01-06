@@ -1,3 +1,12 @@
+## [5.2.10](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.9...v5.2.10) (2025-01-06)
+
+
+### Bug Fixes
+
+* options maybe undefined ([04397d7](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/04397d7bdd6f9f1e7cc142d20071df927f311b55))
+
+
+
 ## [5.2.9](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.8...v5.2.9) (2024-12-31)
 
 
