@@ -34,9 +34,9 @@ function initVscodeSetting(options: I18nAllyOptions) {
   return {
     options: {
       ...options,
-      localesPaths: options.localesPaths ?? i18nAlly?.['localesPaths'],
-      pathMatcher: options.pathMatcher ?? i18nAlly?.['pathMatcher'],
-      namespace: options.namespace ?? i18nAlly?.['namespace'],
+      localesPaths: (options.localesPaths ?? i18nAlly?.['localesPaths']) || [],
+      pathMatcher: (options.pathMatcher ?? i18nAlly?.['pathMatcher']) || '',
+      namespace: (options.namespace ?? i18nAlly?.['namespace']) || false,
     },
     vscodeSetting,
   }
