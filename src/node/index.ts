@@ -34,6 +34,10 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
         optimizeDeps: {
           exclude: [VirtualModule.id('*')],
         },
+        ssr: {
+          // remix virtual modules resolve error
+          noExternal: ['vite-plugin-i18n-ally'],
+        },
       }
     },
     async resolveId(id: string, importer: string) {
