@@ -1,3 +1,12 @@
+## [5.2.11](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.10...v5.2.11) (2025-02-10)
+
+
+### Bug Fixes
+
+* ssr virtual module resolve error ([52cafac](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/52caface17dddf5d19cb4aee26edda6c32f0de3b))
+
+
+
 ## [5.2.10](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.9...v5.2.10) (2025-01-06)
 
 
