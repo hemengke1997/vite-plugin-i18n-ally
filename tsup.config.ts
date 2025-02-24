@@ -21,7 +21,6 @@ export const tsup = defineConfig((option) => [
     format: ['esm'],
     platform: 'browser',
     splitting: true,
-    outExtension: () => ({ js: '.js' }),
     ...bundleless(),
   },
   {

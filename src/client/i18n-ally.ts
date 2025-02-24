@@ -160,7 +160,9 @@ class I18nAlly {
           lookup: any
         }
       ).lookup
-      const detectedLang = detectorsMap.get(detection[i].detect)?.lookup({ lookup: lookup ?? 'lang' })
+      const detectedLang = detectorsMap
+        .get(detection[i].detect)
+        ?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
       if (detectedLang) {
         lang = detectedLang
         break

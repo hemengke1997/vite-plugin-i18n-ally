@@ -6,6 +6,7 @@ export interface Detector<
   lookup: (
     options: {
       lookup: any
+      languages: string[]
     } & L,
   ) => string | undefined | null
   cacheUserLanguage?: (
