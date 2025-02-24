@@ -1,3 +1,12 @@
+## [5.2.12](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.11...v5.2.12) (2025-02-24)
+
+
+### Bug Fixes
+
+* navigator detection not accurate ([0e9f6ae](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/0e9f6ae5808294cda176ac913af455c018763f06))
+
+
+
 ## [5.2.11](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.10...v5.2.11) (2025-02-10)
 
 

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import {
   // addFile,
   editFile,
@@ -11,7 +12,6 @@ import {
   untilUpdated,
   viteTestUrl,
 } from '~utils'
-import { describe, expect, test } from 'vitest'
 
 describe('e2e', () => {
   test('should render en by default', async () => {

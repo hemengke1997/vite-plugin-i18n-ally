@@ -51,9 +51,9 @@ import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 
 ```tsx
 import React from 'react'
+import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
-import ReactDOM from 'react-dom/client'
 import { i18nAlly } from 'vite-plugin-i18n-ally/client'
 
 const fallbackLng = 'en'

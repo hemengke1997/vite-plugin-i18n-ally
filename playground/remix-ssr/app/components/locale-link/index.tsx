@@ -1,7 +1,7 @@
-import { memo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { generatePath, Link, type Path } from '@remix-run/react'
 import { type RemixLinkProps } from '@remix-run/react/dist/components'
+import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isString } from 'lodash-es'
 
 function generateLocalePath(route: string, locale: string, params: Record<string, string>) {
