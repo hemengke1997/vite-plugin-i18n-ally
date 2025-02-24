@@ -155,14 +155,14 @@ class I18nAlly {
     if (!detection?.length) return lang
 
     for (let i = 0; i < detection?.length; i++) {
-      const lookup = (
-        detection[i] as {
-          lookup: any
-        }
-      ).lookup
+      const { lookup } = detection[i] as {
+        lookup: any
+      }
+
       const detectedLang = detectorsMap
         .get(detection[i].detect)
         ?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
+
       if (detectedLang) {
         lang = detectedLang
         break
