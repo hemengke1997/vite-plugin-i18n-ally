@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-i18n-ally",
-  "version": "5.2.12",
+  "version": "5.2.13",
   "packageManager": "pnpm@9.15.6",
   "description": "Vite plugin for automatic lazy loading of i18n resources",
   "type": "module",
