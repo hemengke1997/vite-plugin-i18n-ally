@@ -1,3 +1,12 @@
+# [5.3.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.13...v5.3.0) (2025-03-04)
+
+
+### Features
+
+* add lowerCaseLng support ([fc94b8e](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/fc94b8e5cea9c7961fef40fdc6f797b6c2e5786f))
+
+
+
 ## [5.2.13](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.12...v5.2.13) (2025-02-24)
 
 
