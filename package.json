@@ -106,6 +106,7 @@
     "tsup-plugin-bundleless": "^1.2.1",
     "typescript": "^5.7.3",
     "vite-plugin-i18n-ally": "workspace:*",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitepress": "^1.6.3",
     "vitest": "^3.0.6",
     "vitest-e2e": "^0.0.10"

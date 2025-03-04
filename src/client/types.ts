@@ -13,6 +13,11 @@ export interface I18nSetupOptions {
    * If no resource for current language, fallback to `fallbackLng`
    */
   fallbackLng: string
+  /**
+   * Language will be lowercased eg. en-US --> en-us
+   * @default false
+   */
+  lowerCaseLng?: boolean
   onInit?: (
     current: { language: string; namespaces: string[] },
     all: {

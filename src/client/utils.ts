@@ -10,3 +10,8 @@ export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, k
   })
   return clone
 }
+
+export function ignoreCaseIncludes(arr: string[], target: string | string[]) {
+  const targets = ensureArray(target) || []
+  return arr.some((item) => targets.some((t) => item.toLowerCase() === t.toLowerCase()))
+}

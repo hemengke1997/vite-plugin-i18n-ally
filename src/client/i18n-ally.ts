@@ -164,8 +164,15 @@ class I18nAlly {
         ?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
 
       if (detectedLang) {
-        lang = detectedLang
-        break
+        if (this.options.lowerCaseLng) {
+          lang = detectedLang.toLowerCase()
+        } else {
+          lang = detectedLang
+        }
+
+        if (this.allLanguages.includes(lang)) {
+          break
+        }
       }
     }
 
@@ -174,6 +181,11 @@ class I18nAlly {
 
   static mount(options: I18nSetupOptions) {
     this.options = options
+
+    if (this.options.lowerCaseLng) {
+      this.options.language = this.options.language?.toLowerCase()
+      this.options.fallbackLng = this.options.fallbackLng.toLowerCase()
+    }
 
     const resolvedLng = this.options.language || this.resolveCurrentLng()
     if (this.allLanguages.includes(resolvedLng)) {
