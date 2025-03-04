@@ -46,10 +46,6 @@ const { asyncLoadResource } = i18nAlly({
       lookup: lookupTarget,
     },
     {
-      detect: 'cookie',
-      lookup: 'vscode-setting-lang',
-    },
-    {
       detect: 'htmlTag',
     },
   ],

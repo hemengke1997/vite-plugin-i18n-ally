@@ -46,6 +46,9 @@ const { asyncLoadResource } = i18nAlly({
       detect: 'querystring',
       lookup: lookupTarget,
     },
+    {
+      detect: 'htmlTag',
+    },
   ],
 })
 
