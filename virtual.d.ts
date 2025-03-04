@@ -9,6 +9,7 @@ declare module 'virtual:i18n-ally-async-resource' {
 declare module 'virtual:i18n-ally-config' {
   type I18nAllyConfig = {
     namespace: boolean
+    separator: string
   }
   const config: I18nAllyConfig
   export { config }

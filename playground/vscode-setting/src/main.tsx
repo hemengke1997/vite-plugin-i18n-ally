@@ -28,6 +28,7 @@ const { asyncLoadResource } = i18nAlly({
       fallbackLng,
     })
   },
+  lowerCaseLng: true,
   onInited() {
     root.render(
       <React.StrictMode>

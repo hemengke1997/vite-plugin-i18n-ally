@@ -34,6 +34,7 @@ function main() {
         fallbackLng,
       })
     },
+    lowerCaseLng: true,
     onInited() {
       root.render(
         <React.StrictMode>

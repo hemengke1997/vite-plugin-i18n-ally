@@ -1,7 +1,9 @@
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
 
-export const separator = '__'
+const { separator } = config
+
+export { separator }
 
 export function getLanguages() {
   if (config.namespace) {

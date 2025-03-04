@@ -11,6 +11,7 @@ const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
 const { asyncLoadResource } = i18nAlly({
   onInit({ language }) {
+    console.log(language, 'language')
     i18next.use(initReactI18next).init({
       lng: language,
       returnNull: false,
@@ -24,10 +25,11 @@ const { asyncLoadResource } = i18nAlly({
       interpolation: {
         escapeValue: false,
       },
-      lowerCaseLng: true,
       fallbackLng,
+      lowerCaseLng: true,
     })
   },
+  lowerCaseLng: true,
   onInited() {
     root.render(
       <React.StrictMode>
@@ -43,13 +45,6 @@ const { asyncLoadResource } = i18nAlly({
     {
       detect: 'querystring',
       lookup: lookupTarget,
-    },
-    {
-      detect: 'cookie',
-      lookup: 'with-namespace-lang',
-    },
-    {
-      detect: 'htmlTag',
     },
   ],
 })

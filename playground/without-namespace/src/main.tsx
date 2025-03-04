@@ -27,6 +27,7 @@ const { asyncLoadResource } = i18nAlly({
       fallbackLng,
     })
   },
+  lowerCaseLng: true,
   onInited(...args) {
     console.log(args, 'onInited')
     root.render(

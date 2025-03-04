@@ -9,7 +9,7 @@ import { initI18nAlly } from './utils/init-i18n-ally'
 import { logger } from './utils/logger'
 import { VirtualModule } from './utils/virtual'
 
-export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
+export function i18nAlly(opts?: I18nAllyOptions): any {
   const { options, vscodeSetting } = initI18nAlly(opts)
 
   debug('User input i18n-ally options on init:', options)
@@ -115,6 +115,7 @@ export function i18nAlly(opts?: I18nAllyOptions): PluginOption {
         if (id.endsWith(VirtualModule.Mods.config)) {
           const code = `export const config = ${JSON.stringify({
             namespace: options.namespace,
+            separator: localeDetector.separator,
           })}`
 
           debug('config:', code)

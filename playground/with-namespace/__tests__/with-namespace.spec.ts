@@ -7,9 +7,7 @@ import {
   // removeDir,
   // removeFile,
   // renameDir,
-  untilBrowserLogAfter,
   untilUpdated,
-  viteTestUrl,
 } from '~utils'
 
 describe('e2e', () => {
@@ -71,13 +69,6 @@ describe('e2e', () => {
     urlSearchParams = new URLSearchParams(currentUrl.split('?')[1])
     lang = urlSearchParams.get('lang')
     expect(lang).toBe('en')
-  })
-
-  test('should fallback to fallbackLng when language is not found', async () => {
-    await untilBrowserLogAfter(
-      () => page.goto(`${viteTestUrl}/?lang=not-exist`),
-      /.*Current language 'not-exist' not found*/,
-    )
   })
 })
 

@@ -45,6 +45,8 @@ export class LocaleDetector {
   private _rootPath: string
   private _namespace: boolean
 
+  public separator = '__'
+
   private _localeDirs: string[] = []
   private _files: Record<string, ParsedFile> = {}
   private _localeModules: {
@@ -132,7 +134,7 @@ export class LocaleDetector {
       Object.keys(modules).forEach((locale) => {
         const value = modules[locale]
         Object.keys(value).forEach((namespace) => {
-          const key = `${locale}__${namespace}`
+          const key = `${locale}${this.separator}${namespace}`
           modulesWithNamespace[key] = value[namespace]
         })
       })

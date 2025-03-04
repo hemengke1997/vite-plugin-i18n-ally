@@ -14,6 +14,23 @@ class I18nAlly {
 
   private static loaded: { [lang: string]: Set<string> } = {}
 
+  private static formatLanguages<T>(lang: T): T {
+    if (Array.isArray(lang)) {
+      return lang.map((l: string | undefined) => (this.options.lowerCaseLng ? l?.toLowerCase() : l)) as T
+    }
+    if (this.options.lowerCaseLng) {
+      return (lang as string | undefined)?.toLowerCase() as T
+    }
+    return lang
+  }
+
+  // virtual resource is case sensitive
+  private static getSensitiveLang(language: string) {
+    return this.options.lowerCaseLng
+      ? getLanguages().find((l) => l.toLowerCase() === language.toLowerCase()) || language
+      : language
+  }
+
   private static async loadResource(
     language?: string,
     options?: {
@@ -21,6 +38,7 @@ class I18nAlly {
       enableCache?: boolean // avoid querystring blink
     },
   ) {
+    language = this.formatLanguages(language)
     const { fallbackLng } = this.options
     const { enableCache = true, namespaces } = options || {}
 
@@ -35,8 +53,17 @@ class I18nAlly {
 
     const lazyloads: {
       fn: () => Promise<{ default: Record<string, string> | undefined }>
+      /**
+       * 如果开启了namespace配置，则此namespace是命名空间
+       *
+       * 否则是语言
+       */
       namespace: string
     }[] = []
+
+    // 虚拟资源的 key 是大小写固定的
+    // 从 resource 中取值时要注意用大小写敏感的语言
+    language = this.getSensitiveLang(language)
 
     if (config.namespace) {
       if (namespaces) {
@@ -84,22 +111,26 @@ class I18nAlly {
             return
           }
 
-          this.loaded[language] ||= new Set()
-          this.loaded[language].add(lazyload.namespace)
+          if (config.namespace) {
+            this.loaded[language] ||= new Set()
+            this.loaded[language].add(lazyload.namespace)
 
-          if (!this.loaded[fallbackLng]?.has(lazyload.namespace)) {
-            this.loadResource(fallbackLng, { enableCache: false, namespaces: [lazyload.namespace] })
+            if (!this.loaded[fallbackLng]?.has(lazyload.namespace)) {
+              // 如果 fallback 的 namespace 未加载，加载 fallback 的 namespace
+              this.loadResource(fallbackLng, { enableCache: false, namespaces: [lazyload.namespace] })
+            }
           }
 
+          // inject resources to i18n library, eg. i18next
           await this.options.onResourceLoaded(resources, {
-            language,
+            language: this.formatLanguages(language),
             namespace: lazyload.namespace,
           })
         }),
       )
     }
 
-    enableCache && this.setCache(language)
+    enableCache && this.setCache(this.formatLanguages(language))
   }
 
   private static setCache(lang: string) {
@@ -164,11 +195,7 @@ class I18nAlly {
         ?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
 
       if (detectedLang) {
-        if (this.options.lowerCaseLng) {
-          lang = detectedLang.toLowerCase()
-        } else {
-          lang = detectedLang
-        }
+        lang = this.formatLanguages(detectedLang)
 
         if (this.allLanguages.includes(lang)) {
           break
@@ -182,10 +209,9 @@ class I18nAlly {
   static mount(options: I18nSetupOptions) {
     this.options = options
 
-    if (this.options.lowerCaseLng) {
-      this.options.language = this.options.language?.toLowerCase()
-      this.options.fallbackLng = this.options.fallbackLng.toLowerCase()
-    }
+    this.options.language = this.formatLanguages(this.options.language)
+    this.options.fallbackLng = this.formatLanguages(this.options.fallbackLng)
+    this.allLanguages = this.formatLanguages(this.allLanguages)
 
     const resolvedLng = this.options.language || this.resolveCurrentLng()
     if (this.allLanguages.includes(resolvedLng)) {
@@ -199,7 +225,7 @@ class I18nAlly {
       language: this.currentLng,
       namespaces: config.namespace
         ? this.options.namespaces || this.allNamespaces[this.currentLng] || []
-        : Object.keys(resources[this.currentLng]),
+        : Object.keys(resources[this.getSensitiveLang(this.currentLng)]),
     }
 
     {
