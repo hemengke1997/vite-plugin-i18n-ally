@@ -1,3 +1,12 @@
+## [5.3.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.3.0...v5.3.1) (2025-03-04)
+
+
+### Bug Fixes
+
+* case sensitive ([9eea8e4](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/9eea8e49ed357f57ded735d528c7b88a76777a4f))
+
+
+
 # [5.3.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.2.13...v5.3.0) (2025-03-04)
 
 
