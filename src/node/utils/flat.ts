@@ -1,4 +1,4 @@
-import { get, isObject, set } from 'lodash-es'
+import { get, isObject, set } from 'es-toolkit/compat'
 
 const ROOT_KEY = '__i18n_ally_root__'
 

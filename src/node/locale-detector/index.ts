@@ -1,7 +1,6 @@
-import cloneDeep from 'clone-deep'
+import { cloneDeep, throttle, trimEnd, uniq } from 'es-toolkit'
 import fg from 'fast-glob'
 import tags from 'language-tags'
-import { throttle, trimEnd, uniq } from 'lodash-es'
 import fs from 'node:fs'
 import path from 'node:path'
 import { type ChangeEvent } from 'rollup'
@@ -212,30 +211,22 @@ export class LocaleDetector {
     return relative
   }
 
-  private throttledUpdate = throttle(
-    () => {
-      this.update()
-    },
-    THROTTLE_DELAY,
-    { leading: true },
-  )
+  private throttledUpdate = throttle(() => {
+    this.update()
+  }, THROTTLE_DELAY)
 
   private throttledLoadFileWaitingList: [string, string][] = []
 
-  private throttledLoadFileExecutor = throttle(
-    async () => {
-      const list = this.throttledLoadFileWaitingList
-      this.throttledLoadFileWaitingList = []
-      if (list.length) {
-        let changed = false
-        for (const [d, r] of list) changed = (await this.loadFile(d, r)) || changed
+  private throttledLoadFileExecutor = throttle(async () => {
+    const list = this.throttledLoadFileWaitingList
+    this.throttledLoadFileWaitingList = []
+    if (list.length) {
+      let changed = false
+      for (const [d, r] of list) changed = (await this.loadFile(d, r)) || changed
 
-        if (changed) this.update()
-      }
-    },
-    THROTTLE_DELAY,
-    { leading: true },
-  )
+      if (changed) this.update()
+    }
+  }, THROTTLE_DELAY)
 
   private throttledLoadFile = (d: string, r: string) => {
     if (!this.throttledLoadFileWaitingList.find(([a, b]) => a === d && b === r))
