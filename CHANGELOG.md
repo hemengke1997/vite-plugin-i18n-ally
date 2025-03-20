@@ -1,3 +1,12 @@
+# [5.4.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.3.2...v5.4.0) (2025-03-20)
+
+
+### Features
+
+* support custom detectors ([aa93b1c](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/aa93b1c84167a1ee06e91c14ea5637b4129164c1))
+
+
+
 ## [5.3.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.3.1...v5.3.2) (2025-03-20)
 
 
