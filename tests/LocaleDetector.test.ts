@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { LocaleDetector } from '../src/node/locale-detector'
 import { initI18nAlly } from '../src/node/utils/init-i18n-ally'
 
-describe('LocaleDetector - Dir mode', () => {
+describe('LocaleDetector - Namespace', () => {
   let localeDetector: LocaleDetector
 
   beforeAll(async () => {
@@ -85,4 +85,64 @@ describe('LocaleDetector - Dir mode', () => {
   })
 })
 
-// TODO: non-namespace
+describe('LocaleDetector - Non-Namespace', () => {
+  let localeDetector: LocaleDetector
+
+  beforeAll(async () => {
+    const { options } = initI18nAlly({
+      root: path.resolve(__dirname, './fixtures/'),
+      localesPaths: [path.resolve(__dirname, './fixtures/locales-non-namespace/')],
+      namespace: false,
+      useVscodeI18nAllyConfig: false,
+    })
+
+    localeDetector = new LocaleDetector(options)
+
+    await localeDetector.init()
+  })
+
+  test('should localeDetector find locales', () => {
+    expect(localeDetector.files.length).toBeGreaterThan(0)
+  })
+
+  test('should localeModules has every locale', () => {
+    const { modules } = localeDetector.localeModules
+    expect(Object.keys(modules).sort()).toMatchInlineSnapshot(`
+      [
+        "en",
+        "zh",
+      ]
+    `)
+  })
+
+  test('should virtualModules has every locale', () => {
+    const { virtualModules } = localeDetector.localeModules
+    expect(Object.keys(virtualModules).sort()).toMatchInlineSnapshot(`
+      [
+        "virtual:i18n-ally-en",
+        "virtual:i18n-ally-zh",
+      ]
+    `)
+  })
+
+  test('should resolvedIds has every locale', () => {
+    const { resolvedIds } = localeDetector.localeModules
+    const resolvedIdsValues = Array.from(resolvedIds.values()).sort()
+    expect(resolvedIdsValues).toMatchInlineSnapshot(`
+      [
+        "virtual:i18n-ally-en",
+        "virtual:i18n-ally-zh",
+      ]
+    `)
+  })
+
+  test('locale modules', () => {
+    const { modules } = localeDetector.localeModules
+    expect(modules).toMatchSnapshot()
+  })
+
+  test('virtualModules', () => {
+    const { virtualModules } = localeDetector.localeModules
+    expect(virtualModules).toMatchSnapshot()
+  })
+})

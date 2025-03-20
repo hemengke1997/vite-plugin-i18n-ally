@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`LocaleDetector - Dir mode > locale modules 1`] = `
+exports[`LocaleDetector - Namespace > locale modules 1`] = `
 {
   "de": {
     "more": {
@@ -43,7 +43,7 @@ exports[`LocaleDetector - Dir mode > locale modules 1`] = `
 }
 `;
 
-exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
+exports[`LocaleDetector - Namespace > virtualModules 1`] = `
 {
   "virtual:i18n-ally-de": {
     "more": {
@@ -111,6 +111,28 @@ exports[`LocaleDetector - Dir mode > virtualModules 1`] = `
     "key": "繁体中文",
   },
   "virtual:i18n-ally-zh__test": {
+    "key": "中文",
+  },
+}
+`;
+
+exports[`LocaleDetector - Non-Namespace > locale modules 1`] = `
+{
+  "en": {
+    "key": "en",
+  },
+  "zh": {
+    "key": "中文",
+  },
+}
+`;
+
+exports[`LocaleDetector - Non-Namespace > virtualModules 1`] = `
+{
+  "virtual:i18n-ally-en": {
+    "key": "en",
+  },
+  "virtual:i18n-ally-zh": {
     "key": "中文",
   },
 }

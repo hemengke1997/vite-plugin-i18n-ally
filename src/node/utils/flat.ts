@@ -1,6 +1,6 @@
 import { get, isObject, set } from 'es-toolkit/compat'
 
-const ROOT_KEY = '__i18n_ally_root__'
+export const ROOT_KEY = '__i18n_ally_root__'
 
 export function flatten(data: any) {
   const output: any = {}

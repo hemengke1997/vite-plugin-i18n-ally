@@ -4,7 +4,7 @@ import { name as I18nAllyName } from '../../package.json'
 import { type Detection, detectorsMap } from './detectors'
 import { getLanguages, getNamespaces, separator } from './resolver'
 import { type I18nSetupOptions } from './types'
-import { ensureArray, omit } from './utils'
+import { ensureArray, formatLanguage, ignoreCaseFind, omit } from './utils'
 
 class I18nAlly {
   private static options: I18nSetupOptions = {} as I18nSetupOptions
@@ -15,20 +15,12 @@ class I18nAlly {
   private static loaded: { [lang: string]: Set<string> } = {}
 
   private static formatLanguages<T>(lang: T): T {
-    if (Array.isArray(lang)) {
-      return lang.map((l: string | undefined) => (this.options.lowerCaseLng ? l?.toLowerCase() : l)) as T
-    }
-    if (this.options.lowerCaseLng) {
-      return (lang as string | undefined)?.toLowerCase() as T
-    }
-    return lang
+    return formatLanguage(lang, this.options.lowerCaseLng)
   }
 
   // virtual resource is case sensitive
   private static getSensitiveLang(language: string) {
-    return this.options.lowerCaseLng
-      ? getLanguages().find((l) => l.toLowerCase() === language.toLowerCase()) || language
-      : language
+    return ignoreCaseFind(this.allLanguages, language, this.options.lowerCaseLng) || language
   }
 
   private static async loadResource(

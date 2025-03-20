@@ -301,7 +301,7 @@ export class LocaleDetector {
 
       const data = await parser.load(filepath)
 
-      // support `i18n-ally.keyStyle` `nesetd` and `flat`
+      // support `i18n-ally.keyStyle` both `nesetd` and `flat`
       const value = unflatten(data)
 
       const deepDirpath = path.dirname(filepath)
@@ -380,14 +380,16 @@ export class LocaleDetector {
   }
 
   private enabledParserExts() {
-    const enabledParsers = this.getParsers().map((item) => item.supportedExts)
-    return enabledParsers.filter(Boolean).join('|')
+    return this.getParsers()
+      .map((item) => item.ext)
+      .filter(Boolean)
+      .join('|')
   }
 
   private getParsers() {
     const _parsers = this.config.parserPlugins?.filter(Boolean)
 
-    const parsers: Parser[] = DefaultEnabledParsers
+    const parsers = DefaultEnabledParsers
     if (_parsers?.length) {
       parsers.push(..._parsers.filter(Boolean).map((parser) => new Parser(parser!)))
     }

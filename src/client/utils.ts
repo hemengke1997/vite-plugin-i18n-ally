@@ -11,7 +11,26 @@ export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, k
   return clone
 }
 
-export function ignoreCaseIncludes(arr: string[], target: string | string[]) {
+/**
+ * find。从 source 中找到 target 中的任意一个
+ *
+ * 如果开启lowerCase小写，则忽略大小写查找
+ */
+export function ignoreCaseFind(source: string[], target: string | string[], lowerCase: boolean | undefined) {
   const targets = ensureArray(target) || []
-  return arr.some((item) => targets.some((t) => item.toLowerCase() === t.toLowerCase()))
+
+  return source.find((item) => targets.some((t) => (lowerCase ? item.toLowerCase() === t.toLowerCase() : item === t)))
+}
+
+/**
+ * 如果开启lowerCase小写，则将语言转为小写
+ */
+export function formatLanguage<T>(lang: T, lowerCaseLng: boolean | undefined): T {
+  if (Array.isArray(lang)) {
+    return lang.map((l: string | undefined) => (lowerCaseLng ? l?.toLowerCase() : l)) as T
+  }
+  if (lowerCaseLng) {
+    return (lang as string | undefined)?.toLowerCase() as T
+  }
+  return lang
 }

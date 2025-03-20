@@ -6,17 +6,17 @@ export type ParserConstructor = {
 }
 
 export class Parser {
-  private supportedExtsRegex: RegExp
+  private extRegex: RegExp
 
-  public readonly supportedExts: string
+  public readonly ext: string
 
   constructor(public readonly parser: ParserConstructor) {
-    this.supportedExts = parser.ext
-    this.supportedExtsRegex = new RegExp(`.?(${this.supportedExts})$`)
+    this.ext = parser.ext
+    this.extRegex = new RegExp(`^\\.?(${this.ext})$`)
   }
 
   supports(ext: string) {
-    return !!ext.toLowerCase().match(this.supportedExtsRegex)
+    return !!ext.toLowerCase().match(this.extRegex)
   }
 
   async load(filepath: string): Promise<object> {
@@ -33,7 +33,7 @@ export class Parser {
     }
   }
 
-  parse(text: string, filepath: string): Promise<object> | object {
+  private parse(text: string, filepath: string): Promise<object> | object {
     if (!text || !text.trim()) {
       return {}
     }
