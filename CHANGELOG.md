@@ -1,3 +1,12 @@
+## [5.3.2](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.3.1...v5.3.2) (2025-03-20)
+
+
+### Performance Improvements
+
+* replace lodash with es-toolkit ([df77541](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/df77541f3b1c4b8b8c04fcb2c6f2413c2652b334))
+
+
+
 ## [5.3.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.3.0...v5.3.1) (2025-03-04)
 
 
