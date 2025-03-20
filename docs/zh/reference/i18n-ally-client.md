@@ -94,3 +94,52 @@
 - `navigator`
 
 
+## customDetectors
+
+- **类型**: `Detector[]`
+
+自定义语言探测器。如果内置探测器无法满足需求，可以通过此选项添加自定义探测器。
+
+添加了自定义探测器后，需要在 `detection` 中添加对应的探测配置。
+
+```tsx
+i18nAlly<
+  (
+    | {
+        name: 'custom'
+        lookup: (options: { lookup: string }) => string
+      }
+    | {
+        name: 'onemore'
+        lookup: (options: { lookup: string }) => string
+      }
+  )[]
+>({
+  customDetectors: [
+    {
+      name: 'custom',
+      lookup: ({ lookup }) => {
+        // 自定义探测逻辑
+      },
+    },
+    {
+      name: 'onemore',
+      lookup: ({ lookup }) => {
+        // 自定义探测逻辑
+      },
+    },
+  ],
+  detection: [
+    {
+      detect: 'custom',
+      lookup: 'custom-lookup',
+      cache: false,
+    }, 
+    {
+      detect: 'onemore',
+      lookup: 'onemore-lookup',
+      cache: true,
+    },
+  ],
+})
+```

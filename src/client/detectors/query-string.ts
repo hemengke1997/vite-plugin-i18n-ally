@@ -1,7 +1,7 @@
 import { type Detector } from './types'
 
 export class QueryString implements Detector {
-  name = 'querystring'
+  name = 'querystring' as const
   lookup(options: { lookup: string }) {
     const { lookup } = options
     const params = new URLSearchParams(window.location.search)

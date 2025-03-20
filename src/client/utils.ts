@@ -16,7 +16,7 @@ export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, k
  *
  * 如果开启lowerCase小写，则忽略大小写查找
  */
-export function ignoreCaseFind(source: string[], target: string | string[], lowerCase: boolean | undefined) {
+export function findByCase(source: string[], target: string | string[], lowerCase: boolean | undefined) {
   const targets = ensureArray(target) || []
 
   return source.find((item) => targets.some((t) => (lowerCase ? item.toLowerCase() === t.toLowerCase() : item === t)))

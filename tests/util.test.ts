@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { ensureArray, formatLanguage, ignoreCaseFind, omit } from '@/client/utils'
+import { ensureArray, findByCase, formatLanguage, omit } from '@/client/utils'
 import { flatten, ROOT_KEY, unflatten } from '@/node/utils/flat'
 
 describe('util', () => {
@@ -12,21 +12,21 @@ describe('util', () => {
     expect(omit({ a: 1, b: 2 }, ['a'])).toEqual({ b: 2 })
   })
 
-  test('ignoreCaseFind', () => {
+  test('findByCase', () => {
     // 浏览器语言
     const navigatorLanguages = ['zh', 'zh-CN', 'en']
     // 支持的语言
     const languages = ['zh-cn', 'en']
 
     // 忽略大小写时，匹配 zh-CN
-    expect(ignoreCaseFind(navigatorLanguages, languages, true)).toEqual('zh-CN')
+    expect(findByCase(navigatorLanguages, languages, true)).toEqual('zh-CN')
 
     // 不忽略大小写时，匹配 en
-    expect(ignoreCaseFind(navigatorLanguages, languages, false)).toEqual('en')
+    expect(findByCase(navigatorLanguages, languages, false)).toEqual('en')
 
     const languages1 = ['zh-cn']
     // 不忽略大小写时，匹配不到
-    expect(ignoreCaseFind(navigatorLanguages, languages1, false)).toEqual(undefined)
+    expect(findByCase(navigatorLanguages, languages1, false)).toEqual(undefined)
 
     // 支持的语言
     const allLanguages = ['zh', 'en', 'zh-CN']
@@ -34,10 +34,10 @@ describe('util', () => {
     const language = 'zh-cn'
 
     // 忽略大小写时，匹配 zh-CN
-    expect(ignoreCaseFind(allLanguages, language, true)).toEqual('zh-CN')
+    expect(findByCase(allLanguages, language, true)).toEqual('zh-CN')
 
     // 不忽略大小写时，匹配不到
-    expect(ignoreCaseFind(allLanguages, language, false)).toEqual(undefined)
+    expect(findByCase(allLanguages, language, false)).toEqual(undefined)
   })
 
   test('should format languages to lowercase', () => {

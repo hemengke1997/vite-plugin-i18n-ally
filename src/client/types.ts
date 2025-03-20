@@ -1,6 +1,18 @@
-import { type CookieAttributes } from './detectors/cookie'
+import { type Cookie, type CookieAttributes } from './detectors/cookie'
+import { type HtmlTag } from './detectors/html-tag'
+import { type LocalStorage } from './detectors/local-storage'
+import { type Navigator } from './detectors/navigator'
+import { type Path } from './detectors/path'
+import { type QueryString } from './detectors/query-string'
+import { type SessionStorage } from './detectors/session-storage'
+import { type Detector } from './detectors/types'
 
-export interface I18nSetupOptions {
+type ResolveDetectorName<T extends Detector> = T['name']
+type ResolveDetectorLookup<T extends Detector> = Parameters<T['lookup']>[0]['lookup']
+
+type Detections<T, U, D> = D extends undefined ? T : T | U
+
+export interface I18nSetupOptions<D extends Detector[] | undefined = undefined> {
   /**
    * Current language
    */
@@ -51,7 +63,7 @@ export interface I18nSetupOptions {
     },
     current: {
       language: string
-      namespace: string
+      namespace: string | undefined
     },
   ) => Promise<void> | void
   /**
@@ -62,46 +74,58 @@ export interface I18nSetupOptions {
    * The order of detection determines the priority of language detection. The earlier it appears, the higher the priority.
    *
    */
-  detection?: (
+  detection?: Detections<
     | {
-        detect: 'htmlTag'
-        lookup?: string
+        detect: ResolveDetectorName<HtmlTag>
+        lookup?: ResolveDetectorLookup<HtmlTag>
         cache?: boolean
       }
     | {
-        detect: 'querystring'
-        lookup?: string
+        detect: ResolveDetectorName<QueryString>
+        lookup?: ResolveDetectorLookup<QueryString>
         cache?: boolean
       }
     | {
-        detect: 'cookie'
-        lookup?: string
+        detect: ResolveDetectorName<Cookie>
+        lookup?: ResolveDetectorLookup<Cookie>
         cache?: boolean
         attributes?: CookieAttributes
       }
     | {
-        detect: 'localStorage'
+        detect: ResolveDetectorName<LocalStorage>
+        lookup?: ResolveDetectorLookup<LocalStorage>
         cache?: boolean
-        lookup?: string
       }
     | {
-        detect: 'sessionStorage'
+        detect: ResolveDetectorName<SessionStorage>
+        lookup?: ResolveDetectorLookup<SessionStorage>
         cache?: boolean
-        lookup?: string
       }
     | {
-        detect: 'navigator'
+        detect: ResolveDetectorName<Navigator>
       }
     | {
-        detect: 'path'
+        detect: ResolveDetectorName<Path>
         /**
          * The path index to get language
          * @example
          * '/en-US/...' => 0
          * '/prefix/en-US' => 1
          */
-        lookup?: number
+        lookup?: ResolveDetectorLookup<Path>
         cache?: boolean
-      }
-  )[]
+      },
+    D extends Detector[]
+      ? {
+          detect: ResolveDetectorName<D[number]>
+          lookup?: ResolveDetectorLookup<D[number]>
+          cache?: boolean
+        }
+      : undefined,
+    D
+  >[]
+  /**
+   * Custom detectors
+   */
+  customDetectors?: D
 }

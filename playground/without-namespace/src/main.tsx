@@ -51,6 +51,7 @@ const { asyncLoadResource } = i18nAlly({
     },
     {
       detect: 'htmlTag',
+      cache: true,
     },
   ],
 })

@@ -91,3 +91,54 @@ Supports the following types:
   - `lookup` - Index to get the language identifier from the URL pathname, default is `0`
   - `cache` - Whether to cache the language identifier
 - `navigator`
+
+
+## customDetectors
+
+- **Type**: `Detector[]`
+
+Custom language detectors. If the built-in detectors do not meet your needs, you can add custom detectors using this option.
+
+After adding custom detectors, you need to add the corresponding detection configuration in.
+
+```tsx
+i18nAlly<
+  (
+    | {
+        name: 'custom'
+        lookup: (options: { lookup: string }) => string
+      }
+    | {
+        name: 'onemore'
+        lookup: (options: { lookup: string }) => string
+      }
+  )[]
+>({
+  customDetectors: [
+    {
+      name: 'custom',
+      lookup: ({ lookup }) => {
+        // Custom detection logic
+      },
+    },
+    {
+      name: 'onemore',
+      lookup: ({ lookup }) => {
+        // Custom detection logic
+      },
+    },
+  ],
+  detection: [
+    {
+      detect: 'custom',
+      lookup: 'custom-lookup',
+      cache: false,
+    }, 
+    {
+      detect: 'onemore',
+      lookup: 'onemore-lookup',
+      cache: true,
+    },
+  ],
+})
+```

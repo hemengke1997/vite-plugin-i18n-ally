@@ -3,7 +3,7 @@ import { type Detector } from './types'
 const regex = /\/([^\/]*)/g
 
 export class Path implements Detector {
-  name = 'path'
+  name = 'path' as const
   lookup(options: { lookup: number }) {
     const { lookup: lookupFromPathIndex } = options
     if (typeof window === 'undefined') return undefined

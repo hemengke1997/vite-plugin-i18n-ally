@@ -68,15 +68,4 @@ async function hydrate() {
   window.asyncLoadResource = asyncLoadResource
 }
 
-function removeThirdPartyDOM() {
-  document
-    .querySelectorAll(
-      ['html > *:not(body, head)', 'script[src*="extension://"]', 'link[href*="extension://"]'].join(', '),
-    )
-    .forEach((s) => {
-      s.parentNode?.removeChild(s)
-    })
-}
-
-removeThirdPartyDOM()
 hydrate()

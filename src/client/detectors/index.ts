@@ -5,9 +5,12 @@ import { Navigator } from './navigator'
 import { Path } from './path'
 import { QueryString } from './query-string'
 import { SessionStorage } from './session-storage'
-import { type Detector } from './types'
 
-export const detectors = [
+/**
+ * 之所以不做成懒加载，是因为这些 Detector 会在初始化时就被使用
+ * 如果懒加载，部分场景下可能会有闪烁问题
+ */
+export const builtinDetectors = [
   new Cookie(),
   new HtmlTag(),
   new LocalStorage(),
@@ -16,8 +19,6 @@ export const detectors = [
   new QueryString(),
   new SessionStorage(),
 ]
-
-export const detectorsMap = new Map<string, Detector>(detectors.map((detector) => [detector.name, detector]))
 
 export type Detection = {
   detect: string

@@ -1,26 +1,30 @@
+import { type Detector } from 'dist/client/detectors/types'
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
 import { name as I18nAllyName } from '../../package.json'
-import { type Detection, detectorsMap } from './detectors'
-import { getLanguages, getNamespaces, separator } from './resolver'
+import { builtinDetectors, type Detection } from './detectors'
+import { getLanguages, getNamespace, separator } from './resolver'
 import { type I18nSetupOptions } from './types'
-import { ensureArray, formatLanguage, ignoreCaseFind, omit } from './utils'
+import { ensureArray, findByCase, formatLanguage, omit } from './utils'
 
 class I18nAlly {
-  private static options: I18nSetupOptions = {} as I18nSetupOptions
+  private static options: I18nSetupOptions<any> = {} as I18nSetupOptions<any>
   private static currentLng: string = ''
   static allLanguages: string[] = getLanguages()
-  static allNamespaces: { [lang: string]: string[] } = getNamespaces()
+  static allNamespace: { [lang: string]: string[] } = getNamespace()
 
   private static loaded: { [lang: string]: Set<string> } = {}
+  private static detectorMap: Map<string, Detector> = new Map()
 
   private static formatLanguages<T>(lang: T): T {
     return formatLanguage(lang, this.options.lowerCaseLng)
   }
 
-  // virtual resource is case sensitive
+  /**
+   * 获取资源的语言
+   */
   private static getSensitiveLang(language: string) {
-    return ignoreCaseFind(this.allLanguages, language, this.options.lowerCaseLng) || language
+    return findByCase(getLanguages(), language, this.options.lowerCaseLng) || language
   }
 
   private static async loadResource(
@@ -45,15 +49,10 @@ class I18nAlly {
 
     const lazyloads: {
       fn: () => Promise<{ default: Record<string, string> | undefined }>
-      /**
-       * 如果开启了namespace配置，则此namespace是命名空间
-       *
-       * 否则是语言
-       */
-      namespace: string
+      namespace: string | undefined
     }[] = []
 
-    // 虚拟资源的 key 是大小写固定的
+    // 资源的 key 是大小写敏感的
     // 从 resource 中取值时要注意用大小写敏感的语言
     language = this.getSensitiveLang(language)
 
@@ -89,7 +88,7 @@ class I18nAlly {
       } else {
         lazyloads.push({
           fn: lazyload,
-          namespace: language,
+          namespace: undefined,
         })
       }
     }
@@ -103,7 +102,7 @@ class I18nAlly {
             return
           }
 
-          if (config.namespace) {
+          if (config.namespace && lazyload.namespace) {
             this.loaded[language] ||= new Set()
             this.loaded[language].add(lazyload.namespace)
 
@@ -130,8 +129,9 @@ class I18nAlly {
 
     if (!cacheDetector?.length) return
 
-    cacheDetector.forEach((d) => {
-      detectorsMap.get(d.detect)?.cacheUserLanguage?.(lang, {
+    cacheDetector.forEach(async (d) => {
+      const detector = this.detectorMap.get(d.detect)
+      detector?.cacheUserLanguage?.(lang, {
         cache: d.lookup || 'lang',
         ...omit(d, ['detect', 'lookup', 'cache']),
         languages: this.allLanguages,
@@ -168,6 +168,11 @@ class I18nAlly {
     })
   }
 
+  private static generateDetectorMap() {
+    const detectors = [...builtinDetectors, ...(this.options.customDetectors || [])]
+    this.detectorMap = new Map<string, Detector>(detectors.map((detector) => [detector.name, detector]))
+  }
+
   /**
    * @description Resolve current language from detector
    */
@@ -182,9 +187,9 @@ class I18nAlly {
         lookup: any
       }
 
-      const detectedLang = detectorsMap
-        .get(detection[i].detect)
-        ?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
+      const detector = this.detectorMap.get(detection[i]?.detect)
+
+      const detectedLang = detector?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
 
       if (detectedLang) {
         lang = this.formatLanguages(detectedLang)
@@ -198,12 +203,16 @@ class I18nAlly {
     return lang
   }
 
-  static mount(options: I18nSetupOptions) {
-    this.options = options
-
+  /**
+   * @description 初始化前的处理
+   */
+  private static beforeInit() {
+    // 统一格式化语言相关的配置
     this.options.language = this.formatLanguages(this.options.language)
     this.options.fallbackLng = this.formatLanguages(this.options.fallbackLng)
     this.allLanguages = this.formatLanguages(this.allLanguages)
+
+    this.generateDetectorMap()
 
     const resolvedLng = this.options.language || this.resolveCurrentLng()
     if (this.allLanguages.includes(resolvedLng)) {
@@ -216,16 +225,24 @@ class I18nAlly {
     const current = {
       language: this.currentLng,
       namespaces: config.namespace
-        ? this.options.namespaces || this.allNamespaces[this.currentLng] || []
-        : Object.keys(resources[this.getSensitiveLang(this.currentLng)]),
+        ? // 用户配置的namespace优先级最高。如果没有配置，则使用当前语言的namespace
+          this.options.namespaces || this.allNamespace[this.currentLng] || []
+        : [],
     }
+
+    return { current }
+  }
+
+  static mount<T extends Detector[] | undefined = undefined>(options: I18nSetupOptions<T>) {
+    this.options = options
+    const { current } = this.beforeInit()
 
     {
       ;(async () => {
         try {
           await this.options.onInit?.(current, {
             languages: this.allLanguages,
-            namespaces: this.allNamespaces,
+            namespaces: this.allNamespace,
           })
         } catch (e) {
           console.error(`[${I18nAllyName}]: onInit error`, e)
@@ -236,7 +253,7 @@ class I18nAlly {
         try {
           await this.options.onInited?.(current, {
             languages: this.allLanguages,
-            namespaces: this.allNamespaces,
+            namespaces: this.allNamespace,
           })
         } catch (e) {
           console.error(`[${I18nAllyName}]: onInited error`, e)
@@ -247,7 +264,7 @@ class I18nAlly {
     return {
       asyncLoadResource: this.asyncLoadResource.bind(this),
       languages: this.allLanguages,
-      namespaces: this.allNamespaces,
+      namespaces: this.allNamespace,
     }
   }
 }

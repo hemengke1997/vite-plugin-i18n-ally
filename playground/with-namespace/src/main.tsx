@@ -9,9 +9,19 @@ import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-const { asyncLoadResource } = i18nAlly({
+const { asyncLoadResource } = i18nAlly<
+  (
+    | {
+        name: 'custom'
+        lookup: (options: { lookup: string }) => string
+      }
+    | {
+        name: 'onemore'
+        lookup: (options: { lookup: string }) => string
+      }
+  )[]
+>({
   onInit({ language }) {
-    console.log(language, 'language')
     i18next.use(initReactI18next).init({
       lng: language,
       returnNull: false,
@@ -30,7 +40,8 @@ const { asyncLoadResource } = i18nAlly({
     })
   },
   lowerCaseLng: true,
-  onInited() {
+  onInited(...args) {
+    console.log(args, 'onInited')
     root.render(
       <React.StrictMode>
         <App />
@@ -43,11 +54,25 @@ const { asyncLoadResource } = i18nAlly({
   fallbackLng,
   detection: [
     {
+      detect: 'custom',
+      lookup: 'test',
+      cache: false,
+    },
+    {
       detect: 'querystring',
       lookup: lookupTarget,
     },
     {
       detect: 'htmlTag',
+    },
+  ],
+  detectors: [
+    {
+      name: 'custom',
+      lookup({ lookup }) {
+        console.log(lookup, '自定义检测器')
+        return null
+      },
     },
   ],
 })

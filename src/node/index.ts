@@ -135,14 +135,16 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
     watchChange(id, { event }) {
       localeDetector.onFileChanged(event, { fsPath: id }).then((updated) => {
         if (updated) {
-          logger.info(colors.green(`${event}: `) + colors.gray(updated))
+          logger.info(colors.green(`${event}: `) + colors.gray(updated), { timestamp: true })
           fullReload(server, localeDetector)
         }
       })
 
       const vscodeFile = vscodeSetting?.findUp()
       if (id === vscodeFile) {
-        logger.info(colors.green(`${event}: `) + colors.gray(path.relative(options.root, vscodeFile)))
+        logger.info(colors.green(`${event}: `) + colors.gray(path.relative(options.root, vscodeFile)), {
+          timestamp: true,
+        })
         fullReload(server, localeDetector)
       }
     },

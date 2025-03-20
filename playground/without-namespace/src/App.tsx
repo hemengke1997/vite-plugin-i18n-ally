@@ -47,7 +47,7 @@ function App() {
       </button>
       <button
         onClick={async () => {
-          await i18n.changeLanguage('zh-tw')
+          await i18n.changeLanguage('zh-TW')
           update()
         }}
         id='zh-tw'

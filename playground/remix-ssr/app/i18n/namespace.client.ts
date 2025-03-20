@@ -2,6 +2,7 @@ import { matchRoutes } from '@remix-run/router'
 import { i18nOptions } from './i18n'
 
 export async function resolveNamespace(pathname: string = window.location.pathname) {
+  if (!window.__remixRouter?.routes) return i18nOptions.defaultNS
   const res = await Promise.all<string[]>(
     matchRoutes(window.__remixRouter.routes, pathname)?.map(async (_route) => {
       const { route } = _route

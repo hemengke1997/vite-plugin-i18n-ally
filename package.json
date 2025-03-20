@@ -40,10 +40,6 @@
     "./client/*": {
       "types": "./dist/client/*.d.ts",
       "import": "./dist/client/*.js"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js"
     }
   },
   "scripts": {
@@ -99,7 +95,7 @@
     "react-i18next": "13.2.2",
     "simple-git-hooks": "^2.11.1",
     "taze": "^18.7.1",
-    "tsup": "8.3.0",
+    "tsup": "^8.3.6",
     "tsup-plugin-bundleless": "^1.2.1",
     "typescript": "^5.7.3",
     "vite-plugin-i18n-ally": "workspace:*",
@@ -116,5 +112,6 @@
     "extends": [
       "@minko-fe/commitlint-config"
     ]
-  }
+  },
+  "prettier": "@minko-fe/prettier-config"
 }
