@@ -22,13 +22,15 @@ export default defineConfig({
             items: [
               { text: 'Getting Started', link: '/guides/getting-started' },
               { text: 'Namespace', link: '/guides/namespace' },
+              { text: 'Language Detection', link: '/guides/language-detection' },
             ],
           },
           {
             text: 'Reference',
             items: [
               { text: 'Plugin Options', link: '/reference/plugin-options' },
-              { text: 'i18nAlly Client Options', link: '/reference/i18n-ally-client' },
+              { text: 'Client Options', link: '/reference/i18n-ally-client' },
+              { text: 'Server Options', link: '/reference/i18n-ally-server' },
             ],
           },
         ],
@@ -53,6 +55,10 @@ export default defineConfig({
                 text: '命名空间',
                 link: '/zh/guides/namespace',
               },
+              {
+                text: '语言探测',
+                link: '/zh/guides/language-detection',
+              },
             ],
           },
           {
@@ -60,8 +66,12 @@ export default defineConfig({
             items: [
               { text: '插件配置', link: '/zh/reference/plugin-options' },
               {
-                text: 'i18nAlly 客户端配置',
+                text: '客户端配置',
                 link: '/zh/reference/i18n-ally-client',
+              },
+              {
+                text: '服务端配置',
+                link: '/zh/reference/i18n-ally-server',
               },
             ],
           },

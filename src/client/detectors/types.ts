@@ -3,7 +3,7 @@ export interface Detector<
   C extends Record<string, any> = Record<string, any>,
 > {
   name: string
-  lookup: (
+  resolveLanguage: (
     options: {
       lookup: any
       languages: string[]

@@ -4,7 +4,7 @@ const regex = /\/([^\/]*)/g
 
 export class Path implements Detector {
   name = 'path' as const
-  lookup(options: { lookup: number }) {
+  resolveLanguage(options: { lookup: number }) {
     const { lookup: lookupFromPathIndex } = options
     if (typeof window === 'undefined') return undefined
 

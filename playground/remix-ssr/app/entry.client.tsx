@@ -5,7 +5,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next'
 import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/cssinjs'
 import i18next from 'i18next'
 import { getInitialNamespaces } from 'remix-i18next/client'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import { i18nOptions } from '@/i18n/i18n'
 import { resolveNamespace } from './i18n/namespace.client'
 
@@ -16,7 +16,7 @@ const initialNamespaces = () => {
 }
 
 async function hydrate() {
-  const { asyncLoadResource } = i18nAlly({
+  const { asyncLoadResource } = new I18nAllyClient({
     namespaces: initialNamespaces(),
     fallbackLng: i18nOptions.fallbackLng,
     async onInit({ language }) {
@@ -31,7 +31,7 @@ async function hydrate() {
       })
     },
     onResourceLoaded(resource, { language, namespace }) {
-      i18next.addResourceBundle(language, namespace, resource)
+      i18next.addResourceBundle(language, namespace!, resource)
     },
     onInited: () => {
       startTransition(() => {

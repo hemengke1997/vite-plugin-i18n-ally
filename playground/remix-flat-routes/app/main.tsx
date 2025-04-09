@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import i18next from 'i18next'
 import { routes } from 'virtual:remix-flat-routes'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import { GlobalContext } from './contexts/global-context'
 import { fallbackLng, lookupTarget } from './locales'
 import './css/tailwind.css'
@@ -15,7 +15,7 @@ let namespaces: string[] = []
 function main() {
   const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-  const { asyncLoadResource } = i18nAlly({
+  const { asyncLoadResource } = new I18nAllyClient({
     namespaces,
     async onInit({ language }) {
       await i18next.use(initReactI18next).init({

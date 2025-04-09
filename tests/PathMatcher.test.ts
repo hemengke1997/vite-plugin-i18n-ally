@@ -4,6 +4,7 @@ import { ParsePathMatcher } from '../src/node/path-matcher'
 describe('PathMatching', () => {
   const cases = [
     ['{namespace}/**/{locale}.json', 'moduleC/nested/locales/zh-cn.json', 'moduleC', 'zh-cn'],
+    ['{namespace}/locales/{locale}.json', 'moduleC/locales/zh-cn.json', 'moduleC', 'zh-cn'],
     ['{namespaces}/{locale}.json', 'modules/nested/en.json', 'modules/nested', 'en'],
     ['{namespaces}/{locale}.json', 'modules/nested/en.js', null],
     ['{namespaces}/{locale}.(json|yml)', 'modules/nested/en.yml', 'modules/nested', 'en'],

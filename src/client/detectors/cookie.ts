@@ -41,7 +41,7 @@ export interface CookieAttributes {
 
 export class Cookie implements Detector {
   name = 'cookie' as const
-  lookup(options: { lookup: string }) {
+  resolveLanguage(options: { lookup: string }) {
     const reader = (value: string) => {
       if (value[0] === '"') {
         value = value.slice(1, -1)

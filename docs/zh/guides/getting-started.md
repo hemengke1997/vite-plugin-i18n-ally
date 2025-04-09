@@ -44,21 +44,21 @@ export default defineConfig({
 
 ```tsx
 // main.tsx
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 ```
 
-`i18nAlly` API 提供了一些hook，便于开发者初始化应用和使用资源。
+`I18nAllyClient` API 提供了一些hook，便于开发者初始化应用和使用资源。
 
 ```tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const fallbackLng = 'en'
 
-const { asyncLoadResource } = i18nAlly({
+const { asyncLoadResource } = new I18nAllyClient({
   // onInit hook 在i18nAlly初始化时调用，此时国际化资源还未加载
   async onInit({ language }) {
     i18next.use(initReactI18next).init({
@@ -106,7 +106,7 @@ i18nAlly 提供了类似 [i18next-browser-languageDetector](https://github.com/i
 detection数组优先级递减，当探测到语言标识时，将不再继续探测
 
 ```tsx
-i18nAlly({
+new I18nAllyClient({
   detection: [
     {
       detect: 'querystring',

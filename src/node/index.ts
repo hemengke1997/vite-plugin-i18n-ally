@@ -9,6 +9,8 @@ import { initI18nAlly } from './utils/init-i18n-ally'
 import { logger } from './utils/logger'
 import { VirtualModule } from './utils/virtual'
 
+export { type I18nAllyOptions }
+
 export function i18nAlly(opts?: I18nAllyOptions): any {
   const { options, vscodeSetting } = initI18nAlly(opts)
 
@@ -22,7 +24,7 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
     namespace: options.namespace,
   })
 
-  let server: ViteDevServer
+  let server: ViteDevServer | undefined
 
   return {
     name: 'vite:plugin-i18n-ally',
@@ -40,7 +42,7 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
         },
       }
     },
-    async resolveId(id: string, importer: string) {
+    async resolveId(id, importer) {
       const { virtualModules, resolvedIds } = localeDetector.localeModules
 
       if (id in virtualModules) {
@@ -117,9 +119,7 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
             namespace: options.namespace,
             separator: localeDetector.separator,
           })}`
-
           debug('config:', code)
-
           return {
             code,
             map: { mappings: '' },
@@ -145,7 +145,13 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
         logger.info(colors.green(`${event}: `) + colors.gray(path.relative(options.root, vscodeFile)), {
           timestamp: true,
         })
-        fullReload(server, localeDetector)
+
+        if (vscodeSetting?.isChanged()) {
+          // reload server
+          server?.restart()
+        } else {
+          fullReload(server, localeDetector)
+        }
       }
     },
     closeBundle() {

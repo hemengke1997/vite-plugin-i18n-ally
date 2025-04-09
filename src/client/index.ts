@@ -1,3 +1,3 @@
-export { i18nAlly } from './i18n-ally'
+export { I18nAllyClient } from './i18n-ally-client'
 export { getNamespace, getLanguages, separator } from './resolver'
-export { type I18nSetupOptions } from './types'
+export { type I18nAllyClientOptions } from './types'

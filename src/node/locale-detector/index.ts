@@ -264,20 +264,24 @@ export class LocaleDetector {
       }
     }
     if (!this.files.length) {
-      logger.warn(`No locale files detected.\n`)
+      logger.warn(`No locale files detected.\n`, {
+        timestamp: true,
+      })
     }
   }
 
-  private async loadDirectory(dirPath: string) {
+  private async loadDirectory(searchingPath: string) {
     const files = await fg('**/*.*', {
-      cwd: dirPath,
+      cwd: searchingPath,
       onlyFiles: true,
       ignore: ['node_modules/**'],
       deep: undefined,
     })
 
+    debug(`📂 Loading ${files.length} files under ${searchingPath}`)
+
     for (const relative of files) {
-      await this.loadFile(dirPath, relative)
+      await this.loadFile(searchingPath, relative)
     }
   }
 
@@ -331,12 +335,16 @@ export class LocaleDetector {
 
   private getFileInfo(dirpath: string, relativePath: string) {
     const fullpath = path.resolve(dirpath, relativePath)
+
+    debug(`Full path: ${fullpath}`)
     const ext = path.extname(relativePath)
 
     let match: RegExpExecArray | null = null
     let matcher: string | undefined
 
     match = this._pathMatcher!.regex.exec(relativePath)
+
+    debug(`Path Match: ${this._pathMatcher!.matcher}`)
     if (match && match.length > 0) {
       matcher = this._pathMatcher!.matcher
     }
@@ -436,7 +444,9 @@ export class LocaleDetector {
       }
     }
     if (this._localeDirs.length === 0) {
-      logger.warn(`No locales paths.\n`)
+      logger.warn(`No locales paths.\n`, {
+        timestamp: true,
+      })
       return false
     }
 

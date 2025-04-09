@@ -1,3 +1,4 @@
+import { diff } from 'deep-object-diff'
 import { findUpSync } from 'find-up'
 import JSON5 from 'json5'
 import fs from 'node:fs'
@@ -15,7 +16,11 @@ export class VscodeSetting {
   ) {
     debug('VscodeSetting - root:', _root)
     debug('VscodeSetting - stopAt:', _stopAt)
+
+    this.previousConfig = this.readJsonFile(this.findUp())
   }
+
+  private previousConfig: Record<string, any> | undefined = undefined
 
   findUp() {
     const settingFile = findUpSync(VscodeSetting.SETTING_FILE, {
@@ -24,11 +29,30 @@ export class VscodeSetting {
       stopAt: this._stopAt,
     })
 
-    debug('findup - settingFile:', settingFile)
     return settingFile
   }
 
+  isChanged() {
+    const settingFile = this.findUp()
+    const currentConfig = this.readJsonFile(settingFile)
+
+    let isChanged = false
+    if (currentConfig) {
+      const res = diff(this.previousConfig || {}, currentConfig)
+      if (Object.keys(res).some((key) => key.startsWith(VscodeSetting.I18N_ALLY_KEY))) {
+        isChanged = true
+      }
+    }
+
+    this.previousConfig = currentConfig
+
+    return isChanged
+  }
+
   init() {
+    const settingFile = this.findUp()
+    debug('findup - settingFile:', settingFile)
+
     const settings = this.readJsonFile(this.findUp())
 
     if (settings) {
@@ -60,9 +84,9 @@ export class VscodeSetting {
       try {
         return JSON5.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }))
       } catch {
-        return ''
+        return {}
       }
     }
-    return ''
+    return {}
   }
 }

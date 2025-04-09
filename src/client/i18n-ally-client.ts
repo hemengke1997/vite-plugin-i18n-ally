@@ -1,33 +1,76 @@
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
 import { name as I18nAllyName } from '../../package.json'
+import { ensureArray, findByCase, formatLanguage, omit } from '../utils'
 import { builtinDetectors, type Detection } from './detectors'
 import { type Detector } from './detectors/types'
 import { getLanguages, getNamespace, separator } from './resolver'
-import { type I18nSetupOptions } from './types'
-import { ensureArray, findByCase, formatLanguage, omit } from './utils'
+import { type I18nAllyClientOptions } from './types'
 
-class I18nAlly {
-  private static options: I18nSetupOptions<any> = {} as I18nSetupOptions<any>
-  private static currentLng: string = ''
-  static allLanguages: string[] = getLanguages()
-  static allNamespace: { [lang: string]: string[] } = getNamespace()
+export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
+  private options: I18nAllyClientOptions<any> = {} as I18nAllyClientOptions<any>
+  currentLng: string = ''
+  supportedLngs: string[] = getLanguages()
+  supportedNamespace: { [lang: string]: string[] } = getNamespace()
 
-  private static loaded: { [lang: string]: Set<string> } = {}
-  private static detectorMap: Map<string, Detector> = new Map()
+  private loaded: { [lang: string]: Set<string> } = {}
+  private detectorMap: Map<string, Detector> = new Map()
 
-  private static formatLanguages<T>(lang: T): T {
+  constructor(options: I18nAllyClientOptions<T>) {
+    this.options = options
+    const { current } = this.beforeInit()
+
+    {
+      ;(async () => {
+        try {
+          await this.options.onInit?.(current, {
+            languages: this.supportedLngs,
+            namespaces: this.supportedNamespace,
+          })
+        } catch (e) {
+          console.error(`[${I18nAllyName}]: onInit error`, e)
+        }
+
+        await this.init()
+
+        try {
+          await this.options.onInited?.(current, {
+            languages: this.supportedLngs,
+            namespaces: this.supportedNamespace,
+          })
+        } catch (e) {
+          console.error(`[${I18nAllyName}]: onInited error`, e)
+        }
+      })()
+    }
+
+    return this
+  }
+
+  asyncLoadResource(
+    language?: string,
+    options?: {
+      namespaces?: string[] | string
+    },
+  ) {
+    const { namespaces } = options || {}
+    return this.loadResource(language, {
+      namespaces: ensureArray(namespaces),
+    })
+  }
+
+  private formatLanguages<T>(lang: T): T {
     return formatLanguage(lang, this.options.lowerCaseLng)
   }
 
   /**
    * 获取资源的语言
    */
-  private static getSensitiveLang(language: string) {
+  private getSensitiveLang(language: string) {
     return findByCase(getLanguages(), language, this.options.lowerCaseLng) || language
   }
 
-  private static async loadResource(
+  private async loadResource(
     language?: string,
     options?: {
       namespaces?: string[] | undefined
@@ -42,7 +85,7 @@ class I18nAlly {
       language = this.currentLng || fallbackLng
     }
 
-    if (!this.allLanguages.includes(language) && language !== fallbackLng) {
+    if (!this.supportedLngs.includes(language) && language !== fallbackLng) {
       this.warnFallback(language)
       language = fallbackLng
     }
@@ -124,7 +167,7 @@ class I18nAlly {
     enableCache && this.setCache(this.formatLanguages(language))
   }
 
-  private static setCache(lang: string) {
+  private setCache(lang: string) {
     const cacheDetector = (this.options.detection as Detection[])?.filter((d) => (d as Detection).cache !== false)
 
     if (!cacheDetector?.length) return
@@ -134,12 +177,12 @@ class I18nAlly {
       detector?.cacheUserLanguage?.(lang, {
         cache: d.lookup || 'lang',
         ...omit(d, ['detect', 'lookup', 'cache']),
-        languages: this.allLanguages,
+        languages: this.supportedLngs,
       })
     })
   }
 
-  private static warnFallback(language: string) {
+  private warnFallback(language: string) {
     if (language !== this.options.fallbackLng) {
       console.warn(
         `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${this.options.fallbackLng}'`,
@@ -147,7 +190,7 @@ class I18nAlly {
     }
   }
 
-  private static async init() {
+  private async init() {
     const { fallbackLng, namespaces } = this.options
     await this.loadResource(fallbackLng, { enableCache: false, namespaces })
     if (this.currentLng !== fallbackLng) {
@@ -156,27 +199,15 @@ class I18nAlly {
     this.options.detection && this.setCache(this.currentLng)
   }
 
-  static asyncLoadResource(
-    language?: string,
-    options?: {
-      namespaces?: string[] | string
-    },
-  ) {
-    const { namespaces } = options || {}
-    return this.loadResource(language, {
-      namespaces: ensureArray(namespaces),
-    })
-  }
-
-  private static generateDetectorMap() {
-    const detectors = [...builtinDetectors, ...(this.options.customDetectors || [])]
+  private generateDetectorMap() {
+    const detectors = [...builtinDetectors, ...(this.options.customDetectors || [])] as Detector[]
     this.detectorMap = new Map<string, Detector>(detectors.map((detector) => [detector.name, detector]))
   }
 
   /**
    * @description Resolve current language from detector
    */
-  private static resolveCurrentLng() {
+  private resolveCurrentLng() {
     const { fallbackLng, detection } = this.options
     let lang: string = fallbackLng
 
@@ -189,12 +220,12 @@ class I18nAlly {
 
       const detector = this.detectorMap.get(detection[i]?.detect)
 
-      const detectedLang = detector?.lookup({ lookup: lookup ?? 'lang', languages: this.allLanguages })
+      const detectedLang = detector?.resolveLanguage({ lookup: lookup ?? 'lang', languages: this.supportedLngs })
 
       if (detectedLang) {
         lang = this.formatLanguages(detectedLang)
 
-        if (this.allLanguages.includes(lang)) {
+        if (this.supportedLngs.includes(lang)) {
           break
         }
       }
@@ -206,16 +237,16 @@ class I18nAlly {
   /**
    * @description 初始化前的处理
    */
-  private static beforeInit() {
+  private beforeInit() {
     // 统一格式化语言相关的配置
     this.options.language = this.formatLanguages(this.options.language)
     this.options.fallbackLng = this.formatLanguages(this.options.fallbackLng)
-    this.allLanguages = this.formatLanguages(this.allLanguages)
+    this.supportedLngs = this.formatLanguages(this.supportedLngs)
 
     this.generateDetectorMap()
 
     const resolvedLng = this.options.language || this.resolveCurrentLng()
-    if (this.allLanguages.includes(resolvedLng)) {
+    if (this.supportedLngs.includes(resolvedLng)) {
       this.currentLng = resolvedLng
     } else {
       this.warnFallback(resolvedLng)
@@ -226,49 +257,10 @@ class I18nAlly {
       language: this.currentLng,
       namespaces: config.namespace
         ? // 用户配置的namespace优先级最高。如果没有配置，则使用当前语言的namespace
-          this.options.namespaces || this.allNamespace[this.currentLng] || []
+          this.options.namespaces || this.supportedNamespace[this.currentLng] || []
         : [],
     }
 
     return { current }
   }
-
-  static mount<T extends Detector[] | undefined = undefined>(options: I18nSetupOptions<T>) {
-    this.options = options
-    const { current } = this.beforeInit()
-
-    {
-      ;(async () => {
-        try {
-          await this.options.onInit?.(current, {
-            languages: this.allLanguages,
-            namespaces: this.allNamespace,
-          })
-        } catch (e) {
-          console.error(`[${I18nAllyName}]: onInit error`, e)
-        }
-
-        await this.init()
-
-        try {
-          await this.options.onInited?.(current, {
-            languages: this.allLanguages,
-            namespaces: this.allNamespace,
-          })
-        } catch (e) {
-          console.error(`[${I18nAllyName}]: onInited error`, e)
-        }
-      })()
-    }
-
-    return {
-      asyncLoadResource: this.asyncLoadResource.bind(this),
-      languages: this.allLanguages,
-      namespaces: this.allNamespace,
-    }
-  }
 }
-
-const i18nAlly = I18nAlly.mount.bind(I18nAlly)
-
-export { i18nAlly }

@@ -40,9 +40,9 @@ export default defineConfig({
 我们可以在 `onResourceLoaded` hook 中，添加对应namespace的资源文件到国际化库中
 
 ```tsx
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
-i18nAlly({
+new I18nAllyClient({
   onResourceLoaded: (resources) => {
     i18next.addResourceBundle(language, namespace, resources)
   },
@@ -57,7 +57,7 @@ i18nAlly({
 
 ```tsx
 import { createRoutesFromElements, Route } from 'react-router';
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const { asyncLoadResource } = i18nAlly(
   /// ...

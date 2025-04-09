@@ -8,11 +8,11 @@ import { type SessionStorage } from './detectors/session-storage'
 import { type Detector } from './detectors/types'
 
 type ResolveDetectorName<T extends Detector> = T['name']
-type ResolveDetectorLookup<T extends Detector> = Parameters<T['lookup']>[0]['lookup']
+type ResolveDetectorLookup<T extends Detector> = Parameters<T['resolveLanguage']>[0]['lookup']
 
 type Detections<T, U, D> = D extends undefined ? T : T | U
 
-export interface I18nSetupOptions<D extends Detector[] | undefined = undefined> {
+export interface I18nAllyClientOptions<D extends Detector[] | undefined = undefined> {
   /**
    * Current language
    */

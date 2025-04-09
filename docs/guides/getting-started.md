@@ -43,7 +43,7 @@ First, import the client API provided by the plugin from `vite-plugin-i18n-ally/
 
 ```tsx
 // main.tsx
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 ```
 
 The `i18nAlly` API provides some hooks to help developers initialize the application and use resources.
@@ -53,11 +53,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const fallbackLng = 'en'
 
-const { asyncLoadResource } = i18nAlly({
+const { asyncLoadResource } = new I18nAllyClient({
   // onInit hook is called when i18nAlly initializes, before resources are loaded
   async onInit({ language }) {
     i18next.use(initReactI18next).init({
@@ -105,7 +105,7 @@ i18nAlly provides language detection and caching similar to [i18next-browser-lan
 The detection array has decreasing priority. Once a language identifier is detected, it stops further detection.
 
 ```tsx
-i18nAlly({
+new I18nAllyClient({
   detection: [
     {
       detect: 'querystring',

@@ -67,7 +67,7 @@ Called after resources are loaded. Typically used to add resources to the i18n l
 
 - **Type**: `Array`
 
-Language detection and caching. Priority decreases according to the order in the array. Once a language identifier is detected, further detection stops.
+Language detection and caching. Once a language identifier is detected, further detection will stop. The priority is higher the earlier it appears.
 
 Supports the following types:
 
@@ -91,6 +91,8 @@ Supports the following types:
   - `lookup` - Index to get the language identifier from the URL pathname, default is `0`
   - `cache` - Whether to cache the language identifier
 - `navigator`
+
+Refer: [Language Detection](../guides/language-detection.md#client-side)
 
 
 ## customDetectors

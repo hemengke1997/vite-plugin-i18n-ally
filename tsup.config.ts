@@ -13,42 +13,70 @@ const commonConfig = (option: Options): Options => {
   }
 }
 
-export const tsup = defineConfig((option) => [
-  {
-    ...commonConfig(option),
-    entry: ['./src/client/**/*.{ts,tsx}'],
-    outDir: 'dist/client',
-    format: ['esm'],
-    platform: 'browser',
-    splitting: true,
-    ...bundleless(),
-  },
-  {
-    ...commonConfig(option),
-    entry: ['./src/client/index.ts'],
-    outDir: 'dist/client',
-    format: ['cjs'],
-    platform: 'neutral',
-    splitting: false,
-    outExtension: () => ({ js: '.cjs' }),
-  },
-  {
-    ...commonConfig(option),
-    entry: {
-      index: 'src/node/index.ts',
+export const tsup = defineConfig((option) => {
+  const client: Options[] = [
+    {
+      ...commonConfig(option),
+      entry: ['./src/client/**/*.{ts,tsx}'],
+      outDir: 'dist/client',
+      format: ['esm'],
+      platform: 'browser',
+      splitting: true,
+      ...bundleless(),
     },
-    platform: 'node',
-    target: 'node16',
-    noExternal: ['find-up'],
-    format: ['cjs'],
-  },
-  {
-    ...commonConfig(option),
-    entry: {
-      index: 'src/node/index.ts',
+    {
+      ...commonConfig(option),
+      entry: ['./src/client/index.ts'],
+      outDir: 'dist/client',
+      format: ['cjs'],
+      platform: 'neutral',
+      splitting: false,
+      outExtension: () => ({ js: '.cjs' }),
     },
-    platform: 'node',
-    target: 'node16',
-    format: ['esm'],
-  },
-])
+  ]
+
+  const node: Options[] = [
+    {
+      ...commonConfig(option),
+      entry: {
+        index: 'src/node/index.ts',
+      },
+      platform: 'node',
+      noExternal: ['find-up'],
+      format: ['cjs'],
+    },
+    {
+      ...commonConfig(option),
+      entry: {
+        index: 'src/node/index.ts',
+      },
+      platform: 'node',
+      format: ['esm'],
+    },
+  ]
+
+  const server: Options[] = [
+    {
+      ...commonConfig(option),
+      entry: {
+        index: 'src/server/index.ts',
+      },
+      outDir: 'dist/server',
+      platform: 'node',
+      format: ['cjs', 'esm'],
+    },
+  ]
+
+  const utils: Options[] = [
+    {
+      ...commonConfig(option),
+      entry: {
+        utils: 'src/utils.ts',
+      },
+      platform: 'node',
+      format: ['cjs', 'esm'],
+    },
+  ]
+
+  return [...client, ...node, ...server, ...utils]
+})

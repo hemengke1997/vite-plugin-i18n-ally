@@ -2,22 +2,22 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 import { fallbackLng, lookupTarget } from './const'
 import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-const { asyncLoadResource } = i18nAlly<
+const { asyncLoadResource } = new I18nAllyClient<
   (
     | {
         name: 'custom'
-        lookup: (options: { lookup: string }) => string
+        resolveLanguage: (options: { lookup: string }) => string | null
       }
     | {
         name: 'onemore'
-        lookup: (options: { lookup: string }) => string
+        resolveLanguage: (options: { lookup: string }) => string
       }
   )[]
 >({
@@ -49,7 +49,7 @@ const { asyncLoadResource } = i18nAlly<
     )
   },
   onResourceLoaded: (resource, { language, namespace }) => {
-    i18next.addResourceBundle(language, namespace, resource)
+    i18next.addResourceBundle(language, namespace!, resource)
   },
   fallbackLng,
   detection: [
@@ -66,10 +66,10 @@ const { asyncLoadResource } = i18nAlly<
       detect: 'htmlTag',
     },
   ],
-  detectors: [
+  customDetectors: [
     {
       name: 'custom',
-      lookup({ lookup }) {
+      resolveLanguage({ lookup }) {
         console.log(lookup, '自定义检测器')
         return null
       },

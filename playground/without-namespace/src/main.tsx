@@ -2,14 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 import { fallbackLng, lookupTarget } from './const'
 import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-const { asyncLoadResource } = i18nAlly({
+const { asyncLoadResource } = new I18nAllyClient({
   onInit({ language }) {
     i18next.use(initReactI18next).init({
       lng: language,
@@ -37,7 +37,7 @@ const { asyncLoadResource } = i18nAlly({
     )
   },
   onResourceLoaded: (resources, { language }) => {
-    i18next.addResourceBundle(language, i18next.options.defaultNS[0], resources)
+    i18next.addResourceBundle(language, 'translation', resources)
   },
   fallbackLng,
   detection: [

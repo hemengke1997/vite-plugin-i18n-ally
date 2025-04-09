@@ -40,9 +40,9 @@ There are two ways to load resource files:
 We can add the corresponding namespace resource files to the internationalization library in the `onResourceLoaded` hook:
 
 ```tsx
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
-i18nAlly({
+new I18nAllyClient({
   onResourceLoaded: (resources) => {
     i18next.addResourceBundle(language, namespace, resources)
   },
@@ -58,7 +58,7 @@ Since it involves routes, we naturally think of `react-router`. In `react-router
 
 ```tsx
 import { createRoutesFromElements, Route } from 'react-router';
-import { i18nAlly } from 'vite-plugin-i18n-ally/client'
+import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const { asyncLoadResource } = i18nAlly(
   /// ...

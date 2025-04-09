@@ -34,21 +34,19 @@
       "require": "./dist/client/index.cjs",
       "import": "./dist/client/index.js"
     },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "require": "./dist/server/index.cjs",
+      "import": "./dist/server/index.js"
+    },
     "./virtual": {
       "types": "./virtual.d.ts"
-    },
-    "./client/*": {
-      "types": "./dist/client/*.d.ts",
-      "import": "./dist/client/*.js"
     }
   },
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
-    "test": "run-s test:unit test:serve test:build",
-    "test:unit": "vitest run",
-    "test:serve": "vitest run -c vitest.config.e2e.ts",
-    "test:build": "cross-env VITE_TEST_BUILD=1 vitest run -c vitest.config.e2e.ts",
+    "test": "vitest",
     "prepare": "simple-git-hooks",
     "lint": "eslint . --fix --cache",
     "commitlint": "commitlint -e",
@@ -62,13 +60,16 @@
     "vite": ">=5.0.0"
   },
   "dependencies": {
+    "cookie": "^0.6.0",
     "debug": "^4.4.0",
+    "deep-object-diff": "^1.1.9",
     "fast-glob": "^3.3.3",
     "find-up": "^7.0.0",
     "importx": "^0.5.2",
     "js-yaml": "^4.1.0",
     "json5": "^2.2.3",
     "language-tags": "^2.0.1",
+    "negotiator": "^1.0.0",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
@@ -80,6 +81,7 @@
     "@types/debug": "^4.1.12",
     "@types/js-yaml": "^4.0.9",
     "@types/language-tags": "^1.0.4",
+    "@types/negotiator": "^0.6.3",
     "@types/node": "^22.13.5",
     "@types/react": "^18.3.18",
     "bumpp": "^10.1.0",
@@ -101,8 +103,7 @@
     "vite-plugin-i18n-ally": "workspace:*",
     "vite-tsconfig-paths": "^5.1.4",
     "vitepress": "^1.6.3",
-    "vitest": "^3.0.6",
-    "vitest-e2e": "^0.0.10"
+    "vitest": "^3.0.6"
   },
   "simple-git-hooks": {
     "commit-msg": "npm run commitlint",

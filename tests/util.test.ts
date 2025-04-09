@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { ensureArray, findByCase, formatLanguage, omit } from '@/client/utils'
 import { flatten, ROOT_KEY, unflatten } from '@/node/utils/flat'
+import { ensureArray, findByCase, formatLanguage, omit } from '@/utils'
 
 describe('util', () => {
   test('should ensure array', () => {
