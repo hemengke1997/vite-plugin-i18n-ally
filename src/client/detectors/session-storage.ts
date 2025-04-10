@@ -2,12 +2,12 @@ import { type Detector } from './types'
 
 export class SessionStorage implements Detector {
   name = 'sessionStorage' as const
-  resolveLanguage(options: { lookup: string }) {
+  resolveLng(options: { lookup: string }) {
     const { lookup } = options
     return window.sessionStorage.getItem(lookup)
   }
-  cacheUserLanguage(lng: string, options: { cache: string }) {
-    const { cache } = options
-    window.sessionStorage.setItem(cache, lng)
+  persistLng(lng: string, options: { lookup: string }) {
+    const { lookup } = options
+    window.sessionStorage.setItem(lookup, lng)
   }
 }

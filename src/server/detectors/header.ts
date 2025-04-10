@@ -1,10 +1,10 @@
 import Negotiator from 'negotiator'
 import { findByCase } from '@/utils'
-import { type Detector } from './type'
+import { type Detector } from './types'
 
 export class Header implements Detector {
   name = 'header' as const
-  resolveLanguage(options: { request: Request; languages: string[] }) {
+  resolveLng(options: { request: Request; languages: string[] }) {
     const { request } = options
 
     const languages = new Negotiator({

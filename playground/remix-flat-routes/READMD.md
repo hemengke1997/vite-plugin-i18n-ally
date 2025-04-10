@@ -24,7 +24,7 @@ createBrowserRouter(routes, {
       .map((t) => t.i18n)
       .flat()
 
-    await asyncLoadResource(i18next.language, {
+    await i18nAlly.asyncLoadResource(i18next.language, {
       namespaces,
     })
 
@@ -40,7 +40,7 @@ createBrowserRouter(routes, {
 ```ts
 const changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lng?: string, ...args) => {
-  await asyncLoadResource(lng || i18next.language, {
+  await i18nAlly.asyncLoadResource(lng || i18next.language, {
     namespaces,
   })
   return changeLanguage(lng, ...args)

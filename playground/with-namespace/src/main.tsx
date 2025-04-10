@@ -9,15 +9,15 @@ import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-const { asyncLoadResource } = new I18nAllyClient<
+const i18nAlly = new I18nAllyClient<
   (
     | {
         name: 'custom'
-        resolveLanguage: (options: { lookup: string }) => string | null
+        resolveLng: (options: { lookup: string }) => string | null
       }
     | {
         name: 'onemore'
-        resolveLanguage: (options: { lookup: string }) => string
+        resolveLng: (options: { lookup: string }) => string
       }
   )[]
 >({
@@ -69,7 +69,7 @@ const { asyncLoadResource } = new I18nAllyClient<
   customDetectors: [
     {
       name: 'custom',
-      resolveLanguage({ lookup }) {
+      resolveLng({ lookup }) {
         console.log(lookup, '自定义检测器')
         return null
       },
@@ -79,6 +79,6 @@ const { asyncLoadResource } = new I18nAllyClient<
 
 const changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
-  await asyncLoadResource(lang)
+  await i18nAlly.asyncLoadResource(lang)
   return changeLanguage(lang, ...args)
 }

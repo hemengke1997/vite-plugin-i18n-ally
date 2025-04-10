@@ -24,7 +24,7 @@ describe('HtmlTag', () => {
       const mockElement = { getAttribute: vi.fn().mockReturnValue('en') }
       vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as HTMLElement)
 
-      const result = htmlTag.resolveLanguage({ lookup: 'lang' })
+      const result = htmlTag.resolveLng({ lookup: 'lang' })
 
       expect(document.querySelector).toHaveBeenCalledWith('html')
       expect(mockElement.getAttribute).toHaveBeenCalledWith('lang')
@@ -35,7 +35,7 @@ describe('HtmlTag', () => {
       const mockElement = { getAttribute: vi.fn().mockReturnValue(null) }
       vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as HTMLElement)
 
-      const result = htmlTag.resolveLanguage({ lookup: 'lang' })
+      const result = htmlTag.resolveLng({ lookup: 'lang' })
 
       expect(document.querySelector).toHaveBeenCalledWith('html')
       expect(mockElement.getAttribute).toHaveBeenCalledWith('lang')
@@ -45,19 +45,19 @@ describe('HtmlTag', () => {
     test('should return undefined if no html element is found', () => {
       vi.spyOn(document, 'querySelector').mockReturnValue(null)
 
-      const result = htmlTag.resolveLanguage({ lookup: 'lang' })
+      const result = htmlTag.resolveLng({ lookup: 'lang' })
 
       expect(document.querySelector).toHaveBeenCalledWith('html')
       expect(result).toBeFalsy()
     })
   })
 
-  describe('cacheUserLanguage', () => {
+  describe('persistLng', () => {
     test('should set the specified attribute to the given value', () => {
       const mockElement = { setAttribute: vi.fn() }
       vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as HTMLElement)
 
-      htmlTag.cacheUserLanguage('en', { cache: 'lang' })
+      htmlTag.persistLng('en', { lookup: 'lang' })
 
       expect(document.querySelector).toHaveBeenCalledWith('html')
       expect(mockElement.setAttribute).toHaveBeenCalledWith('lang', 'en')
@@ -66,7 +66,7 @@ describe('HtmlTag', () => {
     test('should do nothing if no html element is found', () => {
       vi.spyOn(document, 'querySelector').mockReturnValue(null)
 
-      htmlTag.cacheUserLanguage('en', { cache: 'lang' })
+      htmlTag.persistLng('en', { lookup: 'lang' })
 
       expect(document.querySelector).toHaveBeenCalledWith('html')
     })
@@ -89,7 +89,7 @@ describe('LocalStorage', () => {
     test('should retrieve the correct value from localStorage', () => {
       vi.mocked(window.localStorage.getItem).mockReturnValue('en')
 
-      const result = localStorageDetector.resolveLanguage({ lookup: 'language' })
+      const result = localStorageDetector.resolveLng({ lookup: 'language' })
 
       expect(window.localStorage.getItem).toHaveBeenCalledWith('language')
       expect(result).toBe('en')
@@ -98,41 +98,41 @@ describe('LocalStorage', () => {
     test('should return null if the key does not exist in localStorage', () => {
       vi.mocked(window.localStorage.getItem).mockReturnValue(null)
 
-      const result = localStorageDetector.resolveLanguage({ lookup: 'nonexistent' })
+      const result = localStorageDetector.resolveLng({ lookup: 'nonexistent' })
 
       expect(window.localStorage.getItem).toHaveBeenCalledWith('nonexistent')
       expect(result).toBeNull()
     })
 
     test('should handle undefined lookup key gracefully', () => {
-      const result = localStorageDetector.resolveLanguage({ lookup: undefined as unknown as string })
+      const result = localStorageDetector.resolveLng({ lookup: undefined as unknown as string })
 
       expect(window.localStorage.getItem).toHaveBeenCalledWith(undefined)
       expect(result).toBeNull()
     })
   })
 
-  describe('cacheUserLanguage', () => {
+  describe('persistLng', () => {
     test('should set the correct value in localStorage', () => {
-      localStorageDetector.cacheUserLanguage('en', { cache: 'language' })
+      localStorageDetector.persistLng('en', { lookup: 'language' })
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith('language', 'en')
     })
 
     test('should overwrite an existing value in localStorage', () => {
-      localStorageDetector.cacheUserLanguage('fr', { cache: 'language' })
+      localStorageDetector.persistLng('fr', { lookup: 'language' })
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith('language', 'fr')
     })
 
-    test('should handle undefined cache key gracefully', () => {
-      localStorageDetector.cacheUserLanguage('en', { cache: undefined as unknown as string })
+    test('should handle undefined lookup key gracefully', () => {
+      localStorageDetector.persistLng('en', { lookup: undefined as unknown as string })
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith(undefined, 'en')
     })
 
     test('should handle undefined language value gracefully', () => {
-      localStorageDetector.cacheUserLanguage(undefined as unknown as string, { cache: 'language' })
+      localStorageDetector.persistLng(undefined as unknown as string, { lookup: 'language' })
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith('language', undefined)
     })
@@ -156,7 +156,7 @@ describe('Navigator', () => {
       const mockLanguages = ['en-US', 'fr-FR']
       vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(mockLanguages)
 
-      const result = navigatorDetector.resolveLanguage({ languages: ['en-us', 'es-ES'] })
+      const result = navigatorDetector.resolveLng({ languages: ['en-us', 'es-ES'] })
 
       expect(result).toBe('en-US')
     })
@@ -166,7 +166,7 @@ describe('Navigator', () => {
       const mockLanguages = ['de-DE', 'fr-FR']
       vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(mockLanguages)
 
-      const result = navigatorDetector.resolveLanguage({ languages: ['en-us', 'es-ES'] })
+      const result = navigatorDetector.resolveLng({ languages: ['en-us', 'es-ES'] })
 
       expect(result).toBeFalsy()
     })
@@ -175,7 +175,7 @@ describe('Navigator', () => {
       // Mock navigator.languages as undefined
       vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(undefined as any)
 
-      const result = navigatorDetector.resolveLanguage({ languages: ['en-us', 'es-ES'] })
+      const result = navigatorDetector.resolveLng({ languages: ['en-us', 'es-ES'] })
 
       expect(result).toBeFalsy()
     })
@@ -199,7 +199,7 @@ describe('Path', () => {
         pathname: '/en/about',
       } as Location)
 
-      const result = pathDetector.resolveLanguage({ lookup: 0 })
+      const result = pathDetector.resolveLng({ lookup: 0 })
 
       expect(result).toBe('en')
     })
@@ -209,7 +209,7 @@ describe('Path', () => {
         pathname: '/en/about',
       } as Location)
 
-      const result = pathDetector.resolveLanguage({ lookup: 2 })
+      const result = pathDetector.resolveLng({ lookup: 2 })
 
       expect(result).toBeUndefined()
     })
@@ -219,7 +219,7 @@ describe('Path', () => {
       // Temporarily remove window
       delete (global as any).window
 
-      const result = pathDetector.resolveLanguage({ lookup: 0 })
+      const result = pathDetector.resolveLng({ lookup: 0 })
 
       expect(result).toBeUndefined()
 
@@ -228,7 +228,7 @@ describe('Path', () => {
     })
   })
 
-  describe('cacheUserLanguage', () => {
+  describe('persistLng', () => {
     test('should update the URL with the new language', () => {
       vi.spyOn(window, 'location', 'get').mockReturnValue({
         href: 'http://example.com/en/about?q=1',
@@ -237,7 +237,7 @@ describe('Path', () => {
 
       const replaceStateSpy = vi.spyOn(window.history, 'replaceState').mockImplementation(() => {}) // Mock replaceState to do nothing
 
-      pathDetector.cacheUserLanguage('fr', { cache: 0, languages: ['en', 'fr'] })
+      pathDetector.persistLng('fr', { lookup: 0, languages: ['en', 'fr'] })
 
       expect(replaceStateSpy).toHaveBeenCalledWith({}, '', new URL('/fr/about?q=1', 'http://example.com'))
     })
@@ -250,7 +250,7 @@ describe('Path', () => {
 
       const replaceStateSpy = vi.spyOn(window.history, 'replaceState').mockImplementation(() => {}) // Mock replaceState to do nothing
 
-      pathDetector.cacheUserLanguage('fr', { cache: 0, languages: ['en', 'fr'] })
+      pathDetector.persistLng('fr', { lookup: 0, languages: ['en', 'fr'] })
 
       expect(replaceStateSpy).not.toHaveBeenCalled()
     })
@@ -263,7 +263,7 @@ describe('Path', () => {
 
       const replaceStateSpy = vi.spyOn(window.history, 'replaceState').mockImplementation(() => {}) // Mock replaceState to do nothing
 
-      pathDetector.cacheUserLanguage('fr', { cache: 0, languages: ['en', 'fr'] })
+      pathDetector.persistLng('fr', { lookup: 0, languages: ['en', 'fr'] })
 
       expect(replaceStateSpy).toHaveBeenCalledWith({}, '', new URL('/fr/about', 'http://example.com'))
     })
@@ -289,7 +289,7 @@ describe('QueryString', () => {
         search: '?lang=en',
       } as Location)
 
-      const result = queryStringDetector.resolveLanguage({ lookup: 'lang' })
+      const result = queryStringDetector.resolveLng({ lookup: 'lang' })
 
       expect(result).toBe('en')
     })
@@ -299,13 +299,13 @@ describe('QueryString', () => {
         search: '?other=123',
       } as Location)
 
-      const result = queryStringDetector.resolveLanguage({ lookup: 'lang' })
+      const result = queryStringDetector.resolveLng({ lookup: 'lang' })
 
       expect(result).toBeNull()
     })
   })
 
-  describe('cacheUserLanguage', () => {
+  describe('persistLng', () => {
     test('should update the query parameter with the new language', () => {
       vi.spyOn(window, 'location', 'get').mockReturnValue({
         href: 'http://example.com/?lang=en',
@@ -314,7 +314,7 @@ describe('QueryString', () => {
 
       const replaceStateSpy = vi.spyOn(window.history, 'replaceState').mockImplementation(() => {})
 
-      queryStringDetector.cacheUserLanguage('fr', { cache: 'lang' })
+      queryStringDetector.persistLng('fr', { lookup: 'lang' })
 
       vi.advanceTimersToNextTimer()
       expect(replaceStateSpy).toHaveBeenCalledWith({}, '', new URL('http://example.com/?lang=fr'))
@@ -328,7 +328,7 @@ describe('QueryString', () => {
 
       const replaceStateSpy = vi.spyOn(window.history, 'replaceState').mockImplementation(() => {})
 
-      queryStringDetector.cacheUserLanguage('fr', { cache: 'lang' })
+      queryStringDetector.persistLng('fr', { lookup: 'lang' })
 
       vi.advanceTimersToNextTimer()
 
@@ -354,7 +354,7 @@ describe('SessionStorage', () => {
     test('should retrieve the correct value from sessionStorage', () => {
       vi.mocked(window.sessionStorage.getItem).mockReturnValue('en')
 
-      const result = sessionStorageDetector.resolveLanguage({ lookup: 'language' })
+      const result = sessionStorageDetector.resolveLng({ lookup: 'language' })
 
       expect(window.sessionStorage.getItem).toHaveBeenCalledWith('language')
       expect(result).toBe('en')
@@ -363,22 +363,22 @@ describe('SessionStorage', () => {
     test('should return null if the key does not exist in sessionStorage', () => {
       vi.mocked(window.sessionStorage.getItem).mockReturnValue(null)
 
-      const result = sessionStorageDetector.resolveLanguage({ lookup: 'nonexistent' })
+      const result = sessionStorageDetector.resolveLng({ lookup: 'nonexistent' })
 
       expect(window.sessionStorage.getItem).toHaveBeenCalledWith('nonexistent')
       expect(result).toBeNull()
     })
   })
 
-  describe('cacheUserLanguage', () => {
+  describe('persistLng', () => {
     test('should set the correct value in sessionStorage', () => {
-      sessionStorageDetector.cacheUserLanguage('en', { cache: 'language' })
+      sessionStorageDetector.persistLng('en', { lookup: 'language' })
 
       expect(window.sessionStorage.setItem).toHaveBeenCalledWith('language', 'en')
     })
 
     test('should overwrite an existing value in sessionStorage', () => {
-      sessionStorageDetector.cacheUserLanguage('fr', { cache: 'language' })
+      sessionStorageDetector.persistLng('fr', { lookup: 'language' })
 
       expect(window.sessionStorage.setItem).toHaveBeenCalledWith('language', 'fr')
     })
@@ -404,7 +404,7 @@ describe('Cookie', () => {
     test('should return the correct value for a given cookie name', () => {
       document.cookie = 'language=en'
 
-      const result = cookieDetector.resolveLanguage({ lookup: 'language' })
+      const result = cookieDetector.resolveLng({ lookup: 'language' })
 
       expect(result).toBe('en')
     })
@@ -412,7 +412,7 @@ describe('Cookie', () => {
     test('should return null if the cookie does not exist', () => {
       document.cookie = 'other=value'
 
-      const result = cookieDetector.resolveLanguage({ lookup: 'language' })
+      const result = cookieDetector.resolveLng({ lookup: 'language' })
 
       expect(result).toBeNull()
     })
@@ -420,28 +420,28 @@ describe('Cookie', () => {
     test('should handle cookies with encoded values', () => {
       document.cookie = 'language=%E4%B8%AD%E6%96%87'
 
-      const result = cookieDetector.resolveLanguage({ lookup: 'language' })
+      const result = cookieDetector.resolveLng({ lookup: 'language' })
 
       expect(result).toBe('中文')
     })
 
     test('should return null if no cookie name is provided', () => {
-      const result = cookieDetector.resolveLanguage({ lookup: '' })
+      const result = cookieDetector.resolveLng({ lookup: '' })
 
       expect(result).toBeNull()
     })
   })
 
-  describe('cacheUserLanguage', () => {
+  describe('persistLng', () => {
     test('should set a cookie with the correct value and default attributes', () => {
-      cookieDetector.cacheUserLanguage('en', { cache: 'language' })
+      cookieDetector.persistLng('en', { lookup: 'language' })
 
       expect(document.cookie).toContain('language=en; path=/')
     })
 
     test('should set a cookie with custom attributes', () => {
-      cookieDetector.cacheUserLanguage('en', {
-        cache: 'language',
+      cookieDetector.persistLng('en', {
+        lookup: 'language',
         attributes: { path: '/test', secure: true, sameSite: 'Strict' },
       })
 
@@ -453,8 +453,8 @@ describe('Cookie', () => {
       const mockDate = new Date()
       vi.setSystemTime(mockDate)
 
-      cookieDetector.cacheUserLanguage('en', {
-        cache: 'language',
+      cookieDetector.persistLng('en', {
+        lookup: 'language',
         attributes: { expires: expiresInDays },
       })
 
@@ -462,8 +462,8 @@ describe('Cookie', () => {
       expect(document.cookie).toContain(`expires=${expectedExpiration}`)
     })
 
-    test('should not set a cookie if no cache name is provided', () => {
-      cookieDetector.cacheUserLanguage('en', { cache: '' })
+    test('should not set a cookie if no lookup name is provided', () => {
+      cookieDetector.persistLng('en', { lookup: '' })
 
       expect(document.cookie).toBe('')
     })

@@ -1,19 +1,11 @@
-export interface Detector<
-  L extends Record<string, any> = Record<string, any>,
-  C extends Record<string, any> = Record<string, any>,
-> {
+export interface Detector<> {
   name: string
-  resolveLanguage: (
+  resolveLng: (options: { lookup: any; languages: string[] }) => string | undefined | null
+  persistLng?: (
+    lng: string,
     options: {
       lookup: any
       languages: string[]
-    } & L,
-  ) => string | undefined | null
-  cacheUserLanguage?: (
-    lng: string,
-    options: {
-      cache: any
-      languages: string[]
-    } & C,
+    },
   ) => void
 }

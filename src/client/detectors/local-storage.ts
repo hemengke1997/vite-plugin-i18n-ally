@@ -2,12 +2,12 @@ import { type Detector } from './types'
 
 export class LocalStorage implements Detector {
   name = 'localStorage' as const
-  resolveLanguage(options: { lookup: string }) {
+  resolveLng(options: { lookup: string }) {
     const { lookup } = options
     return window.localStorage.getItem(lookup)
   }
-  cacheUserLanguage(lng: string, options: { cache: string }) {
-    const { cache } = options
-    window.localStorage.setItem(cache, lng)
+  persistLng(lng: string, options: { lookup: string }) {
+    const { lookup } = options
+    window.localStorage.setItem(lookup, lng)
   }
 }

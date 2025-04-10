@@ -1,9 +1,15 @@
-import { formatLanguage } from '@/utils'
+import { formatLanguage, omit } from '@/utils'
 import { Cookie } from './detectors/cookie'
 import { Header } from './detectors/header'
 import { Path } from './detectors/path'
 import { QueryString } from './detectors/query-string'
-import { type Detections, type Detector, type ResolveDetectorLookup, type ResolveDetectorName } from './detectors/type'
+import { type Detections, type Detector, type ResolveDetectorLookup, type ResolveDetectorName } from './detectors/types'
+
+type Detection = {
+  detect: string
+  lookup?: string
+  cache?: boolean
+} & Record<string, any>
 
 export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> = {
   /**
@@ -25,6 +31,8 @@ export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> 
     | {
         detect: ResolveDetectorName<Cookie>
         lookup: ResolveDetectorLookup<Cookie>
+        attributes?: Cookies.CookieAttributes
+        cache?: boolean
       }
     | {
         detect: ResolveDetectorName<Header>
@@ -76,7 +84,7 @@ export class I18nAllyServer {
 
       const detector = this.detectorMap.get(detection[i]?.detect)
 
-      const detectedLang = detector?.resolveLanguage({ lookup, languages: this.options.supportedLngs, request })
+      const detectedLang = detector?.resolveLng({ lookup, languages: this.options.supportedLngs, request })
 
       if (detectedLang) {
         lang = this.formatLanguages(detectedLang)
@@ -87,6 +95,21 @@ export class I18nAllyServer {
     }
 
     return lang
+  }
+
+  persistLng(lang: string, headers: Headers) {
+    const persistDetector = (this.options.detection as Detection[])?.filter((d) => d.cache !== false)
+
+    if (!persistDetector?.length) return
+
+    persistDetector.forEach(async (d) => {
+      const detector = this.detectorMap.get(d.detect)
+      detector?.persistLng?.(lang, {
+        lookup: d.lookup || 'lang',
+        ...omit(d, ['detect', 'lookup', 'cache']),
+        headers,
+      })
+    })
   }
 
   private formatLanguages<T>(lang: T): T {

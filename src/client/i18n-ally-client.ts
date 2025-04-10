@@ -4,7 +4,7 @@ import { name as I18nAllyName } from '../../package.json'
 import { ensureArray, findByCase, formatLanguage, omit } from '../utils'
 import { builtinDetectors, type Detection } from './detectors'
 import { type Detector } from './detectors/types'
-import { getLanguages, getNamespace, separator } from './resolver'
+import { getLanguages, getNamespace } from './resolver'
 import { type I18nAllyClientOptions } from './types'
 
 export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
@@ -102,7 +102,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
     if (config.namespace) {
       if (namespaces) {
         namespaces.forEach((ns) => {
-          const lazyload = resources[`${language}${separator}${ns}`]
+          const lazyload = resources[`${language}${config.separator}${ns}`]
           if (!lazyload) {
             console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${language}' is empty`)
           } else {
@@ -114,9 +114,9 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
         })
       } else {
         Object.keys(resources)
-          .filter((key) => key.startsWith(`${language}${separator}`))
+          .filter((key) => key.startsWith(`${language}${config.separator}`))
           .forEach((key) => {
-            const ns = key.split(separator)[1]
+            const ns = key.split(config.separator)[1]
             const lazyload = resources[key]
             lazyloads.push({
               fn: lazyload,
@@ -164,18 +164,18 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
       )
     }
 
-    enableCache && this.setCache(this.formatLanguages(language))
+    enableCache && this.persistLng(this.formatLanguages(language))
   }
 
-  private setCache(lang: string) {
-    const cacheDetector = (this.options.detection as Detection[])?.filter((d) => (d as Detection).cache !== false)
+  private persistLng(lang: string) {
+    const persistDetector = (this.options.detection as Detection[])?.filter((d) => d.cache !== false)
 
-    if (!cacheDetector?.length) return
+    if (!persistDetector?.length) return
 
-    cacheDetector.forEach(async (d) => {
+    persistDetector.forEach(async (d) => {
       const detector = this.detectorMap.get(d.detect)
-      detector?.cacheUserLanguage?.(lang, {
-        cache: d.lookup || 'lang',
+      detector?.persistLng?.(lang, {
+        lookup: d.lookup || 'lang',
         ...omit(d, ['detect', 'lookup', 'cache']),
         languages: this.supportedLngs,
       })
@@ -196,7 +196,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
     if (this.currentLng !== fallbackLng) {
       await this.loadResource(this.currentLng, { enableCache: false, namespaces })
     }
-    this.options.detection && this.setCache(this.currentLng)
+    this.options.detection && this.persistLng(this.currentLng)
   }
 
   private generateDetectorMap() {
@@ -220,7 +220,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
 
       const detector = this.detectorMap.get(detection[i]?.detect)
 
-      const detectedLang = detector?.resolveLanguage({ lookup: lookup ?? 'lang', languages: this.supportedLngs })
+      const detectedLang = detector?.resolveLng({ lookup: lookup ?? 'lang', languages: this.supportedLngs })
 
       if (detectedLang) {
         lang = this.formatLanguages(detectedLang)

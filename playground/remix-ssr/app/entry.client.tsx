@@ -16,7 +16,7 @@ const initialNamespaces = () => {
 }
 
 async function hydrate() {
-  const { asyncLoadResource } = new I18nAllyClient({
+  const i18nAlly = new I18nAllyClient({
     namespaces: initialNamespaces(),
     fallbackLng: i18nOptions.fallbackLng,
     async onInit({ language }) {
@@ -59,13 +59,11 @@ async function hydrate() {
   })
 
   i18next.changeLanguage = async (lng?: string, ...args) => {
-    await asyncLoadResource(lng || i18next.language, {
+    await i18nAlly.asyncLoadResource(lng || i18next.language, {
       namespaces: [...(await resolveNamespace())],
     })
     return i18nChangeLanguage(lng, ...args)
   }
-
-  window.asyncLoadResource = asyncLoadResource
 }
 
 hydrate()

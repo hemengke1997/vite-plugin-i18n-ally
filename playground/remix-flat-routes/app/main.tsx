@@ -15,7 +15,7 @@ let namespaces: string[] = []
 function main() {
   const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-  const { asyncLoadResource } = new I18nAllyClient({
+  const i18nAlly = new I18nAllyClient({
     namespaces,
     async onInit({ language }) {
       await i18next.use(initReactI18next).init({
@@ -49,7 +49,7 @@ function main() {
                     .map((t) => t.i18n)
                     .flat()
 
-                  await asyncLoadResource(i18next.language, {
+                  await i18nAlly.asyncLoadResource(i18next.language, {
                     namespaces,
                   })
 
@@ -85,7 +85,7 @@ function main() {
 
   const changeLanguage = i18next.changeLanguage
   i18next.changeLanguage = async (lng?: string, ...args) => {
-    await asyncLoadResource(lng || i18next.language, {
+    await i18nAlly.asyncLoadResource(lng || i18next.language, {
       namespaces,
     })
     return changeLanguage(lng, ...args)

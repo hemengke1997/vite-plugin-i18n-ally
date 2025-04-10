@@ -4,7 +4,7 @@ import { bundleless } from 'tsup-plugin-bundleless'
 const commonConfig = (option: Options): Options => {
   return {
     dts: true,
-    clean: !option.watch,
+    clean: false,
     minify: false,
     format: ['cjs', 'esm'],
     sourcemap: !!option.watch,

@@ -8,7 +8,7 @@ import { type SessionStorage } from './detectors/session-storage'
 import { type Detector } from './detectors/types'
 
 type ResolveDetectorName<T extends Detector> = T['name']
-type ResolveDetectorLookup<T extends Detector> = Parameters<T['resolveLanguage']>[0]['lookup']
+type ResolveDetectorLookup<T extends Detector> = Parameters<T['resolveLng']>[0]['lookup']
 
 type Detections<T, U, D> = D extends undefined ? T : T | U
 

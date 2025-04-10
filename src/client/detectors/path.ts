@@ -4,7 +4,7 @@ const regex = /\/([^\/]*)/g
 
 export class Path implements Detector {
   name = 'path' as const
-  resolveLanguage(options: { lookup: number }) {
+  resolveLng(options: { lookup: number }) {
     const { lookup: lookupFromPathIndex } = options
     if (typeof window === 'undefined') return undefined
 
@@ -14,9 +14,9 @@ export class Path implements Detector {
     const index = typeof lookupFromPathIndex === 'number' ? lookupFromPathIndex : 0
     return language[index]?.replace('/', '')
   }
-  cacheUserLanguage(lng: string, options: { cache: number | string; languages: string[] }) {
-    const { cache: cachePathIndex, languages } = options
-    const index = typeof cachePathIndex === 'number' ? cachePathIndex : 0
+  persistLng(lng: string, options: { lookup: number | string; languages: string[] }) {
+    const { lookup: lookupPathIndex, languages } = options
+    const index = typeof lookupPathIndex === 'number' ? lookupPathIndex : 0
     const currentURL = new URL(window.location.href)
     const language = currentURL.pathname.match(regex)
     if (!Array.isArray(language)) return

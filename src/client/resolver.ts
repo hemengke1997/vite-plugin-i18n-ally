@@ -1,15 +1,13 @@
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
 
-const { separator } = config
-
-export { separator }
+const { namespace, separator } = config
 
 /**
  * 获取所有语言（大小写敏感）
  */
 export function getLanguages() {
-  if (config.namespace) {
+  if (namespace) {
     return Array.from(
       new Set(
         Object.keys(resources)
@@ -28,7 +26,7 @@ export function getLanguages() {
  * 否则返回 {}
  */
 export function getNamespace() {
-  if (config.namespace) {
+  if (namespace) {
     const namespaceMap = new Map<string, string[]>()
     Object.keys(resources)
       .filter((key) => key.includes(separator))

@@ -29,7 +29,7 @@ import globalCss from './css/global.css?url'
 export const clientLoader: ClientLoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
   if (url) {
-    await window.asyncLoadResource?.(i18next.language, {
+    await window.i18nAlly.asyncLoadResource(i18next.language, {
       namespaces: await resolveNamespace(url.pathname),
     })
   }

@@ -57,7 +57,7 @@ import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const fallbackLng = 'en'
 
-const { asyncLoadResource } = new I18nAllyClient({
+const i18nAlly = new I18nAllyClient({
   // onInit hook is called when i18nAlly initializes, before resources are loaded
   async onInit({ language }) {
     i18next.use(initReactI18next).init({
@@ -88,12 +88,12 @@ const { asyncLoadResource } = new I18nAllyClient({
 To load resources when switching languages, we need to override the `i18next.changeLanguage` method:
 
 ```tsx
-const { asyncLoadResource } = i18nAlly()
+const i18nAlly = new I18nAllyClient()
 
 const i18nextChangeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
   // Load resources before switching languages
-  await asyncLoadResource(lang)
+  await i18nAlly.asyncLoadResource(lang)
   return i18nextChangeLanguage(lang, ...args)
 }
 ```

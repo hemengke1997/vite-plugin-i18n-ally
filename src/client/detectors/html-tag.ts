@@ -2,17 +2,17 @@ import { type Detector } from './types'
 
 export class HtmlTag implements Detector {
   name = 'htmlTag' as const
-  resolveLanguage(options: { lookup: string }) {
+  resolveLng(options: { lookup: string }) {
     const { lookup } = options
     return document.querySelector('html')?.getAttribute(lookup)
   }
-  cacheUserLanguage(
+  persistLng(
     lng: string,
     options: {
-      cache: string
+      lookup: string
     },
   ) {
-    const { cache } = options
-    document.querySelector('html')?.setAttribute(cache, lng)
+    const { lookup } = options
+    document.querySelector('html')?.setAttribute(lookup, lng)
   }
 }

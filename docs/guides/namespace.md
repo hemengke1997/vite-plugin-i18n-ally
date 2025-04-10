@@ -60,14 +60,14 @@ Since it involves routes, we naturally think of `react-router`. In `react-router
 import { createRoutesFromElements, Route } from 'react-router';
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
-const { asyncLoadResource } = i18nAlly(
+const i18nAlly = I18nAllyClient(
   /// ...
 )
 
 const routes = createRoutesFromElements(
   <Route path="/">
     <Route path="a" lazy={() => import("./a")} loader={async () => {
-      await asyncLoadResource(i18next.language, {
+      await i18nAlly.asyncLoadResource(i18next.language, {
         namespaces: ['a']
       })
     }} />

@@ -9,7 +9,7 @@ import './index.css'
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
-const { asyncLoadResource } = new I18nAllyClient({
+const i18nAlly = new I18nAllyClient({
   onInit({ language }) {
     i18next.use(initReactI18next).init({
       lng: language,
@@ -58,6 +58,6 @@ const { asyncLoadResource } = new I18nAllyClient({
 
 const changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lang: string, ...args) => {
-  await asyncLoadResource(lang)
+  await i18nAlly.asyncLoadResource(lang)
   return changeLanguage(lang, ...args)
 }

@@ -1,5 +1,7 @@
 import { type Detector } from './types'
 
+// Adopted from js-cookie
+
 export interface CookieAttributes {
   /**
    * Define when the cookie will be removed. Value can be a Number
@@ -41,7 +43,7 @@ export interface CookieAttributes {
 
 export class Cookie implements Detector {
   name = 'cookie' as const
-  resolveLanguage(options: { lookup: string }) {
+  resolveLng(options: { lookup: string }) {
     const reader = (value: string) => {
       if (value[0] === '"') {
         value = value.slice(1, -1)
@@ -73,15 +75,15 @@ export class Cookie implements Detector {
 
     return jar[name] || null
   }
-  cacheUserLanguage(lng: string, options: { cache: string; attributes?: CookieAttributes }) {
-    const { cache } = options
+  persistLng(lng: string, options: { lookup: string; attributes?: CookieAttributes }) {
+    const { lookup } = options
 
-    if (!cache) return
+    if (!lookup) return
 
     const write = (value: string) =>
       encodeURIComponent(value).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent)
 
-    let name = options.cache
+    let name = options.lookup
 
     let attributes: CookieAttributes = Object.assign({}, { path: '/' })
     if (options.attributes) {

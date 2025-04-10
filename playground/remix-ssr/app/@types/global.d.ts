@@ -1,11 +1,8 @@
+import { type I18nAllyClient } from 'vite-plugin-i18n-ally/client'
+
 declare global {
   interface Window {
-    asyncLoadResource?: (
-      language?: string,
-      options?: {
-        namespaces?: string[] | string
-      },
-    ) => Promise<void>
+    i18nAlly: I18nAllyClient
   }
 }
 

@@ -1,6 +1,6 @@
 declare module 'virtual:i18n-ally-async-resource' {
   type I18nAllyAsyncResource = {
-    [lang_ns: string]: () => Promise<{ default: Record<string, any> | undefined }>
+    [lang__ns: string]: () => Promise<{ default: Record<string, any> | undefined }>
   }
   const resources: I18nAllyAsyncResource
   export { resources }
