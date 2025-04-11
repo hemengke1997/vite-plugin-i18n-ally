@@ -79,7 +79,8 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
   ) {
     language = this.formatLanguages(language)
     const { fallbackLng } = this.options
-    const { enableCache = true, namespaces } = options || {}
+    const { enableCache = true } = options || {}
+    let { namespaces } = options || {}
 
     if (!language) {
       language = this.currentLng || fallbackLng
@@ -100,6 +101,9 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
     language = this.getSensitiveLang(language)
 
     if (config.namespace) {
+      // 希望请求的 namespaces
+      // 如果没有传入，则使用初始化时的 namespaces
+      namespaces ||= this.options.namespaces
       if (namespaces) {
         namespaces.forEach((ns) => {
           const lazyload = resources[`${language}${config.separator}${ns}`]
@@ -113,16 +117,19 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
           }
         })
       } else {
-        Object.keys(resources)
-          .filter((key) => key.startsWith(`${language}${config.separator}`))
-          .forEach((key) => {
-            const ns = key.split(config.separator)[1]
-            const lazyload = resources[key]
+        // 用户未传入namespaces
+        // 请求当前语言支持的所有的namespace
+        this.supportedNamespace[language].forEach((ns) => {
+          const lazyload = resources[`${language}${config.separator}${ns}`]
+          if (!lazyload) {
+            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${language}' is empty`)
+          } else {
             lazyloads.push({
               fn: lazyload,
               namespace: ns,
             })
-          })
+          }
+        })
       }
     } else {
       const lazyload = resources[language]

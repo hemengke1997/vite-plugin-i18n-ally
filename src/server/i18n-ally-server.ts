@@ -27,7 +27,7 @@ export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> 
    * @default false
    */
   lowerCaseLng?: boolean
-  detection: Detections<
+  detection?: Detections<
     | {
         detect: ResolveDetectorName<Cookie>
         lookup: ResolveDetectorLookup<Cookie>
