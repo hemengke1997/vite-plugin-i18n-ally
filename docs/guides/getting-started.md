@@ -58,10 +58,10 @@ import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 const fallbackLng = 'en'
 
 const i18nAlly = new I18nAllyClient({
-  // onInit hook is called when i18nAlly initializes, before resources are loaded
-  async onInit({ language }) {
+  // onBeforeInit hook is called when i18nAlly initializes, before resources are loaded
+  async onBeforeInit({ lng }) {
     i18next.use(initReactI18next).init({
-      lng: language,
+      lng,
       resources: {}, // Empty object, resources will be loaded in onResourceLoaded hook
       nsSeparator: '.',
       keySeparator: '.',
@@ -78,8 +78,8 @@ const i18nAlly = new I18nAllyClient({
   },
   // onResourceLoaded hook is called after resources are loaded
   // Here we need to add the resources to i18next
-  onResourceLoaded: (resources, { language }) => {
-    i18next.addResourceBundle(language, i18next.options.defaultNS[0], resources)
+  onResourceLoaded: (resources, { lng }) => {
+    i18next.addResourceBundle(lng, i18next.options.defaultNS[0], resources)
   },
   fallbackLng,
 })
@@ -91,10 +91,10 @@ To load resources when switching languages, we need to override the `i18next.cha
 const i18nAlly = new I18nAllyClient()
 
 const i18nextChangeLanguage = i18next.changeLanguage
-i18next.changeLanguage = async (lang: string, ...args) => {
+i18next.changeLanguage = async (lng: string, ...args) => {
   // Load resources before switching languages
-  await i18nAlly.asyncLoadResource(lang)
-  return i18nextChangeLanguage(lang, ...args)
+  await i18nAlly.asyncLoadResource(lng)
+  return i18nextChangeLanguage(lng, ...args)
 }
 ```
 

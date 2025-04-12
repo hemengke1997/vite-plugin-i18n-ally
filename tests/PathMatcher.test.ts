@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { ParsePathMatcher } from '../src/node/path-matcher'
 
 describe('PathMatching', () => {
@@ -21,7 +21,7 @@ describe('PathMatching', () => {
   ] as const
 
   for (const [map, path, expectedNamespace, expectedLocale] of cases) {
-    test(map, () => {
+    it(map, () => {
       const re = ParsePathMatcher(map)
       const result = re.exec(path)
 

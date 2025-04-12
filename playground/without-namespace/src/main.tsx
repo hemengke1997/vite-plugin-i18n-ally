@@ -10,9 +10,9 @@ import './index.css'
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
 const i18nAlly = new I18nAllyClient({
-  onInit({ language }) {
+  onBeforeInit({ lng }) {
     i18next.use(initReactI18next).init({
-      lng: language,
+      lng,
       returnNull: false,
       react: {
         useSuspense: true,
@@ -36,8 +36,8 @@ const i18nAlly = new I18nAllyClient({
       </React.StrictMode>,
     )
   },
-  onResourceLoaded: (resources, { language }) => {
-    i18next.addResourceBundle(language, 'translation', resources)
+  onResourceLoaded: (resources, { lng }) => {
+    i18next.addResourceBundle(lng, 'translation', resources)
   },
   fallbackLng,
   detection: [

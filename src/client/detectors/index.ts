@@ -19,9 +19,3 @@ export const builtinDetectors = [
   new QueryString(),
   new SessionStorage(),
 ]
-
-export type Detection = {
-  detect: string
-  lookup?: string
-  cache?: boolean
-} & Record<string, any>

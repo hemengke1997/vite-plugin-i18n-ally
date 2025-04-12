@@ -1,6 +1,17 @@
 import path from 'node:path'
 import { createServer, type ViteDevServer } from 'vite'
-import { afterEach, beforeEach, describe, expect, type Mock, type MockInstance, test, vi } from 'vitest'
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  type Mock,
+  type MockInstance,
+  vi,
+} from 'vitest'
 import { type I18nAllyClientOptions } from '@/client'
 
 async function createViteServer() {
@@ -34,28 +45,33 @@ describe('I18nAlly', () => {
   let consoleWarnMock: MockInstance
   let viteServer: ViteDevServer
 
+  beforeAll(async () => {
+    viteServer = await createViteServer()
+  })
+
+  afterAll(async () => {
+    await viteServer.close()
+  })
+
   beforeEach(async () => {
     onResourceLoadedMock = vi.fn()
     onInitMock = vi.fn()
     onInitedMock = vi.fn()
     consoleWarnMock = vi.spyOn(console, 'warn')
-
-    viteServer = await createViteServer()
   })
 
   afterEach(async () => {
     vi.restoreAllMocks()
-    await viteServer.close()
   })
 
-  test('should initialize with provided options', async () => {
+  it('should initialize with provided options', async () => {
     const options: I18nAllyClientOptions = {
       fallbackLng: 'en',
-      language: 'en',
+      lng: 'en',
       lowerCaseLng: true,
       detection: [],
       onResourceLoaded: onResourceLoadedMock,
-      onInit: onInitMock,
+      onBeforeInit: onInitMock,
       onInited: onInitedMock,
     }
     const I18nAlly = await import('@/client/i18n-ally-client').then((m) => m.I18nAllyClient)
@@ -64,13 +80,16 @@ describe('I18nAlly', () => {
 
     expect(i18nAlly).toBeDefined()
     expect(i18nAlly.supportedLngs).toContain('en')
-    expect(i18nAlly.supportedNamespace).toBeDefined()
+    expect(i18nAlly.supportedNs).toBeDefined()
+
+    // i18nAllyClient 的options是只读的，不能直接修改
+    expect(i18nAlly['options']).toEqual(options)
   })
 
-  test('should load resources for a specific language and namespace', async () => {
+  it('should load resources for a specific language and namespace', async () => {
     const options: I18nAllyClientOptions = {
       fallbackLng: 'en',
-      language: 'en',
+      lng: 'en',
       lowerCaseLng: true,
       detection: [],
       onResourceLoaded: onResourceLoadedMock,
@@ -79,15 +98,15 @@ describe('I18nAlly', () => {
 
     const i18nAlly = new I18nAlly(options)
 
-    await i18nAlly.asyncLoadResource('zh', { namespaces: 'test' })
+    await i18nAlly.asyncLoadResource('zh', { ns: 'test' })
 
-    expect(onResourceLoadedMock).toHaveBeenCalledWith({ key: '中文' }, { language: 'zh', namespace: 'test' })
+    expect(onResourceLoadedMock).toHaveBeenCalledWith({ key: '中文' }, { lng: 'zh', ns: 'test' })
   })
 
-  test('should fallback to default language if resource is missing', async () => {
+  it('should fallback to default language if resource is missing', async () => {
     const options: I18nAllyClientOptions = {
       fallbackLng: 'en',
-      language: 'fr',
+      lng: 'fr',
       lowerCaseLng: true,
       detection: [],
       onResourceLoaded: onResourceLoadedMock,
@@ -99,11 +118,32 @@ describe('I18nAlly', () => {
 
     expect(consoleWarnMock).toBeCalledTimes(1)
 
-    await i18nAlly.asyncLoadResource('es', { namespaces: 'test' })
+    await i18nAlly.asyncLoadResource('es', { ns: 'test' })
 
-    expect(onResourceLoadedMock).toHaveBeenCalledWith({ key: 'en' }, { language: 'en', namespace: 'test' })
+    expect(onResourceLoadedMock).toHaveBeenCalledWith({ key: 'en' }, { lng: 'en', ns: 'test' })
 
     expect(consoleWarnMock).toBeCalledTimes(2)
+  })
+
+  it('should override lngs', async () => {
+    const options: I18nAllyClientOptions = {
+      fallbackLng: 'en',
+      lngs: ['en', 'zh', 'unknown'],
+      lowerCaseLng: true,
+      detection: [],
+      onResourceLoaded: onResourceLoadedMock,
+    }
+
+    const I18nAlly = await import('@/client/i18n-ally-client').then((m) => m.I18nAllyClient)
+
+    const i18nAlly = new I18nAlly(options)
+
+    // 如果lngs中有不支持的语言，会被过滤掉
+    expect(i18nAlly['lngs']).toEqual(['en', 'zh'])
+    expect(i18nAlly.supportedLngs).toEqual(expect.arrayContaining(['de', 'en', 'zh-tw', 'zh']))
+
+    await i18nAlly.asyncLoadResource('de', { ns: 'test' })
+    expect(consoleWarnMock).toHaveBeenCalledWith(expect.stringContaining(`language 'de' not found`))
   })
 })
 

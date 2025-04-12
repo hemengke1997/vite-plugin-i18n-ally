@@ -64,17 +64,19 @@ export const tsup = defineConfig((option) => {
       outDir: 'dist/server',
       platform: 'node',
       format: ['cjs', 'esm'],
+      splitting: true,
     },
   ]
 
   const utils: Options[] = [
     {
       ...commonConfig(option),
-      entry: {
-        utils: 'src/utils.ts',
-      },
-      platform: 'node',
-      format: ['cjs', 'esm'],
+      entry: ['src/utils/*.ts'],
+      platform: 'neutral',
+      format: ['esm', 'cjs'],
+      outDir: 'dist/utils',
+      splitting: true,
+      ...bundleless(),
     },
   ]
 

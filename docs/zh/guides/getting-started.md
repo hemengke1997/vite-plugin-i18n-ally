@@ -59,10 +59,10 @@ import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 const fallbackLng = 'en'
 
 const i18nAlly = new I18nAllyClient({
-  // onInit hook 在i18nAlly初始化时调用，此时国际化资源还未加载
-  async onInit({ language }) {
+  // onBeforeInit hook 在i18nAlly初始化时调用，此时国际化资源还未加载
+  async onBeforeInit({ lng }) {
     i18next.use(initReactI18next).init({
-      lng: language,
+      lng,
       resources: {}, // 空对象即可，资源会在onResourceLoaded hook中加载
       nsSeparator: '.',
       keySeparator: '.',
@@ -79,8 +79,8 @@ const i18nAlly = new I18nAllyClient({
   },
   // onResourceLoaded hook 在资源加载完成后调用
   // 在这里我们需要将资源添加到i18next中
-  onResourceLoaded: (resources, { language }) => {
-    i18next.addResourceBundle(language, i18next.options.defaultNS[0], resources)
+  onResourceLoaded: (resources, { lng }) => {
+    i18next.addResourceBundle(lng, i18next.options.defaultNS[0], resources)
   },
   fallbackLng,
 })
@@ -88,14 +88,14 @@ const i18nAlly = new I18nAllyClient({
 
 为了在语言切换时加载资源，我们需要重写 `i18next.changeLanguage` 方法
 
-```tsx{3-8}
+```tsx
 const i18nAlly = new I18nAllyClient()
 
 const i18nextChangeLanguage = i18next.changeLanguage
-i18next.changeLanguage = async (lang: string, ...args) => {
+i18next.changeLanguage = async (lng: string, ...args) => {
   // 在语言切换前加载资源
-  await i18nAlly.asyncLoadResource(lang)
-  return i18nextChangeLanguage(lang, ...args)
+  await i18nAlly.asyncLoadResource(lng)
+  return i18nextChangeLanguage(lng, ...args)
 }
 ```
 

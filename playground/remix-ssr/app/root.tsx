@@ -15,13 +15,13 @@ import { isBrowser } from 'browser-or-node'
 import i18next from 'i18next'
 import { ExternalScripts } from 'remix-utils/external-scripts'
 import { manifest } from 'virtual:public-typescript-manifest'
+import { getSupportedLngs } from 'vite-plugin-i18n-ally/server'
 import AntdConfigProvider from './components/antd-config-provider'
 import { ErrorBoundaryComponent } from './components/error-boundary'
 import { useChangeI18n } from './hooks/use-change-i18n'
 import { i18nOptions } from './i18n/i18n'
 import { i18nServer, localeCookie } from './i18n/i18n.server'
 import { resolveNamespace } from './i18n/namespace.client'
-import { getLanguages } from './i18n/resolver'
 import { siteConfig } from './utils/constants/site'
 import { isDev } from './utils/env'
 import globalCss from './css/global.css?url'
@@ -30,7 +30,7 @@ export const clientLoader: ClientLoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
   if (url) {
     await window.i18nAlly.asyncLoadResource(i18next.language, {
-      namespaces: await resolveNamespace(url.pathname),
+      ns: await resolveNamespace(url.pathname),
     })
   }
   return {}
@@ -68,7 +68,7 @@ export const links: LinksFunction = () => {
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const url = new URL(request.url)
   // locale
-  const locale = getLanguages().includes(params.lang!) ? params.lang! : await i18nServer.getLocale(request)
+  const locale = getSupportedLngs().includes(params.lang!) ? params.lang! : await i18nServer.getLocale(request)
 
   if (!params.lang || params.lang !== locale) {
     if (url.pathname === '/') {

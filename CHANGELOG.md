@@ -175,7 +175,7 @@
 
 ### Bug Fixes
 
-* `onInit` does not support asynchronous ([bfc3de1](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/bfc3de1c22caea53c7fc663e916c038cab2a6d10))
+* `onBeforeInit` does not support asynchronous ([bfc3de1](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/bfc3de1c22caea53c7fc663e916c038cab2a6d10))
 * react-router-dom navigate query cache failed ([ebcfc1e](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/ebcfc1e3dbe9a1d83a612ea9bfac490d44c3dc8c))
 
 

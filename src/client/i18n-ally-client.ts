@@ -1,42 +1,56 @@
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
+import { type Detection, detectLanguage } from '@/utils/detect'
 import { name as I18nAllyName } from '../../package.json'
-import { ensureArray, findByCase, formatLanguage, omit } from '../utils'
-import { builtinDetectors, type Detection } from './detectors'
+import { getSupportedLngs, getSupportedNs } from '../utils/supported'
+import { ensureArray, findByCase, formatLng, omit } from '../utils/utils'
+import { builtinDetectors } from './detectors'
 import { type Detector } from './detectors/types'
-import { getLanguages, getNamespace } from './resolver'
 import { type I18nAllyClientOptions } from './types'
 
 export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
-  private options: I18nAllyClientOptions<any> = {} as I18nAllyClientOptions<any>
-  currentLng: string = ''
-  supportedLngs: string[] = getLanguages()
-  supportedNamespace: { [lang: string]: string[] } = getNamespace()
+  private readonly options: I18nAllyClientOptions<T> = {} as I18nAllyClientOptions<T>
 
-  private loaded: { [lang: string]: Set<string> } = {}
+  private loaded: { [lng: string]: Set<string> } = {}
   private detectorMap: Map<string, Detector> = new Map()
+
+  lng?: string
+  lngs: string[] = []
+  fallbackLng: string = ''
+
+  /**
+   * @description
+   * 当前语言
+   */
+  language: string = ''
+  /**
+   * @description
+   * i18n-ally资源支持的语言
+   */
+  supportedLngs: string[] = getSupportedLngs()
+  supportedNs: { [lng: string]: string[] } = getSupportedNs()
 
   constructor(options: I18nAllyClientOptions<T>) {
     this.options = options
-    const { current } = this.beforeInit()
+    const { current } = this.onReady()
 
     {
       ;(async () => {
         try {
-          await this.options.onInit?.(current, {
-            languages: this.supportedLngs,
-            namespaces: this.supportedNamespace,
+          await this.options.onBeforeInit?.(current, {
+            lngs: this.lngs,
+            ns: this.supportedNs,
           })
         } catch (e) {
-          console.error(`[${I18nAllyName}]: onInit error`, e)
+          console.error(`[${I18nAllyName}]: onBeforeInit error`, e)
         }
 
         await this.init()
 
         try {
           await this.options.onInited?.(current, {
-            languages: this.supportedLngs,
-            namespaces: this.supportedNamespace,
+            lngs: this.lngs,
+            ns: this.supportedNs,
           })
         } catch (e) {
           console.error(`[${I18nAllyName}]: onInited error`, e)
@@ -48,97 +62,130 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
   }
 
   asyncLoadResource(
-    language?: string,
+    lng?: string,
     options?: {
-      namespaces?: string[] | string
+      ns?: string[] | string
     },
   ) {
-    const { namespaces } = options || {}
-    return this.loadResource(language, {
-      namespaces: ensureArray(namespaces),
+    const { ns } = options || {}
+    return this.loadResource(lng, {
+      ns: ensureArray(ns),
     })
   }
 
-  private formatLanguages<T>(lang: T): T {
-    return formatLanguage(lang, this.options.lowerCaseLng)
+  private onReady() {
+    // 统一格式化语言相关的配置
+    // 不更改用户传入的配置，保持options是用户传入的配置
+    this.lng = this.formatLngs(this.options.lng)
+    this.fallbackLng = this.formatLngs(this.options.fallbackLng)
+    this.supportedLngs = this.formatLngs(this.supportedLngs)
+
+    this.lngs = this.formatLngs(this.options.lngs || []).filter((lng) => this.supportedLngs.includes(lng))
+    if (!this.lngs?.length) {
+      this.lngs = this.supportedLngs
+    }
+
+    this.generateDetectorMap()
+
+    const resolvedLng = this.lng || this.detect()
+    if (this.lngs.includes(resolvedLng)) {
+      this.language = resolvedLng
+    } else {
+      this.warnFallback(resolvedLng)
+      this.language = this.fallbackLng
+    }
+
+    const current = {
+      lng: this.language,
+      ns: config.namespace
+        ? // 用户配置的namespace优先级最高。如果没有配置，则使用当前语言的namespace
+          this.options.ns || this.supportedNs[this.language] || []
+        : [],
+    }
+
+    return { current }
+  }
+
+  private formatLngs<T>(lng: T): T {
+    return formatLng(lng, this.options.lowerCaseLng)
   }
 
   /**
    * 获取资源的语言
    */
-  private getSensitiveLang(language: string) {
-    return findByCase(getLanguages(), language, this.options.lowerCaseLng) || language
+  private getSensitiveLang(lng: string) {
+    return findByCase(getSupportedLngs(), lng, this.options.lowerCaseLng) || lng
   }
 
   private async loadResource(
-    language?: string,
+    lng?: string,
     options?: {
-      namespaces?: string[] | undefined
+      ns?: string[] | undefined
       enableCache?: boolean // avoid querystring blink
     },
   ) {
-    language = this.formatLanguages(language)
+    lng = this.formatLngs(lng)
     const { fallbackLng } = this.options
     const { enableCache = true } = options || {}
-    let { namespaces } = options || {}
+    let { ns } = options || {}
 
-    if (!language) {
-      language = this.currentLng || fallbackLng
+    if (!lng) {
+      lng = this.language || fallbackLng
     }
 
-    if (!this.supportedLngs.includes(language) && language !== fallbackLng) {
-      this.warnFallback(language)
-      language = fallbackLng
+    if (!this.lngs.includes(lng) && lng !== fallbackLng) {
+      this.warnFallback(lng)
+      lng = fallbackLng
     }
 
     const lazyloads: {
       fn: () => Promise<{ default: Record<string, string> | undefined }>
-      namespace: string | undefined
+      ns: string | undefined
     }[] = []
 
     // 资源的 key 是大小写敏感的
     // 从 resource 中取值时要注意用大小写敏感的语言
-    language = this.getSensitiveLang(language)
+    lng = this.getSensitiveLang(lng)
 
     if (config.namespace) {
-      // 希望请求的 namespaces
-      // 如果没有传入，则使用初始化时的 namespaces
-      namespaces ||= this.options.namespaces
-      if (namespaces) {
-        namespaces.forEach((ns) => {
-          const lazyload = resources[`${language}${config.separator}${ns}`]
+      // 希望请求的 ns
+      // 如果没有传入，则使用初始化时的 ns
+      ns ||= this.options.ns
+      if (ns) {
+        ns.forEach((ns) => {
+          const lazyload = resources[`${lng}${config.separator}${ns}`]
           if (!lazyload) {
-            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${language}' is empty`)
+            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${lng}' is empty`)
           } else {
             lazyloads.push({
               fn: lazyload,
-              namespace: ns,
+              ns,
             })
           }
         })
       } else {
         // 用户未传入namespaces
         // 请求当前语言支持的所有的namespace
-        this.supportedNamespace[language].forEach((ns) => {
-          const lazyload = resources[`${language}${config.separator}${ns}`]
+        this.supportedNs[lng].forEach((ns) => {
+          const lazyload = resources[`${lng}${config.separator}${ns}`]
           if (!lazyload) {
-            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${language}' is empty`)
+            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${lng}' is empty`)
           } else {
             lazyloads.push({
               fn: lazyload,
-              namespace: ns,
+              ns,
             })
           }
         })
       }
     } else {
-      const lazyload = resources[language]
+      const lazyload = resources[lng]
       if (!lazyload) {
         console.warn(`[${I18nAllyName}]: No locale resources found`)
       } else {
         lazyloads.push({
           fn: lazyload,
-          namespace: undefined,
+          ns: undefined,
         })
       }
     }
@@ -148,62 +195,62 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
         lazyloads.map(async (lazyload) => {
           const resources = (await lazyload.fn()).default || null
           if (!resources) {
-            console.warn(`[${I18nAllyName}]: Resource of language '${language}' is empty`)
+            console.warn(`[${I18nAllyName}]: Resource of language '${lng}' is empty`)
             return
           }
 
-          if (config.namespace && lazyload.namespace) {
-            this.loaded[language] ||= new Set()
-            this.loaded[language].add(lazyload.namespace)
+          if (config.namespace && lazyload.ns) {
+            this.loaded[lng] ||= new Set()
+            this.loaded[lng].add(lazyload.ns)
 
-            if (!this.loaded[fallbackLng]?.has(lazyload.namespace)) {
+            if (!this.loaded[fallbackLng]?.has(lazyload.ns)) {
               // 如果 fallback 的 namespace 未加载，加载 fallback 的 namespace
-              this.loadResource(fallbackLng, { enableCache: false, namespaces: [lazyload.namespace] })
+              this.loadResource(fallbackLng, { enableCache: false, ns: [lazyload.ns] })
             }
           }
 
           // inject resources to i18n library, eg. i18next
-          await this.options.onResourceLoaded(resources, {
-            language: this.formatLanguages(language),
-            namespace: lazyload.namespace,
+          await this.options.onResourceLoaded?.(resources, {
+            lng: this.formatLngs(lng),
+            ns: lazyload.ns,
           })
         }),
       )
     }
 
-    enableCache && this.persistLng(this.formatLanguages(language))
+    enableCache && this.persistLng(this.formatLngs(lng))
   }
 
-  private persistLng(lang: string) {
+  private persistLng(lng: string) {
     const persistDetector = (this.options.detection as Detection[])?.filter((d) => d.cache !== false)
 
     if (!persistDetector?.length) return
 
     persistDetector.forEach(async (d) => {
       const detector = this.detectorMap.get(d.detect)
-      detector?.persistLng?.(lang, {
-        lookup: d.lookup || 'lang',
+      detector?.persistLng?.(lng, {
+        lookup: d.lookup || 'lng',
         ...omit(d, ['detect', 'lookup', 'cache']),
-        languages: this.supportedLngs,
+        lngs: this.lngs,
       })
     })
   }
 
-  private warnFallback(language: string) {
-    if (language !== this.options.fallbackLng) {
+  private warnFallback(lng: string) {
+    if (lng !== this.fallbackLng) {
       console.warn(
-        `[${I18nAllyName}]: Current language '${language}' not found in locale resources, fallback to '${this.options.fallbackLng}'`,
+        `[${I18nAllyName}]: Current language '${lng}' not found in locale resources, fallback to '${this.fallbackLng}'`,
       )
     }
   }
 
   private async init() {
-    const { fallbackLng, namespaces } = this.options
-    await this.loadResource(fallbackLng, { enableCache: false, namespaces })
-    if (this.currentLng !== fallbackLng) {
-      await this.loadResource(this.currentLng, { enableCache: false, namespaces })
+    const { fallbackLng, ns } = this.options
+    await this.loadResource(fallbackLng, { enableCache: false, ns })
+    if (this.language !== fallbackLng) {
+      await this.loadResource(this.language, { enableCache: false, ns })
     }
-    this.options.detection && this.persistLng(this.currentLng)
+    this.options.detection && this.persistLng(this.language)
   }
 
   private generateDetectorMap() {
@@ -214,60 +261,17 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
   /**
    * @description Resolve current language from detector
    */
-  private resolveCurrentLng() {
-    const { fallbackLng, detection } = this.options
-    let lang: string = fallbackLng
-
-    if (!detection?.length) return lang
-
-    for (let i = 0; i < detection?.length; i++) {
-      const { lookup } = detection[i] as {
-        lookup: any
-      }
-
-      const detector = this.detectorMap.get(detection[i]?.detect)
-
-      const detectedLang = detector?.resolveLng({ lookup: lookup ?? 'lang', languages: this.supportedLngs })
-
-      if (detectedLang) {
-        lang = this.formatLanguages(detectedLang)
-
-        if (this.supportedLngs.includes(lang)) {
-          break
-        }
-      }
-    }
-
-    return lang
-  }
-
-  /**
-   * @description 初始化前的处理
-   */
-  private beforeInit() {
-    // 统一格式化语言相关的配置
-    this.options.language = this.formatLanguages(this.options.language)
-    this.options.fallbackLng = this.formatLanguages(this.options.fallbackLng)
-    this.supportedLngs = this.formatLanguages(this.supportedLngs)
-
-    this.generateDetectorMap()
-
-    const resolvedLng = this.options.language || this.resolveCurrentLng()
-    if (this.supportedLngs.includes(resolvedLng)) {
-      this.currentLng = resolvedLng
-    } else {
-      this.warnFallback(resolvedLng)
-      this.currentLng = this.options.fallbackLng
-    }
-
-    const current = {
-      language: this.currentLng,
-      namespaces: config.namespace
-        ? // 用户配置的namespace优先级最高。如果没有配置，则使用当前语言的namespace
-          this.options.namespaces || this.supportedNamespace[this.currentLng] || []
-        : [],
-    }
-
-    return { current }
+  private detect() {
+    return detectLanguage(
+      {
+        fallbackLng: this.fallbackLng,
+        lngs: this.lngs,
+        detection: this.options.detection || [],
+      },
+      ({ lookup, detect }) => {
+        const detector = this.detectorMap.get(detect)
+        return this.formatLngs(detector?.resolveLng({ lookup, lngs: this.lngs }))
+      },
+    )
   }
 }

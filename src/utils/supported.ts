@@ -1,12 +1,13 @@
-// Taken from vite-plugin-i18n-ally/resolver.ts
-
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
 
-export const separator = '__'
+const { namespace, separator } = config
 
-export function getLanguages() {
-  if (config.namespace) {
+/**
+ * 获取所有语言（大小写敏感）
+ */
+export function getSupportedLngs() {
+  if (namespace) {
     return Array.from(
       new Set(
         Object.keys(resources)
@@ -18,24 +19,26 @@ export function getLanguages() {
   return Array.from(new Set(Object.keys(resources).filter((key) => !key.includes(separator))))
 }
 
-export function getNamespaces() {
-  if (config.namespace) {
+/**
+ * 获取所有命名空间（大小写敏感）
+ *
+ * 如果启用了namespace，则返回 { [lng]: [ns1, ns2] }
+ * 否则返回 {}
+ */
+export function getSupportedNs() {
+  if (namespace) {
     const namespaceMap = new Map<string, string[]>()
     Object.keys(resources)
       .filter((key) => key.includes(separator))
       .forEach((key) => {
-        const [lang, ns] = key.split(separator)
-        const namespaces = namespaceMap.get(lang) || []
+        const [lng, ns] = key.split(separator)
+        const namespaces = namespaceMap.get(lng) || []
         namespaces.push(ns)
-        namespaceMap.set(lang, namespaces)
+        namespaceMap.set(lng, namespaces)
       })
 
     return Object.fromEntries(namespaceMap)
   } else {
-    const r: { [lang: string]: string[] } = {}
-    Object.keys(resources).forEach((key) => {
-      r[key] = []
-    })
-    return r
+    return {}
   }
 }

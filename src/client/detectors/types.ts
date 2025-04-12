@@ -1,11 +1,8 @@
-export interface Detector<> {
-  name: string
-  resolveLng: (options: { lookup: any; languages: string[] }) => string | undefined | null
-  persistLng?: (
-    lng: string,
-    options: {
-      lookup: any
-      languages: string[]
-    },
-  ) => void
-}
+import { type BaseDetector } from '@/utils/detect'
+
+export type Detector = BaseDetector<
+  Record<string, any>,
+  {
+    lngs: string[]
+  }
+>

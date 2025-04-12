@@ -1,18 +1,18 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { flatten, ROOT_KEY, unflatten } from '@/node/utils/flat'
-import { ensureArray, findByCase, formatLanguage, omit } from '@/utils'
+import { ensureArray, findByCase, formatLng, omit } from '@/utils/utils'
 
 describe('util', () => {
-  test('should ensure array', () => {
+  it('should ensure array', () => {
     expect(ensureArray('a')).toEqual(['a'])
     expect(ensureArray(['a'])).toEqual(['a'])
   })
 
-  test('should omit object', () => {
+  it('should omit object', () => {
     expect(omit({ a: 1, b: 2 }, ['a'])).toEqual({ b: 2 })
   })
 
-  test('findByCase', () => {
+  it('findByCase', () => {
     // 浏览器语言
     const navigatorLanguages = ['zh', 'zh-CN', 'en']
     // 支持的语言
@@ -40,16 +40,16 @@ describe('util', () => {
     expect(findByCase(allLanguages, language, false)).toEqual(undefined)
   })
 
-  test('should format languages to lowercase', () => {
-    expect(formatLanguage(['zh', 'en', 'zh-CN'], true)).toEqual(['zh', 'en', 'zh-cn'])
+  it('should format languages to lowercase', () => {
+    expect(formatLng(['zh', 'en', 'zh-CN'], true)).toEqual(['zh', 'en', 'zh-cn'])
   })
 
-  test('should not format languages to lowercase', () => {
-    expect(formatLanguage(['zh', 'en', 'zh-CN'], false)).toEqual(['zh', 'en', 'zh-CN'])
+  it('should not format languages to lowercase', () => {
+    expect(formatLng(['zh', 'en', 'zh-CN'], false)).toEqual(['zh', 'en', 'zh-CN'])
   })
 
   describe('flatten', () => {
-    test('basic', () => {
+    it('basic', () => {
       expect(
         flatten({
           a: { b: { c: 1 } },
@@ -59,7 +59,7 @@ describe('util', () => {
       })
     })
 
-    test('root', () => {
+    it('root', () => {
       expect(
         flatten({
           [ROOT_KEY]: 2,
@@ -74,7 +74,7 @@ describe('util', () => {
   })
 
   describe('unflatten', () => {
-    test('basic', () => {
+    it('basic', () => {
       expect(
         unflatten({
           'a.b.c': 1,
@@ -90,7 +90,7 @@ describe('util', () => {
       })
     })
 
-    test('root', () => {
+    it('root', () => {
       expect(
         unflatten({
           '': 2,
@@ -103,7 +103,7 @@ describe('util', () => {
       })
     })
 
-    test('keep original value', () => {
+    it('keep original value', () => {
       expect(
         unflatten({
           a: {

@@ -1,12 +1,12 @@
 # i18nAlly Client Options
 
-## language
+## lng
 
 - **Type**: `string`
 
 Initial language identifier
 
-## namespaces
+## ns
 
 - **Type**: `string[]`
 
@@ -18,14 +18,14 @@ Namespaces to load initially
 
 Default language identifier
 
-## onInit
+## onBeforeInit
 
 - **Type**: `(
-    current: { language: string; namespaces: string[] },
+    current: { lng: string; ns: string[] },
     all: {
-      languages: string[]
-      namespaces: {
-        [lang: string]: string[]
+      lngs: string[]
+      ns: {
+        [lng: string]: string[]
       }
     },
   ) => Promise<void> | void`
@@ -36,13 +36,13 @@ Called during initialization, before i18n resources are loaded. Typically used t
 
 - **Type**: `(
     current: {
-      language: string
-      namespaces: string[]
+      lng: string
+      ns: string[]
     },
     all: {
-      languages: string[]
-      namespaces: {
-        [lang: string]: string[]
+      lngs: string[]
+      ns: {
+        [lng: string]: string[]
       }
     },
   ) => Promise<void> | void`
@@ -56,8 +56,8 @@ Called after initialization is complete and i18n resources are loaded for the fi
       [key in string]: string
     },
     current: {
-      language: string
-      namespace: string
+      lng: string
+      ns: string
     },
   ) => Promise<void> | void`
 

@@ -21,9 +21,9 @@ const i18nAlly = new I18nAllyClient<
       }
   )[]
 >({
-  onInit({ language }) {
+  onBeforeInit({ lng }) {
     i18next.use(initReactI18next).init({
-      lng: language,
+      lng,
       returnNull: false,
       react: {
         useSuspense: true,
@@ -48,8 +48,8 @@ const i18nAlly = new I18nAllyClient<
       </React.StrictMode>,
     )
   },
-  onResourceLoaded: (resource, { language, namespace }) => {
-    i18next.addResourceBundle(language, namespace!, resource)
+  onResourceLoaded: (resource, { lng, ns }) => {
+    i18next.addResourceBundle(lng, ns!, resource)
   },
   fallbackLng,
   detection: [

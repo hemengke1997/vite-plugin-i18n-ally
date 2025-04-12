@@ -6,11 +6,11 @@
 
 The default fallback language. This is a required parameter.
 
-## supportedLngs
+## lngs
 
 - **Type**: `string[]`
 
-A list of supported languages. This is a required parameter.
+Override the list of languages. If this parameter is provided, it will override the language list in `i18n-ally`.
 
 ## lowerCaseLng
 

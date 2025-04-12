@@ -44,7 +44,7 @@ import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 new I18nAllyClient({
   onResourceLoaded: (resources) => {
-    i18next.addResourceBundle(language, namespace, resources)
+    i18next.addResourceBundle(lng, ns, resources)
   },
 })
 ```
@@ -67,7 +67,7 @@ const routes = createRoutesFromElements(
   <Route path="/">
     <Route path="a" lazy={() => import("./a")} loader={async () => {
       await i18nAlly.asyncLoadResource(i18next.language, {
-        namespaces: ['a']
+        ns: ['a']
       })
     }} />
   </Route>

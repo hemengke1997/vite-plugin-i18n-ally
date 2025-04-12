@@ -17,11 +17,11 @@ const initialNamespaces = () => {
 
 async function hydrate() {
   const i18nAlly = new I18nAllyClient({
-    namespaces: initialNamespaces(),
+    ns: initialNamespaces(),
     fallbackLng: i18nOptions.fallbackLng,
-    async onInit({ language }) {
+    async onBeforeInit({ lng }) {
       await i18next.use(initReactI18next).init({
-        lng: language,
+        lng,
         resources: {},
         fallbackLng: i18nOptions.fallbackLng,
         keySeparator: i18nOptions.keySeparator,
@@ -30,8 +30,8 @@ async function hydrate() {
         debug: import.meta.env.DEV,
       })
     },
-    onResourceLoaded(resource, { language, namespace }) {
-      i18next.addResourceBundle(language, namespace!, resource)
+    onResourceLoaded(resource, { lng, ns }) {
+      i18next.addResourceBundle(lng, ns!, resource)
     },
     onInited: () => {
       startTransition(() => {
@@ -60,7 +60,7 @@ async function hydrate() {
 
   i18next.changeLanguage = async (lng?: string, ...args) => {
     await i18nAlly.asyncLoadResource(lng || i18next.language, {
-      namespaces: [...(await resolveNamespace())],
+      ns: [...(await resolveNamespace())],
     })
     return i18nChangeLanguage(lng, ...args)
   }

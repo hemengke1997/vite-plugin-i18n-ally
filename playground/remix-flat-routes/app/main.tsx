@@ -10,16 +10,16 @@ import { fallbackLng, lookupTarget } from './locales'
 import './css/tailwind.css'
 import 'antd/dist/reset.css'
 
-let namespaces: string[] = []
+let ns: string[] = []
 
 function main() {
   const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement)
 
   const i18nAlly = new I18nAllyClient({
-    namespaces,
-    async onInit({ language }) {
+    ns,
+    async onBeforeInit({ lng }) {
       await i18next.use(initReactI18next).init({
-        lng: language,
+        lng,
         returnNull: false,
         react: {
           useSuspense: true,
@@ -44,13 +44,13 @@ function main() {
                 dataStrategy: async ({ matches }) => {
                   const matchesToLoad = matches.filter((m) => m.shouldLoad)
                   const results = await Promise.all(matchesToLoad.map((m) => m.resolve()))
-                  namespaces = (await Promise.all(matches.map((m) => m.route.handle)))
+                  ns = (await Promise.all(matches.map((m) => m.route.handle)))
                     .filter((t) => t?.i18n)
                     .map((t) => t.i18n)
                     .flat()
 
                   await i18nAlly.asyncLoadResource(i18next.language, {
-                    namespaces,
+                    ns,
                   })
 
                   return results.reduce(
@@ -64,8 +64,8 @@ function main() {
         </React.StrictMode>,
       )
     },
-    onResourceLoaded: (resource, { language, namespace }) => {
-      i18next.addResourceBundle(language, namespace, resource)
+    onResourceLoaded: (resource, { lng, ns }) => {
+      i18next.addResourceBundle(lng, ns, resource)
     },
     fallbackLng,
     detection: [
@@ -86,7 +86,7 @@ function main() {
   const changeLanguage = i18next.changeLanguage
   i18next.changeLanguage = async (lng?: string, ...args) => {
     await i18nAlly.asyncLoadResource(lng || i18next.language, {
-      namespaces,
+      ns,
     })
     return changeLanguage(lng, ...args)
   }

@@ -25,12 +25,12 @@ export function findByCase(source: string[], target: string | string[], lowerCas
 /**
  * 如果开启lowerCase小写，则将语言转为小写
  */
-export function formatLanguage<T>(lang: T, lowerCaseLng: boolean | undefined): T {
-  if (Array.isArray(lang)) {
-    return lang.map((l: string | undefined) => (lowerCaseLng ? l?.toLowerCase() : l)) as T
+export function formatLng<T>(lng: T, lowerCaseLng: boolean | undefined): T {
+  if (Array.isArray(lng)) {
+    return lng.map((l: string | undefined) => (lowerCaseLng ? l?.toLowerCase() : l)) as T
   }
   if (lowerCaseLng) {
-    return (lang as string | undefined)?.toLowerCase() as T
+    return (lng as string | undefined)?.toLowerCase() as T
   }
-  return lang
+  return lng
 }

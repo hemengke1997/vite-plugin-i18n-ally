@@ -5,3 +5,4 @@ export { QueryString } from './detectors/query-string'
 
 export { type Detector } from './detectors/types'
 export { I18nAllyServer, type I18nAllyServerOptions } from './i18n-ally-server'
+export { getSupportedLngs, getSupportedNs } from '../utils/supported'

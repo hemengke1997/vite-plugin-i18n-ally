@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Cookie } from '@/server/detectors/cookie'
 import { Header } from '@/server/detectors/header'
 import { Path } from '@/server/detectors/path'
@@ -12,7 +12,7 @@ describe('Cookie (Server)', () => {
   })
 
   describe('lookup', () => {
-    test('should return the correct value for a given cookie name', () => {
+    it('should return the correct value for a given cookie name', () => {
       const mockRequest = new Request('http://example.com', {
         headers: {
           cookie: 'language=en; theme=dark',
@@ -24,7 +24,7 @@ describe('Cookie (Server)', () => {
       expect(result).toBe('en')
     })
 
-    test('should return null if the cookie does not exist', () => {
+    it('should return null if the cookie does not exist', () => {
       const mockRequest = new Request('http://example.com', {
         headers: {
           cookie: 'theme=dark',
@@ -36,7 +36,7 @@ describe('Cookie (Server)', () => {
       expect(result).toBeFalsy()
     })
 
-    test('should return null if no cookies are present in the request', () => {
+    it('should return null if no cookies are present in the request', () => {
       const mockRequest = new Request('http://example.com', {
         headers: {},
       })
@@ -48,7 +48,7 @@ describe('Cookie (Server)', () => {
   })
 
   describe('persist', () => {
-    test('should set the language cookie', () => {
+    it('should set the language cookie', () => {
       const headers = new Headers()
       cookieDetector.persistLng('en', {
         lookup: 'lang',
@@ -62,7 +62,7 @@ describe('Cookie (Server)', () => {
       expect(setCookieHeader).toContain('Max-Age=3600')
     })
 
-    test('should handle custom cookie attributes', () => {
+    it('should handle custom cookie attributes', () => {
       const headers = new Headers()
       cookieDetector.persistLng('fr', {
         lookup: 'lang',
@@ -90,7 +90,7 @@ describe('Header (Server)', () => {
   })
 
   describe('lookup', () => {
-    test('should return the matched language from the Accept-Language header', () => {
+    it('should return the matched language from the Accept-Language header', () => {
       const mockRequest = new Request('http://example.com', {
         headers: {
           'accept-language': 'en-US,fr;q=0.9',
@@ -99,12 +99,12 @@ describe('Header (Server)', () => {
 
       const mockLanguages = ['en-US', 'fr']
 
-      const result = headerDetector.resolveLng({ request: mockRequest, languages: mockLanguages })
+      const result = headerDetector.resolveLng({ request: mockRequest, lngs: mockLanguages })
 
       expect(result).toBe('en-US')
     })
 
-    test('should return null if no matching language is found', () => {
+    it('should return null if no matching language is found', () => {
       const mockRequest = new Request('http://example.com', {
         headers: {
           'accept-language': 'de-DE',
@@ -113,19 +113,19 @@ describe('Header (Server)', () => {
 
       const mockLanguages = ['en-US', 'fr']
 
-      const result = headerDetector.resolveLng({ request: mockRequest, languages: mockLanguages })
+      const result = headerDetector.resolveLng({ request: mockRequest, lngs: mockLanguages })
 
       expect(result).toBeFalsy()
     })
 
-    test('should return null if the Accept-Language header is missing', () => {
+    it('should return null if the Accept-Language header is missing', () => {
       const mockRequest = new Request('http://example.com', {
         headers: {},
       })
 
       const mockLanguages = ['en-US', 'fr']
 
-      const result = headerDetector.resolveLng({ request: mockRequest, languages: mockLanguages })
+      const result = headerDetector.resolveLng({ request: mockRequest, lngs: mockLanguages })
 
       expect(result).toBeFalsy()
     })
@@ -140,7 +140,7 @@ describe('Path (Server)', () => {
   })
 
   describe('lookup', () => {
-    test('should return the language from the specified path index', () => {
+    it('should return the language from the specified path index', () => {
       const mockRequest = new Request('http://example.com/en/about')
 
       const result = pathDetector.resolveLng({ lookup: 0, request: mockRequest })
@@ -148,7 +148,7 @@ describe('Path (Server)', () => {
       expect(result).toBe('en')
     })
 
-    test('should return undefined if the path index is out of bounds', () => {
+    it('should return undefined if the path index is out of bounds', () => {
       const mockRequest = new Request('http://example.com/en/about?q=1')
 
       const result = pathDetector.resolveLng({ lookup: 1, request: mockRequest })
@@ -156,7 +156,7 @@ describe('Path (Server)', () => {
       expect(result).toBe('about')
     })
 
-    test('should return undefined if the URL has no matching segments', () => {
+    it('should return undefined if the URL has no matching segments', () => {
       const mockRequest = new Request('http://example.com/')
 
       const result = pathDetector.resolveLng({ lookup: 0, request: mockRequest })
@@ -174,7 +174,7 @@ describe('QueryString (Server)', () => {
   })
 
   describe('lookup', () => {
-    test('should return the value of the specified query parameter', () => {
+    it('should return the value of the specified query parameter', () => {
       const mockRequest = new Request('http://example.com/?lang=en')
 
       const result = queryStringDetector.resolveLng({ lookup: 'lang', request: mockRequest })
@@ -182,7 +182,7 @@ describe('QueryString (Server)', () => {
       expect(result).toBe('en')
     })
 
-    test('should return null if the query parameter does not exist', () => {
+    it('should return null if the query parameter does not exist', () => {
       const mockRequest = new Request('http://example.com/?other=value')
 
       const result = queryStringDetector.resolveLng({ lookup: 'lang', request: mockRequest })
@@ -190,7 +190,7 @@ describe('QueryString (Server)', () => {
       expect(result).toBeFalsy()
     })
 
-    test('should return null if the URL has no query parameters', () => {
+    it('should return null if the URL has no query parameters', () => {
       const mockRequest = new Request('http://example.com/')
 
       const result = queryStringDetector.resolveLng({ lookup: 'lang', request: mockRequest })
@@ -198,7 +198,7 @@ describe('QueryString (Server)', () => {
       expect(result).toBeFalsy()
     })
 
-    test('should handle URLs with multiple query parameters', () => {
+    it('should handle URLs with multiple query parameters', () => {
       const mockRequest = new Request('http://example.com/?lang=en&theme=dark')
 
       const result = queryStringDetector.resolveLng({ lookup: 'theme', request: mockRequest })

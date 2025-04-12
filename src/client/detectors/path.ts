@@ -14,14 +14,14 @@ export class Path implements Detector {
     const index = typeof lookupFromPathIndex === 'number' ? lookupFromPathIndex : 0
     return language[index]?.replace('/', '')
   }
-  persistLng(lng: string, options: { lookup: number | string; languages: string[] }) {
-    const { lookup: lookupPathIndex, languages } = options
+  persistLng(lng: string, options: { lookup: number | string; lngs: string[] }) {
+    const { lookup: lookupPathIndex, lngs } = options
     const index = typeof lookupPathIndex === 'number' ? lookupPathIndex : 0
     const currentURL = new URL(window.location.href)
     const language = currentURL.pathname.match(regex)
     if (!Array.isArray(language)) return
     if (language[index] === `/${lng}`) return
-    const delIndex = languages.some((l) => language[index] === `/${l}`) ? 1 : 0
+    const delIndex = lngs.some((l) => language[index] === `/${l}`) ? 1 : 0
     language.splice(index, delIndex, `/${lng}`)
     currentURL.pathname = language.join('')
     window.history.replaceState({}, '', currentURL)

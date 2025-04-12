@@ -1,12 +1,12 @@
 # 客户端配置
 
-## language
+## lng
 
 - **类型**: `string`
 
 初始化语言标识
 
-## namespaces
+## ns
 
 - **类型**: `string[]`
 
@@ -18,14 +18,14 @@
 
 默认语言标识
 
-## onInit
+## onBeforeInit
 
 - **类型**: `(
-    current: { language: string; namespaces: string[] },
+    current: { lng: string; ns: string[] },
     all: {
-      languages: string[]
-      namespaces: {
-        [lang: string]: string[]
+      lngs: string[]
+      ns: {
+        [lng: string]: string[]
       }
     },
   ) => Promise<void> | void`
@@ -36,13 +36,13 @@
 
 - **类型**: `(
     current: {
-      language: string
-      namespaces: string[]
+      lng: string
+      ns: string[]
     },
     all: {
-      languages: string[]
-      namespaces: {
-        [lang: string]: string[]
+      lngs: string[]
+      ns: {
+        [lng: string]: string[]
       }
     },
   ) => Promise<void> | void`
@@ -56,8 +56,8 @@
       [key in string]: string
     },
     current: {
-      language: string
-      namespace: string
+      lng: string
+      ns: string
     },
   ) => Promise<void> | void`
 

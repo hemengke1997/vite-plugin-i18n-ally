@@ -6,11 +6,11 @@
 
 默认回退语言，必传参数
 
-## supportedLngs
+## lngs
 
 - **类型**: `string[]`
 
-支持的语言列表，必传参数
+覆盖语言列表，如果传入此参数，则会覆盖 `i18n-ally` 的语言列表。
 
 ## lowerCaseLng
 

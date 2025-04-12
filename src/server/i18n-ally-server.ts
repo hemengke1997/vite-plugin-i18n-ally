@@ -1,32 +1,17 @@
-import { formatLanguage, omit } from '@/utils'
+import { type I18nAllyClientOptions } from '@/client'
+import { type Detection, type Detections, detectLanguage } from '@/utils/detect'
+import { getSupportedLngs } from '../utils/supported'
+import { formatLng, omit } from '../utils/utils'
 import { Cookie } from './detectors/cookie'
 import { Header } from './detectors/header'
 import { Path } from './detectors/path'
 import { QueryString } from './detectors/query-string'
-import { type Detections, type Detector, type ResolveDetectorLookup, type ResolveDetectorName } from './detectors/types'
+import { type Detector, type ResolveDetectorLookup, type ResolveDetectorName } from './detectors/types'
 
-type Detection = {
-  detect: string
-  lookup?: string
-  cache?: boolean
-} & Record<string, any>
-
-export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> = {
-  /**
-   * If detect failed, fallback to `fallbackLng`
-   */
-  fallbackLng: string
-  /**
-   * Supported languages
-   * @description 语言列表，支持多语言。eg. ['en', 'zh-CN']
-   */
-  supportedLngs: string[]
-  /**
-   * Language will be lowercased
-   * @description eg. en-US --> en-us
-   * @default false
-   */
-  lowerCaseLng?: boolean
+export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> = Pick<
+  I18nAllyClientOptions,
+  'fallbackLng' | 'lngs' | 'lowerCaseLng'
+> & {
   detection?: Detections<
     | {
         detect: ResolveDetectorName<Cookie>
@@ -56,13 +41,24 @@ export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> 
 }
 
 export class I18nAllyServer {
-  private options: I18nAllyServerOptions
+  private readonly options: I18nAllyServerOptions
   private detectorMap: Map<string, Detector> = new Map()
+
+  lngs: string[] = []
+  fallbackLng: string = ''
+
+  supportedLngs: string[] = getSupportedLngs()
 
   constructor(options: I18nAllyServerOptions) {
     this.options = options
-    this.options.fallbackLng = this.formatLanguages(this.options.fallbackLng)
-    this.options.supportedLngs = this.formatLanguages(this.options.supportedLngs)
+
+    this.fallbackLng = this.formatLngs(this.options.fallbackLng)
+    this.supportedLngs = this.formatLngs(this.supportedLngs)
+
+    this.lngs = this.formatLngs(this.options.lngs || []).filter((lng) => this.supportedLngs.includes(lng))
+    if (!this.lngs?.length) {
+      this.lngs = this.supportedLngs
+    }
 
     const builtinDetectors = [new Cookie(), new Header(), new Path(), new QueryString()] as Detector[]
 
@@ -72,47 +68,35 @@ export class I18nAllyServer {
   }
 
   detect(request: Request) {
-    const { detection, fallbackLng } = this.options
-    let lang: string = fallbackLng
-
-    if (!detection?.length) return lang
-
-    for (let i = 0; i < detection?.length; i++) {
-      const { lookup } = detection[i] as {
-        lookup: any
-      }
-
-      const detector = this.detectorMap.get(detection[i]?.detect)
-
-      const detectedLang = detector?.resolveLng({ lookup, languages: this.options.supportedLngs, request })
-
-      if (detectedLang) {
-        lang = this.formatLanguages(detectedLang)
-        if (this.options.supportedLngs.includes(lang)) {
-          break
-        }
-      }
-    }
-
-    return lang
+    return detectLanguage(
+      {
+        fallbackLng: this.fallbackLng,
+        lngs: this.lngs,
+        detection: this.options.detection || [],
+      },
+      ({ lookup, detect }) => {
+        const detector = this.detectorMap.get(detect)
+        return this.formatLngs(detector?.resolveLng({ lookup, lngs: this.lngs, request }))
+      },
+    )
   }
 
-  persistLng(lang: string, headers: Headers) {
+  persistLng(lng: string, headers: Headers) {
     const persistDetector = (this.options.detection as Detection[])?.filter((d) => d.cache !== false)
 
     if (!persistDetector?.length) return
 
     persistDetector.forEach(async (d) => {
       const detector = this.detectorMap.get(d.detect)
-      detector?.persistLng?.(lang, {
-        lookup: d.lookup || 'lang',
+      detector?.persistLng?.(lng, {
+        lookup: d.lookup || 'lng',
         ...omit(d, ['detect', 'lookup', 'cache']),
         headers,
       })
     })
   }
 
-  private formatLanguages<T>(lang: T): T {
-    return formatLanguage(lang, this.options.lowerCaseLng)
+  private formatLngs<T>(lng: T): T {
+    return formatLng(lng, this.options.lowerCaseLng)
   }
 }

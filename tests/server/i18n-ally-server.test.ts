@@ -1,15 +1,42 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { I18nAllyServer, type I18nAllyServerOptions } from '@/server/i18n-ally-server'
 
 describe('I18nAllyServer', () => {
-  beforeEach(() => {
+  beforeAll(() => {
+    vi.mock('virtual:i18n-ally-async-resource', () => ({
+      resources: {
+        'en': {
+          translation: {
+            hello: 'Hello',
+          },
+        },
+        'fr': {
+          translation: {
+            hello: 'Bonjour',
+          },
+        },
+        'zh-CN': {
+          translation: {
+            hello: '你好',
+          },
+        },
+      },
+    }))
+    vi.mock('virtual:i18n-ally-config', () => ({
+      config: {
+        namespace: false,
+        separator: '__',
+      },
+    }))
+  })
+
+  afterAll(() => {
     vi.restoreAllMocks()
   })
 
-  test('should initialize with provided options', () => {
+  it('should initialize with provided options', () => {
     const options: I18nAllyServerOptions = {
-      fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
+      fallbackLng: 'EN',
       lowerCaseLng: true,
       detection: [{ detect: 'cookie', lookup: 'language' }, { detect: 'header' }],
     }
@@ -17,11 +44,14 @@ describe('I18nAllyServer', () => {
     const i18nAllyServer = new I18nAllyServer(options)
 
     expect(i18nAllyServer).toBeDefined()
-    expect(i18nAllyServer['options'].fallbackLng).toBe('en')
-    expect(i18nAllyServer['options'].supportedLngs).toEqual(['en', 'fr', 'zh-cn'])
+    expect(i18nAllyServer['fallbackLng']).toBe('en')
+    expect(i18nAllyServer.supportedLngs).toEqual(['en', 'fr', 'zh-cn'])
+
+    // i18nAllyServer 的options是只读的，不能直接修改
+    expect(i18nAllyServer['options']).toEqual(options)
   })
 
-  test('should detect language using cookie detector', () => {
+  it('should detect language using cookie detector', () => {
     const mockRequest = new Request('http://example.com', {
       headers: {
         cookie: 'language=fr',
@@ -30,7 +60,6 @@ describe('I18nAllyServer', () => {
 
     const options: I18nAllyServerOptions = {
       fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
       detection: [{ detect: 'cookie', lookup: 'language' }],
     }
 
@@ -41,7 +70,7 @@ describe('I18nAllyServer', () => {
     expect(detectedLang).toBe('fr')
   })
 
-  test('should detect language using header detector', () => {
+  it('should detect language using header detector', () => {
     const mockRequest = new Request('http://example.com', {
       headers: {
         'accept-language': 'zh-CN,fr;q=0.9',
@@ -50,7 +79,6 @@ describe('I18nAllyServer', () => {
 
     const options: I18nAllyServerOptions = {
       fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
       detection: [{ detect: 'header' }],
     }
 
@@ -61,12 +89,11 @@ describe('I18nAllyServer', () => {
     expect(detectedLang).toBe('zh-CN')
   })
 
-  test('should detect language using path detector', () => {
+  it('should detect language using path detector', () => {
     const mockRequest = new Request('http://example.com/fr/about')
 
     const options: I18nAllyServerOptions = {
       fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
       detection: [{ detect: 'path', lookup: 0 }],
     }
 
@@ -77,12 +104,11 @@ describe('I18nAllyServer', () => {
     expect(detectedLang).toBe('fr')
   })
 
-  test('should detect language using query string detector', () => {
+  it('should detect language using query string detector', () => {
     const mockRequest = new Request('http://example.com/?lang=zh-CN')
 
     const options: I18nAllyServerOptions = {
       fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
       detection: [{ detect: 'querystring', lookup: 'lang' }],
     }
 
@@ -93,12 +119,11 @@ describe('I18nAllyServer', () => {
     expect(detectedLang).toBe('zh-CN')
   })
 
-  test('should return fallback language if no detection matches', () => {
+  it('should return fallback language if no detection matches', () => {
     const mockRequest = new Request('http://example.com/')
 
     const options: I18nAllyServerOptions = {
       fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
       detection: [{ detect: 'cookie', lookup: 'language' }],
     }
 
@@ -109,7 +134,7 @@ describe('I18nAllyServer', () => {
     expect(detectedLang).toBe(options.fallbackLng)
   })
 
-  test('should detect by order', () => {
+  it('should detect by order', () => {
     const mockRequest = new Request('http://example.com/zh-cn/about?lang=en', {
       headers: {
         'accept-language': 'fr',
@@ -118,7 +143,6 @@ describe('I18nAllyServer', () => {
 
     const options: I18nAllyServerOptions = {
       fallbackLng: 'en',
-      supportedLngs: ['en', 'fr', 'zh-CN'],
       detection: [
         { detect: 'path' },
         { detect: 'header' },
@@ -127,6 +151,7 @@ describe('I18nAllyServer', () => {
           lookup: 'lang',
         },
       ],
+      lowerCaseLng: false,
     }
 
     const i18nAllyServer = new I18nAllyServer(options)
@@ -134,5 +159,19 @@ describe('I18nAllyServer', () => {
     const detectedLang = i18nAllyServer.detect(mockRequest)
 
     expect(detectedLang).toBe('fr')
+  })
+
+  it('should override lngs', () => {
+    const options: I18nAllyServerOptions = {
+      fallbackLng: 'en',
+      lngs: ['en', 'zh-CN', 'unknown'],
+      detection: [{ detect: 'querystring', lookup: 'locale' }],
+    }
+
+    const i18nAllyServer = new I18nAllyServer(options)
+
+    // 如果lngs中有不支持的语言，会被过滤掉
+    expect(i18nAllyServer['lngs']).toEqual(['en', 'zh-CN'])
+    expect(i18nAllyServer.detect(new Request('http://example.com?locale=fr'))).toBe('en')
   })
 })
