@@ -1,3 +1,20 @@
+# [6.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.4.0...v6.0.0) (2025-05-12)
+
+
+### Bug Fixes
+
+* release ([e092c86](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/e092c86d73af02406ec227dd0bb84dc337603bfe))
+* 开启命名空间后手动加载资源时加载了全部资源 ([30e8aa0](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/30e8aa08a64fa7483536448ff2360a50f802fbb8))
+
+
+### Features
+
+* **break-change:** server language detection ([f466797](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/f46679776a32641a30a26da54efeb101a6f806e2))
+* i18n-ally实例暴露更多属性和方法 ([4c1da69](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/4c1da69aabc0033f213f0519cdba6a64d77dcb5e))
+* support server i18n ([692d180](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/692d180b6e764ce83f6f2936e18979e3fbf1ea6b))
+
+
+
 # [5.4.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.3.2...v5.4.0) (2025-03-20)
 
 
