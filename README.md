@@ -9,6 +9,10 @@
 
 `vite-plugin-i18n-ally` is a Vite plugin that automatically collects i18n resources in the project and lazy loads them. It is based on the configuration of `vscode-i18n-ally`, so no additional configuration is required.
 
+## Warning
+
+Please follow the [migration guide](https://hemengke1997.github.io/vite-plugin-i18n-ally/migration/v6) if you are upgrading from v5 to v6.
+
 ## Features
 
 - Automatically collect i18n resources in the project, no need to manually import resource files

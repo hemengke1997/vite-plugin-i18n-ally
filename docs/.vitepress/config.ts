@@ -2,6 +2,11 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  vite: {
+    server: {
+      port: 3003,
+    },
+  },
   base: '/vite-plugin-i18n-ally/',
   title: 'vite-plugin-i18n-ally',
   description: 'Vite plugin for automatic lazy loading of i18n resources',
@@ -23,6 +28,7 @@ export default defineConfig({
               { text: 'Getting Started', link: '/guides/getting-started' },
               { text: 'Namespace', link: '/guides/namespace' },
               { text: 'Language Detection', link: '/guides/language-detection' },
+              { text: 'Migration', link: '/guides/migration/v6' },
             ],
           },
           {
@@ -58,6 +64,10 @@ export default defineConfig({
               {
                 text: '语言探测',
                 link: '/zh/guides/language-detection',
+              },
+              {
+                text: '迁移',
+                link: '/zh/guides/migration/v6',
               },
             ],
           },
