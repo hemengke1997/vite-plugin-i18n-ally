@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-import { I18nAllyServer, type I18nAllyServerOptions } from '@/server/i18n-ally-server'
+import { I18nAllyServer, type I18nAllyServerOptions } from '@/server'
 
 describe('I18nAllyServer', () => {
   beforeAll(() => {
@@ -22,6 +22,15 @@ describe('I18nAllyServer', () => {
         },
       },
     }))
+
+    vi.mock('virtual:i18n-ally-empty-resource', () => ({
+      resources: {
+        'en': {},
+        'fr': {},
+        'zh-CN': {},
+      },
+    }))
+
     vi.mock('virtual:i18n-ally-config', () => ({
       config: {
         namespace: false,

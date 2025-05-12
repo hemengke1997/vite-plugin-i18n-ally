@@ -80,5 +80,5 @@ export const tsup = defineConfig((option) => {
     },
   ]
 
-  return [...client, ...node, ...server, ...utils]
+  return [...utils, ...client, ...node, ...server]
 })

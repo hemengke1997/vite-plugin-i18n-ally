@@ -1,7 +1,7 @@
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
-import { type Detection, detectLanguage } from '@/utils/detect'
 import { name as I18nAllyName } from '../../package.json'
+import { type Detection, detectLanguage } from '../utils/detect'
 import { getSupportedLngs, getSupportedNs } from '../utils/supported'
 import { ensureArray, findByCase, formatLng, omit } from '../utils/utils'
 import { builtinDetectors } from './detectors'
@@ -273,5 +273,13 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
         return this.formatLngs(detector?.resolveLng({ lookup, lngs: this.lngs }))
       },
     )
+  }
+
+  static getSupportedLngs() {
+    return getSupportedLngs()
+  }
+
+  static getSupportedNs() {
+    return getSupportedNs()
   }
 }

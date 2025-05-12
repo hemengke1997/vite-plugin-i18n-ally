@@ -1,6 +1,6 @@
-import { type I18nAllyClientOptions } from '@/client'
-import { type Detection, type Detections, detectLanguage } from '@/utils/detect'
-import { getSupportedLngs } from '../utils/supported'
+import { type I18nAllyClientOptions } from '../client'
+import { type Detection, type Detections, detectLanguage } from '../utils/detect'
+import { getSupportedLngs, getSupportedNs } from '../utils/supported'
 import { formatLng, omit } from '../utils/utils'
 import { Cookie } from './detectors/cookie'
 import { Header } from './detectors/header'
@@ -94,6 +94,14 @@ export class I18nAllyServer {
         headers,
       })
     })
+  }
+
+  static getSupportedLngs() {
+    return getSupportedLngs()
+  }
+
+  static getSupportedNs() {
+    return getSupportedNs()
   }
 
   private formatLngs<T>(lng: T): T {

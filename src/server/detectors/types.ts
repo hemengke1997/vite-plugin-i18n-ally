@@ -1,4 +1,4 @@
-import { type BaseDetector } from '@/utils/detect'
+import { type BaseDetector } from '../../utils/detect'
 
 export type ResolveDetectorName<T extends Detector> = T['name']
 export type ResolveDetectorLookup<T extends Detector> = Parameters<T['resolveLng']>[0]['lookup']

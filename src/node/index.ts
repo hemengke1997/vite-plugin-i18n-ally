@@ -81,19 +81,16 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
           return typeof module === 'string' ? module : `export default ${JSON.stringify(module)}`
         }
 
-        // \0/@i18n-ally/virtual:i18n-ally-async-resource
-        if (id.endsWith(VirtualModule.Mods.asyncResource)) {
+        function generateAsyncResourceCode(value: (key: string) => string) {
           let code = `export const resources = { `
           const _modules = options.namespace ? modulesWithNamespace : modules
 
           for (const k of Object.keys(_modules)) {
             // Currently rollup doesn't support inline chunkName
             // TODO: inline chunk name
-            code += `'${k}': () => import('${VirtualModule.id(k)}'),`
+            code += `'${k}': ${value(k)},`
           }
           code += ' };'
-
-          debug('async resources:', code)
 
           return {
             code,
@@ -101,16 +98,24 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
           }
         }
 
+        // \0/@i18n-ally/virtual:i18n-ally-async-resource
+        if (id.endsWith(VirtualModule.Mods.asyncResource)) {
+          return generateAsyncResourceCode((k) => `() => import('${VirtualModule.id(k)}')`)
+        }
+
         // \0/@i18n-ally/virtual:i18n-ally-resource
         if (id.endsWith(VirtualModule.Mods.resource)) {
           const code = `export const resources = ${JSON.stringify(modules)}`
-
-          debug('resources:', code)
 
           return {
             code,
             map: { mappings: '' },
           }
+        }
+
+        // \0/@i18n-ally/virtual:i18n-ally-empty-resource
+        if (id.endsWith(VirtualModule.Mods.emptyResource)) {
+          return generateAsyncResourceCode(() => `{}`)
         }
 
         // \0/@i18n-ally/virtual:i18n-ally-config
@@ -119,7 +124,6 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
             namespace: options.namespace,
             separator: localeDetector.separator,
           })}`
-          debug('config:', code)
           return {
             code,
             map: { mappings: '' },

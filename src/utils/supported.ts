@@ -1,5 +1,5 @@
-import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
+import { resources } from 'virtual:i18n-ally-empty-resource'
 
 const { namespace, separator } = config
 

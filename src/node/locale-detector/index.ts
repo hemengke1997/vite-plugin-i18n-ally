@@ -159,8 +159,6 @@ export class LocaleDetector {
       virtualModules,
       resolvedIds,
     }
-
-    debug('Module locale updated', this._localeModules)
   }
 
   get localeModules() {
@@ -344,7 +342,6 @@ export class LocaleDetector {
 
     match = this._pathMatcher!.regex.exec(relativePath)
 
-    debug(`Path Match: ${this._pathMatcher!.matcher}`)
     if (match && match.length > 0) {
       matcher = this._pathMatcher!.matcher
     }
@@ -352,6 +349,8 @@ export class LocaleDetector {
     if (!match || match.length < 1) {
       return
     }
+
+    debug(`Path Match:`, match)
 
     let namespace = match.groups?.namespace
     if (namespace) {

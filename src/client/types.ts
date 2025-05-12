@@ -1,4 +1,4 @@
-import { type Detections } from '@/utils/detect'
+import { type Detections } from '../utils/detect'
 import { type Cookie, type CookieAttributes } from './detectors/cookie'
 import { type HtmlTag } from './detectors/html-tag'
 import { type LocalStorage } from './detectors/local-storage'

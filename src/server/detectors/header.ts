@@ -1,5 +1,5 @@
 import Negotiator from 'negotiator'
-import { findByCase } from '@/utils/utils'
+import { findByCase } from '../..//utils/utils'
 import { type Detector } from './types'
 
 export class Header implements Detector {

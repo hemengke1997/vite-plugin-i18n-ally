@@ -33,6 +33,7 @@ async function createViteServer() {
   const resources = await server.ssrLoadModule('virtual:i18n-ally-async-resource')
   const config = await server.ssrLoadModule('virtual:i18n-ally-config')
   vi.doMock('virtual:i18n-ally-async-resource', () => resources)
+  vi.doMock('virtual:i18n-ally-empty-resource', () => resources)
   vi.doMock('virtual:i18n-ally-config', () => config)
 
   return server

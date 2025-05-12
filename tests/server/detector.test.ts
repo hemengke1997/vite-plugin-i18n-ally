@@ -1,11 +1,45 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Cookie } from '@/server/detectors/cookie'
-import { Header } from '@/server/detectors/header'
-import { Path } from '@/server/detectors/path'
-import { QueryString } from '@/server/detectors/query-string'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { Cookie, Header, Path, QueryString } from '@/server'
 
 describe('Cookie (Server)', () => {
   let cookieDetector: Cookie
+
+  beforeAll(() => {
+    vi.mock('virtual:i18n-ally-async-resource', () => ({
+      resources: {
+        'en': {
+          translation: {
+            hello: 'Hello',
+          },
+        },
+        'fr': {
+          translation: {
+            hello: 'Bonjour',
+          },
+        },
+        'zh-CN': {
+          translation: {
+            hello: '你好',
+          },
+        },
+      },
+    }))
+
+    vi.mock('virtual:i18n-ally-empty-resource', () => ({
+      resources: {
+        'en': {},
+        'fr': {},
+        'zh-CN': {},
+      },
+    }))
+
+    vi.mock('virtual:i18n-ally-config', () => ({
+      config: {
+        namespace: false,
+        separator: '__',
+      },
+    }))
+  })
 
   beforeEach(() => {
     cookieDetector = new Cookie()
