@@ -1,3 +1,12 @@
+## [6.0.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v6.0.0...v6.0.1) (2025-05-13)
+
+
+### Features
+
+* 不再懒加载空资源文件,提升执行效率 ([c231832](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/c2318326216fddb4b31025ebce8e845cbc853602))
+
+
+
 # [6.0.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v5.4.0...v6.0.0) (2025-05-12)
 
 
