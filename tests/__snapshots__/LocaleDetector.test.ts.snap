@@ -31,6 +31,7 @@ exports[`LocaleDetector - Namespace > locale modules 1`] = `
     "unused": {},
   },
   "zh": {
+    "more": {},
     "test": {
       "key": "中文",
     },
@@ -98,6 +99,7 @@ exports[`LocaleDetector - Namespace > virtualModules 1`] = `
   },
   "virtual:i18n-ally-en__unused": {},
   "virtual:i18n-ally-zh": {
+    "more": {},
     "test": {
       "key": "中文",
     },
@@ -110,6 +112,7 @@ exports[`LocaleDetector - Namespace > virtualModules 1`] = `
   "virtual:i18n-ally-zh-tw__test": {
     "key": "繁体中文",
   },
+  "virtual:i18n-ally-zh__more": {},
   "virtual:i18n-ally-zh__test": {
     "key": "中文",
   },

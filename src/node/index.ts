@@ -1,3 +1,4 @@
+import { isEmpty } from 'es-toolkit/compat'
 import path from 'node:path'
 import colors from 'picocolors'
 import { type PluginOption, type ViteDevServer } from 'vite'
@@ -81,14 +82,28 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
           return typeof module === 'string' ? module : `export default ${JSON.stringify(module)}`
         }
 
-        function generateAsyncResourceCode(value: (key: string) => string) {
+        function generateAsyncResourceCode(mode: 'empty' | 'import') {
           let code = `export const resources = { `
           const _modules = options.namespace ? modulesWithNamespace : modules
 
           for (const k of Object.keys(_modules)) {
-            // Currently rollup doesn't support inline chunkName
-            // TODO: inline chunk name
-            code += `'${k}': ${value(k)},`
+            switch (mode) {
+              case 'empty':
+                code += `'${k}': {},`
+                break
+              case 'import': {
+                if (isEmpty(_modules[k])) {
+                  code += `'${k}': () => ({ default: {} }),`
+                } else {
+                  // Currently rollup doesn't support inline chunkName
+                  // TODO: inline chunk name
+                  code += `'${k}': () => import('${VirtualModule.id(k)}'),`
+                }
+                break
+              }
+              default:
+                break
+            }
           }
           code += ' };'
 
@@ -100,7 +115,7 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
 
         // \0/@i18n-ally/virtual:i18n-ally-async-resource
         if (id.endsWith(VirtualModule.Mods.asyncResource)) {
-          return generateAsyncResourceCode((k) => `() => import('${VirtualModule.id(k)}')`)
+          return generateAsyncResourceCode('import')
         }
 
         // \0/@i18n-ally/virtual:i18n-ally-resource
@@ -115,7 +130,7 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
 
         // \0/@i18n-ally/virtual:i18n-ally-empty-resource
         if (id.endsWith(VirtualModule.Mods.emptyResource)) {
-          return generateAsyncResourceCode(() => `{}`)
+          return generateAsyncResourceCode('empty')
         }
 
         // \0/@i18n-ally/virtual:i18n-ally-config

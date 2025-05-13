@@ -1,4 +1,5 @@
-import { cloneDeep, throttle, trimEnd, uniq } from 'es-toolkit'
+import { cloneDeep, throttle, uniq } from 'es-toolkit'
+import { trimEnd } from 'es-toolkit/compat'
 import fg from 'fast-glob'
 import tags from 'language-tags'
 import fs from 'node:fs'

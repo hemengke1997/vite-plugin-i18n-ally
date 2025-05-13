@@ -15,7 +15,7 @@ export class Cookie implements Detector {
     lng: string,
     options: {
       lookup: string
-      attribute?: cookie.CookieSerializeOptions
+      attribute?: cookie.SerializeOptions
       headers: Headers
     },
   ) {

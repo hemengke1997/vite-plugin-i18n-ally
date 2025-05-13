@@ -22,7 +22,9 @@ export const tsup = defineConfig((option) => {
       format: ['esm'],
       platform: 'browser',
       splitting: true,
-      ...bundleless(),
+      ...bundleless({
+        disable: !!option.watch,
+      }),
     },
     {
       ...commonConfig(option),
@@ -76,7 +78,9 @@ export const tsup = defineConfig((option) => {
       format: ['esm', 'cjs'],
       outDir: 'dist/utils',
       splitting: true,
-      ...bundleless(),
+      ...bundleless({
+        disable: !!option.watch,
+      }),
     },
   ]
 

@@ -49,6 +49,7 @@ describe('LocaleDetector - Namespace', () => {
         "virtual:i18n-ally-zh",
         "virtual:i18n-ally-zh-tw",
         "virtual:i18n-ally-zh-tw__test",
+        "virtual:i18n-ally-zh__more",
         "virtual:i18n-ally-zh__test",
       ]
     `)
@@ -69,6 +70,7 @@ describe('LocaleDetector - Namespace', () => {
         "virtual:i18n-ally-zh",
         "virtual:i18n-ally-zh-tw",
         "virtual:i18n-ally-zh-tw__test",
+        "virtual:i18n-ally-zh__more",
         "virtual:i18n-ally-zh__test",
       ]
     `)
