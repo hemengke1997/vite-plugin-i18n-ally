@@ -7,6 +7,7 @@ import { type Path } from './detectors/path'
 import { type QueryString } from './detectors/query-string'
 import { type SessionStorage } from './detectors/session-storage'
 import { type Detector } from './detectors/types'
+import { type LogLevel } from './logger'
 
 type ResolveDetectorName<T extends Detector> = T['name']
 type ResolveDetectorLookup<T extends Detector> = Parameters<T['resolveLng']>[0]['lookup']
@@ -48,6 +49,14 @@ export interface I18nAllyClientOptions<D extends Detector[] | undefined = undefi
    * @default false
    */
   lowerCaseLng?: boolean
+  /**
+   * logLevel
+   * @description
+   * Log level for i18n-ally
+   *
+   * @default 'log'
+   */
+  logLevel?: LogLevel
   /**
    * @description
    * Before i18n-ally is initialized

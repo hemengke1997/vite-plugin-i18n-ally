@@ -1,11 +1,11 @@
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
-import { name as I18nAllyName } from '../../package.json'
 import { type Detection, detectLanguage } from '../utils/detect'
 import { getSupportedLngs, getSupportedNs } from '../utils/supported'
 import { ensureArray, findByCase, formatLng, omit } from '../utils/utils'
 import { builtinDetectors } from './detectors'
 import { type Detector } from './detectors/types'
+import { Logger } from './logger'
 import { type I18nAllyClientOptions } from './types'
 
 export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
@@ -13,6 +13,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
 
   private loaded: { [lng: string]: Set<string> } = {}
   private detectorMap: Map<string, Detector> = new Map()
+  private logger: Logger = undefined!
 
   lng?: string
   lngs: string[] = []
@@ -32,6 +33,9 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
 
   constructor(options: I18nAllyClientOptions<T>) {
     this.options = options
+
+    this.logger = new Logger(options.logLevel)
+
     const { current } = this.onReady()
 
     {
@@ -42,7 +46,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
             ns: this.supportedNs,
           })
         } catch (e) {
-          console.error(`[${I18nAllyName}]: onBeforeInit error`, e)
+          this.logger.error(`onBeforeInit error`, e)
         }
 
         await this.init()
@@ -53,7 +57,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
             ns: this.supportedNs,
           })
         } catch (e) {
-          console.error(`[${I18nAllyName}]: onInited error`, e)
+          this.logger.error(`onInited error`, e)
         }
       })()
     }
@@ -155,7 +159,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
         ns.forEach((ns) => {
           const lazyload = resources[`${lng}${config.separator}${ns}`]
           if (!lazyload) {
-            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${lng}' is empty`)
+            this.logger.warn(`Resource of namespace '${ns}' in language '${lng}' is empty`)
           } else {
             lazyloads.push({
               fn: lazyload,
@@ -169,7 +173,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
         this.supportedNs[lng].forEach((ns) => {
           const lazyload = resources[`${lng}${config.separator}${ns}`]
           if (!lazyload) {
-            console.warn(`[${I18nAllyName}]: Resource of namespace '${ns}' in language '${lng}' is empty`)
+            this.logger.warn(`Resource of namespace '${ns}' in language '${lng}' is empty`)
           } else {
             lazyloads.push({
               fn: lazyload,
@@ -181,7 +185,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
     } else {
       const lazyload = resources[lng]
       if (!lazyload) {
-        console.warn(`[${I18nAllyName}]: No locale resources found`)
+        this.logger.warn(`No locale resources found`)
       } else {
         lazyloads.push({
           fn: lazyload,
@@ -195,7 +199,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
         lazyloads.map(async (lazyload) => {
           const resources = (await lazyload.fn()).default || null
           if (!resources) {
-            console.warn(`[${I18nAllyName}]: Resource of language '${lng}' is empty`)
+            this.logger.warn(`Resource of language '${lng}' is empty`)
             return
           }
 
@@ -238,9 +242,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
 
   private warnFallback(lng: string) {
     if (lng !== this.fallbackLng) {
-      console.warn(
-        `[${I18nAllyName}]: Current language '${lng}' not found in locale resources, fallback to '${this.fallbackLng}'`,
-      )
+      this.logger.warn(`Current language '${lng}' not found in locale resources, fallback to '${this.fallbackLng}'`)
     }
   }
 
