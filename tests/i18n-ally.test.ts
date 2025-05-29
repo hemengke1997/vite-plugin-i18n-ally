@@ -144,7 +144,11 @@ describe('I18nAlly', () => {
     expect(i18nAlly.supportedLngs).toEqual(expect.arrayContaining(['de', 'en', 'zh-tw', 'zh']))
 
     await i18nAlly.asyncLoadResource('de', { ns: 'test' })
-    expect(consoleWarnMock).toHaveBeenCalledWith(expect.stringContaining(`language 'de' not found`))
+
+    expect(consoleWarnMock).toHaveBeenCalledWith(
+      '[vite-plugin-i18n-ally]',
+      "Current language 'de' not found in locale resources, fallback to 'en'",
+    )
   })
 })
 
