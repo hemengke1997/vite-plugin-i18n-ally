@@ -1,3 +1,12 @@
+# [6.1.0](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v6.0.1...v6.1.0) (2025-05-29)
+
+
+### Features
+
+* add logLevel option ([43ab1ce](https://github.com/hemengke1997/vite-plugin-i18n-ally/commit/43ab1ceb68e7510867a3a0c2de5f8e5057ba71fd))
+
+
+
 ## [6.0.1](https://github.com/hemengke1997/vite-plugin-i18n-ally/compare/v6.0.0...v6.0.1) (2025-05-13)
 
 
