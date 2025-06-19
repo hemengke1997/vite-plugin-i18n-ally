@@ -1,8 +1,8 @@
-import { type Detector } from './types'
+import type { Detector } from './types'
 
 export class QueryString implements Detector {
   name = 'querystring' as const
-  resolveLng(options: { lookup: string; request: Request }) {
+  resolveLng(options: { lookup: string, request: Request }) {
     const { lookup, request } = options
 
     const url = new URL(request.url)

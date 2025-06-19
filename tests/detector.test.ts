@@ -8,7 +8,7 @@ import { Path } from '@/client/detectors/path'
 import { QueryString } from '@/client/detectors/query-string'
 import { SessionStorage } from '@/client/detectors/session-storage'
 
-describe('HtmlTag', () => {
+describe('htmlTag', () => {
   let htmlTag: HtmlTag
 
   beforeEach(() => {
@@ -73,7 +73,7 @@ describe('HtmlTag', () => {
   })
 })
 
-describe('LocalStorage', () => {
+describe('localStorage', () => {
   let localStorageDetector: LocalStorage
   beforeEach(() => {
     localStorageDetector = new LocalStorage()
@@ -139,7 +139,7 @@ describe('LocalStorage', () => {
   })
 })
 
-describe('Navigator', () => {
+describe('navigator', () => {
   let navigatorDetector: Navigator
 
   beforeEach(() => {
@@ -182,7 +182,7 @@ describe('Navigator', () => {
   })
 })
 
-describe('Path', () => {
+describe('path', () => {
   let pathDetector: Path
 
   beforeEach(() => {
@@ -270,7 +270,7 @@ describe('Path', () => {
   })
 })
 
-describe('QueryString', () => {
+describe('queryString', () => {
   let queryStringDetector: QueryString
 
   beforeEach(() => {
@@ -337,7 +337,7 @@ describe('QueryString', () => {
   })
 })
 
-describe('SessionStorage', () => {
+describe('sessionStorage', () => {
   let sessionStorageDetector: SessionStorage
 
   beforeEach(() => {
@@ -385,7 +385,7 @@ describe('SessionStorage', () => {
   })
 })
 
-describe('Cookie', () => {
+describe('cookie', () => {
   let cookieDetector: Cookie
 
   beforeEach(() => {

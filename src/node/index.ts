@@ -1,9 +1,9 @@
-import { isEmpty } from 'es-toolkit/compat'
+import type { PluginOption, ViteDevServer } from 'vite'
+import type { I18nAllyOptions } from './types'
 import path from 'node:path'
+import { isEmpty } from 'es-toolkit/compat'
 import colors from 'picocolors'
-import { type PluginOption, type ViteDevServer } from 'vite'
 import { LocaleDetector } from './locale-detector'
-import { type I18nAllyOptions } from './types'
 import { debug } from './utils/debugger'
 import { fullReload } from './utils/hmr'
 import { initI18nAlly } from './utils/init-i18n-ally'
@@ -94,7 +94,8 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
               case 'import': {
                 if (isEmpty(_modules[k])) {
                   code += `'${k}': () => ({ default: {} }),`
-                } else {
+                }
+                else {
                   // Currently rollup doesn't support inline chunkName
                   // TODO: inline chunk name
                   code += `'${k}': () => import('${VirtualModule.id(k)}'),`
@@ -168,7 +169,8 @@ export function i18nAlly(opts?: I18nAllyOptions): any {
         if (vscodeSetting?.isChanged()) {
           // reload server
           server?.restart()
-        } else {
+        }
+        else {
           fullReload(server, localeDetector)
         }
       }

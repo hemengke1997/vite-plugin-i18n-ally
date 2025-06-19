@@ -1,4 +1,5 @@
-import { type Cookie, createCookie } from '@remix-run/node'
+import type { Cookie } from '@remix-run/node'
+import { createCookie } from '@remix-run/node'
 import { RemixI18Next } from 'remix-i18next/server'
 import { resources } from 'virtual:i18n-ally-resource'
 import { i18nOptions } from '@/i18n/i18n'

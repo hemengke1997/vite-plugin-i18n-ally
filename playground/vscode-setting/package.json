@@ -1,8 +1,8 @@
 {
   "name": "vscode-setting",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "cross-env DEBUG=vite-plugin-i18n* vite",
     "build": "vite build",

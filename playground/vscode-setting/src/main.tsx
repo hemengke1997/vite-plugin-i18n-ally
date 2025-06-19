@@ -1,7 +1,7 @@
+import i18next from 'i18next'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import i18next from 'i18next'
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import App from './App'
 import { fallbackLng, lookupTarget } from './const'

@@ -1,12 +1,13 @@
+import type { Detection } from '../utils/detect'
+import type { Detector } from './detectors/types'
+import type { I18nAllyClientOptions } from './types'
 import { resources } from 'virtual:i18n-ally-async-resource'
 import { config } from 'virtual:i18n-ally-config'
-import { type Detection, detectLanguage } from '../utils/detect'
+import { detectLanguage } from '../utils/detect'
 import { getSupportedLngs, getSupportedNs } from '../utils/supported'
 import { ensureArray, findByCase, formatLng, omit } from '../utils/utils'
 import { builtinDetectors } from './detectors'
-import { type Detector } from './detectors/types'
 import { Logger } from './logger'
-import { type I18nAllyClientOptions } from './types'
 
 export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
   private readonly options: I18nAllyClientOptions<T> = {} as I18nAllyClientOptions<T>
@@ -45,7 +46,8 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
             lngs: this.lngs,
             ns: this.supportedNs,
           })
-        } catch (e) {
+        }
+        catch (e) {
           this.logger.error(`onBeforeInit error`, e)
         }
 
@@ -56,7 +58,8 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
             lngs: this.lngs,
             ns: this.supportedNs,
           })
-        } catch (e) {
+        }
+        catch (e) {
           this.logger.error(`onInited error`, e)
         }
       })()
@@ -84,7 +87,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
     this.fallbackLng = this.formatLngs(this.options.fallbackLng)
     this.supportedLngs = this.formatLngs(this.supportedLngs)
 
-    this.lngs = this.formatLngs(this.options.lngs || []).filter((lng) => this.supportedLngs.includes(lng))
+    this.lngs = this.formatLngs(this.options.lngs || []).filter(lng => this.supportedLngs.includes(lng))
     if (!this.lngs?.length) {
       this.lngs = this.supportedLngs
     }
@@ -94,16 +97,17 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
     const resolvedLng = this.lng || this.detect()
     if (this.lngs.includes(resolvedLng)) {
       this.language = resolvedLng
-    } else {
+    }
+    else {
       this.warnFallback(resolvedLng)
       this.language = this.fallbackLng
     }
 
     const current = {
       lng: this.language,
+      // 用户配置的namespace优先级最高。如果没有配置，则使用当前语言的namespace
       ns: config.namespace
-        ? // 用户配置的namespace优先级最高。如果没有配置，则使用当前语言的namespace
-          this.options.ns || this.supportedNs[this.language] || []
+        ? this.options.ns || this.supportedNs[this.language] || []
         : [],
     }
 
@@ -160,21 +164,8 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
           const lazyload = resources[`${lng}${config.separator}${ns}`]
           if (!lazyload) {
             this.logger.warn(`Resource of namespace '${ns}' in language '${lng}' is empty`)
-          } else {
-            lazyloads.push({
-              fn: lazyload,
-              ns,
-            })
           }
-        })
-      } else {
-        // 用户未传入namespaces
-        // 请求当前语言支持的所有的namespace
-        this.supportedNs[lng].forEach((ns) => {
-          const lazyload = resources[`${lng}${config.separator}${ns}`]
-          if (!lazyload) {
-            this.logger.warn(`Resource of namespace '${ns}' in language '${lng}' is empty`)
-          } else {
+          else {
             lazyloads.push({
               fn: lazyload,
               ns,
@@ -182,11 +173,29 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
           }
         })
       }
-    } else {
+      else {
+        // 用户未传入namespaces
+        // 请求当前语言支持的所有的namespace
+        this.supportedNs[lng].forEach((ns) => {
+          const lazyload = resources[`${lng}${config.separator}${ns}`]
+          if (!lazyload) {
+            this.logger.warn(`Resource of namespace '${ns}' in language '${lng}' is empty`)
+          }
+          else {
+            lazyloads.push({
+              fn: lazyload,
+              ns,
+            })
+          }
+        })
+      }
+    }
+    else {
       const lazyload = resources[lng]
       if (!lazyload) {
         this.logger.warn(`No locale resources found`)
-      } else {
+      }
+      else {
         lazyloads.push({
           fn: lazyload,
           ns: undefined,
@@ -226,9 +235,10 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
   }
 
   private persistLng(lng: string) {
-    const persistDetector = (this.options.detection as Detection[])?.filter((d) => d.cache !== false)
+    const persistDetector = (this.options.detection as Detection[])?.filter(d => d.cache !== false)
 
-    if (!persistDetector?.length) return
+    if (!persistDetector?.length)
+      return
 
     persistDetector.forEach(async (d) => {
       const detector = this.detectorMap.get(d.detect)
@@ -257,7 +267,7 @@ export class I18nAllyClient<T extends Detector[] | undefined = undefined> {
 
   private generateDetectorMap() {
     const detectors = [...builtinDetectors, ...(this.options.customDetectors || [])] as Detector[]
-    this.detectorMap = new Map<string, Detector>(detectors.map((detector) => [detector.name, detector]))
+    this.detectorMap = new Map<string, Detector>(detectors.map(detector => [detector.name, detector]))
   }
 
   /**

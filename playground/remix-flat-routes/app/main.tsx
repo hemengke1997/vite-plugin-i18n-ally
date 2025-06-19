@@ -1,8 +1,8 @@
+import i18next from 'i18next'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import i18next from 'i18next'
 import { routes } from 'virtual:remix-flat-routes'
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import { GlobalContext } from './contexts/global-context'
@@ -42,11 +42,11 @@ function main() {
             <RouterProvider
               router={createBrowserRouter(routes, {
                 dataStrategy: async ({ matches }) => {
-                  const matchesToLoad = matches.filter((m) => m.shouldLoad)
-                  const results = await Promise.all(matchesToLoad.map((m) => m.resolve()))
-                  ns = (await Promise.all(matches.map((m) => m.route.handle)))
-                    .filter((t) => t?.i18n)
-                    .map((t) => t.i18n)
+                  const matchesToLoad = matches.filter(m => m.shouldLoad)
+                  const results = await Promise.all(matchesToLoad.map(m => m.resolve()))
+                  ns = (await Promise.all(matches.map(m => m.route.handle)))
+                    .filter(t => t?.i18n)
+                    .map(t => t.i18n)
                     .flat()
 
                   await i18nAlly.asyncLoadResource(i18next.language, {

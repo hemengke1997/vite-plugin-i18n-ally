@@ -54,7 +54,7 @@ const config = {
   presets: [require('tailwind-antd-preset')],
   plugins: [
     require('tailwindcss-animate'),
-    plugin(function addVars({ addBase, theme }) {
+    plugin(({ addBase, theme }) => {
       function extractColorVars(colorObj: Record<string, any>, colorGroup = '', start: string, end: string) {
         const keys = Object.keys(colorObj)
         const startIndex = keys.indexOf(start)
@@ -63,13 +63,13 @@ const config = {
           return {}
         }
 
-        colorObj = Object.fromEntries(keys.slice(startIndex + 1, endIndex).map((key) => [key, colorObj[key]]))
+        colorObj = Object.fromEntries(keys.slice(startIndex + 1, endIndex).map(key => [key, colorObj[key]]))
 
         return Object.keys(colorObj).reduce((vars, colorKey) => {
           const value = colorObj[colorKey]
 
-          const newVars =
-            typeof value === 'string'
+          const newVars
+            = typeof value === 'string'
               ? { [`--color${colorGroup}-${colorKey}`]: value }
               : extractColorVars(value, `-${colorKey}`, start, end)
 
@@ -81,7 +81,7 @@ const config = {
         ':root': extractColorVars(theme('colors'), '', '/colors-begin', '/colors-end'),
       })
     }),
-    plugin(function addDirection({ addUtilities }) {
+    plugin(({ addUtilities }) => {
       addUtilities({
         '.rtl': {
           direction: 'rtl',
@@ -91,7 +91,7 @@ const config = {
         },
       })
     }),
-    plugin(function addBgContainFull({ addUtilities }) {
+    plugin(({ addUtilities }) => {
       addUtilities({
         '.bg-contain-full': {
           backgroundSize: 'contain',

@@ -11,12 +11,12 @@ export function getSupportedLngs() {
     return Array.from(
       new Set(
         Object.keys(resources)
-          .filter((key) => key.includes(separator))
-          .map((key) => key.split(separator)[0]),
+          .filter(key => key.includes(separator))
+          .map(key => key.split(separator)[0]),
       ),
     )
   }
-  return Array.from(new Set(Object.keys(resources).filter((key) => !key.includes(separator))))
+  return Array.from(new Set(Object.keys(resources).filter(key => !key.includes(separator))))
 }
 
 /**
@@ -29,7 +29,7 @@ export function getSupportedNs() {
   if (namespace) {
     const namespaceMap = new Map<string, string[]>()
     Object.keys(resources)
-      .filter((key) => key.includes(separator))
+      .filter(key => key.includes(separator))
       .forEach((key) => {
         const [lng, ns] = key.split(separator)
         const namespaces = namespaceMap.get(lng) || []
@@ -38,7 +38,8 @@ export function getSupportedNs() {
       })
 
     return Object.fromEntries(namespaceMap)
-  } else {
+  }
+  else {
     return {}
   }
 }

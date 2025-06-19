@@ -1,8 +1,8 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { diff } from 'deep-object-diff'
 import { findUpSync } from 'find-up'
 import JSON5 from 'json5'
-import fs from 'node:fs'
-import path from 'node:path'
 import { debug } from './debugger'
 
 export class VscodeSetting {
@@ -39,7 +39,7 @@ export class VscodeSetting {
     let isChanged = false
     if (currentConfig) {
       const res = diff(this.previousConfig || {}, currentConfig)
-      if (Object.keys(res).some((key) => key.startsWith(VscodeSetting.I18N_ALLY_KEY))) {
+      if (Object.keys(res).some(key => key.startsWith(VscodeSetting.I18N_ALLY_KEY))) {
         isChanged = true
       }
     }
@@ -58,14 +58,15 @@ export class VscodeSetting {
     if (settings) {
       const removePrefix = (key: string) => key.replace(VscodeSetting.I18N_ALLY_KEY, '')
       const filteredConfig = Object.keys(settings)
-        .filter((key) => key.startsWith(VscodeSetting.I18N_ALLY_KEY))
+        .filter(key => key.startsWith(VscodeSetting.I18N_ALLY_KEY))
         .reduce(
           (obj, key) => {
             if (key === `${VscodeSetting.I18N_ALLY_KEY}localesPaths`) {
               if (Array.isArray(settings[key])) {
                 obj[removePrefix(key)] = settings[key].map((p: string) => path.resolve(this._root, p))
               }
-            } else {
+            }
+            else {
               obj[removePrefix(key)] = settings[key]
             }
             return obj
@@ -83,7 +84,8 @@ export class VscodeSetting {
     if (filePath) {
       try {
         return JSON5.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }))
-      } catch {
+      }
+      catch {
         return {}
       }
     }

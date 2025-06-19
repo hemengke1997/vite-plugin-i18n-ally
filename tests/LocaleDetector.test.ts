@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { LocaleDetector } from '../src/node/locale-detector'
 import { initI18nAlly } from '../src/node/utils/init-i18n-ally'
 
-describe('LocaleDetector - Namespace', () => {
+describe('localeDetector - Namespace', () => {
   let localeDetector: LocaleDetector
 
   beforeAll(async () => {
@@ -87,7 +87,7 @@ describe('LocaleDetector - Namespace', () => {
   })
 })
 
-describe('LocaleDetector - Non-Namespace', () => {
+describe('localeDetector - Non-Namespace', () => {
   let localeDetector: LocaleDetector
 
   beforeAll(async () => {

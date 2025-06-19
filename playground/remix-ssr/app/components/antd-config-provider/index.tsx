@@ -1,5 +1,6 @@
-import { memo, type PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 import { theme as antdTheme, App, ConfigProvider } from 'antd'
+import { memo } from 'react'
 
 function AntdConfigProvider(props: PropsWithChildren) {
   const { children } = props

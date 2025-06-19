@@ -1,5 +1,5 @@
-import { type ModuleNode, type ViteDevServer } from 'vite'
-import { type LocaleDetector } from '../locale-detector'
+import type { ModuleNode, ViteDevServer } from 'vite'
+import type { LocaleDetector } from '../locale-detector'
 import { VirtualModule } from './virtual'
 
 export function fullReload(server: ViteDevServer | undefined, localeDetector: LocaleDetector) {

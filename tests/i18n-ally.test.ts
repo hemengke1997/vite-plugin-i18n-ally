@@ -1,5 +1,8 @@
+import type { ViteDevServer } from 'vite'
+import type { Mock, MockInstance } from 'vitest'
+import type { I18nAllyClientOptions } from '@/client'
 import path from 'node:path'
-import { createServer, type ViteDevServer } from 'vite'
+import { createServer } from 'vite'
 import {
   afterAll,
   afterEach,
@@ -8,14 +11,12 @@ import {
   describe,
   expect,
   it,
-  type Mock,
-  type MockInstance,
+
   vi,
 } from 'vitest'
-import { type I18nAllyClientOptions } from '@/client'
 
 async function createViteServer() {
-  const i18nAlly = await import('@/node').then((m) => m.i18nAlly)
+  const i18nAlly = await import('@/node').then(m => m.i18nAlly)
 
   const server = await createServer({
     plugins: [
@@ -39,7 +40,7 @@ async function createViteServer() {
   return server
 }
 
-describe('I18nAlly', () => {
+describe('i18nAlly', () => {
   let onResourceLoadedMock: Mock
   let onInitMock: Mock
   let onInitedMock: Mock
@@ -48,10 +49,6 @@ describe('I18nAlly', () => {
 
   beforeAll(async () => {
     viteServer = await createViteServer()
-  })
-
-  afterAll(async () => {
-    await viteServer.close()
   })
 
   beforeEach(async () => {
@@ -65,6 +62,10 @@ describe('I18nAlly', () => {
     vi.restoreAllMocks()
   })
 
+  afterAll(async () => {
+    await viteServer.close()
+  })
+
   it('should initialize with provided options', async () => {
     const options: I18nAllyClientOptions = {
       fallbackLng: 'en',
@@ -75,7 +76,7 @@ describe('I18nAlly', () => {
       onBeforeInit: onInitMock,
       onInited: onInitedMock,
     }
-    const I18nAlly = await import('@/client/i18n-ally-client').then((m) => m.I18nAllyClient)
+    const I18nAlly = await import('@/client/i18n-ally-client').then(m => m.I18nAllyClient)
 
     const i18nAlly = new I18nAlly(options)
 
@@ -95,7 +96,7 @@ describe('I18nAlly', () => {
       detection: [],
       onResourceLoaded: onResourceLoadedMock,
     }
-    const I18nAlly = await import('@/client/i18n-ally-client').then((m) => m.I18nAllyClient)
+    const I18nAlly = await import('@/client/i18n-ally-client').then(m => m.I18nAllyClient)
 
     const i18nAlly = new I18nAlly(options)
 
@@ -113,7 +114,7 @@ describe('I18nAlly', () => {
       onResourceLoaded: onResourceLoadedMock,
     }
 
-    const I18nAlly = await import('@/client/i18n-ally-client').then((m) => m.I18nAllyClient)
+    const I18nAlly = await import('@/client/i18n-ally-client').then(m => m.I18nAllyClient)
 
     const i18nAlly = new I18nAlly(options)
 
@@ -135,19 +136,19 @@ describe('I18nAlly', () => {
       onResourceLoaded: onResourceLoadedMock,
     }
 
-    const I18nAlly = await import('@/client/i18n-ally-client').then((m) => m.I18nAllyClient)
+    const I18nAlly = await import('@/client/i18n-ally-client').then(m => m.I18nAllyClient)
 
     const i18nAlly = new I18nAlly(options)
 
     // 如果lngs中有不支持的语言，会被过滤掉
-    expect(i18nAlly['lngs']).toEqual(['en', 'zh'])
+    expect(i18nAlly.lngs).toEqual(['en', 'zh'])
     expect(i18nAlly.supportedLngs).toEqual(expect.arrayContaining(['de', 'en', 'zh-tw', 'zh']))
 
     await i18nAlly.asyncLoadResource('de', { ns: 'test' })
 
     expect(consoleWarnMock).toHaveBeenCalledWith(
       '[vite-plugin-i18n-ally]',
-      "Current language 'de' not found in locale resources, fallback to 'en'",
+      'Current language \'de\' not found in locale resources, fallback to \'en\'',
     )
   })
 })

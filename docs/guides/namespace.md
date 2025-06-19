@@ -5,6 +5,7 @@ In the [Getting Started](./getting-started) section, we implemented a basic i18n
 `vite-plugin-i18n-ally` provides the `namespace` configuration to enable namespaces. When enabled, the plugin generates corresponding resource files based on namespaces to reduce file size.
 
 You can set `i18n-ally.namespace`:
+
 ```json
 {
   "i18n-ally.namespace": true,
@@ -55,9 +56,8 @@ This method is simple and straightforward, but the browser will load all resourc
 
 Since it involves routes, we naturally think of `react-router`. In `react-router^6.4`, [`loader`](https://reactrouter.com/en/main/route/loader) was added to load resource files in the loader.
 
-
 ```tsx
-import { createRoutesFromElements, Route } from 'react-router';
+import { createRoutesFromElements, Route } from 'react-router'
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const i18nAlly = I18nAllyClient(
@@ -65,15 +65,18 @@ const i18nAlly = I18nAllyClient(
 )
 
 const routes = createRoutesFromElements(
-  <Route path="/">
-    <Route path="a" lazy={() => import("./a")} loader={async () => {
-      await i18nAlly.asyncLoadResource(i18next.language, {
-        ns: ['a']
-      })
-    }} />
+  <Route path='/'>
+    <Route
+      path='a'
+      lazy={() => import('./a')}
+      loader={async () => {
+        await i18nAlly.asyncLoadResource(i18next.language, {
+          ns: ['a']
+        })
+      }}
+    />
   </Route>
-);
-
+)
 ```
 
 This way, we can load the corresponding resource files based on the route, achieving on-demand loading of resource files.
@@ -82,5 +85,5 @@ For more advanced methods, you can use `vite-plugin-remix-flat-routes` or `remix
 
 References:
 
-- [Implementation with vite-plugin-remix-flat-routes](https://github.com/hemengke1997/vite-plugin-i18n-ally/tree/master/playground/remix-flat-routes) 
+- [Implementation with vite-plugin-remix-flat-routes](https://github.com/hemengke1997/vite-plugin-i18n-ally/tree/master/playground/remix-flat-routes)
 - [Implementation with remix](https://github.com/hemengke1997/vite-plugin-i18n-ally/tree/master/playground/remix-ssr)

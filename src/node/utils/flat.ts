@@ -14,7 +14,8 @@ export function flatten(data: any) {
 
       const newKey = key === ROOT_KEY ? prev || '' : prev ? `${prev}.${key}` : key
 
-      if (!isarray && isobject && Object.keys(value).length) return step(value, newKey)
+      if (!isarray && isobject && Object.keys(value).length)
+        return step(value, newKey)
 
       output[newKey] = value
     })
@@ -33,8 +34,10 @@ export function unflatten(data: any) {
     .forEach((key) => {
       const original = key ? get(output, key) : output
 
-      if (isObject(original)) set(output, key ? `${key}.${ROOT_KEY}` : ROOT_KEY, data[key])
-      else if (original === undefined) set(output, key, data[key])
+      if (isObject(original))
+        set(output, key ? `${key}.${ROOT_KEY}` : ROOT_KEY, data[key])
+      else if (original === undefined)
+        set(output, key, data[key])
       else throw new Error(`Duplicated key ${key} found`)
     })
 

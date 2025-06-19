@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 
-export type ParserConstructor = {
+export interface ParserConstructor {
   ext: string
   parse: (text: string, filepath: string) => Promise<object> | object
 }
@@ -27,7 +27,8 @@ export class Parser {
     try {
       const res = await this.parse(raw, filepath)
       return res
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e)
       return {}
     }

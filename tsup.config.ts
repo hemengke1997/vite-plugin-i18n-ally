@@ -1,7 +1,8 @@
-import { defineConfig, type Options } from 'tsup'
+import type { Options } from 'tsup'
+import { defineConfig } from 'tsup'
 import { bundleless } from 'tsup-plugin-bundleless'
 
-const commonConfig = (option: Options): Options => {
+function commonConfig(option: Options): Options {
   return {
     dts: true,
     clean: false,

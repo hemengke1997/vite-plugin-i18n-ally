@@ -1,13 +1,14 @@
-import { type PropsWithChildren } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link, type LoaderFunction, ScrollRestoration, useLocation, useOutlet, useRouteError } from 'react-router-dom'
+import type { PropsWithChildren } from 'react'
+import type { LoaderFunction } from 'react-router-dom'
 import { Button } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
+import { Link, ScrollRestoration, useLocation, useOutlet, useRouteError } from 'react-router-dom'
 
-const RouteAnimation = ({ children }: PropsWithChildren) => {
+function RouteAnimation({ children }: PropsWithChildren) {
   const location = useLocation()
   return (
-    <AnimatePresence mode={'wait'} initial={false}>
+    <AnimatePresence mode='wait' initial={false}>
       <motion.div
         key={location.pathname}
         initial={{
@@ -36,9 +37,9 @@ export function Component() {
   return (
     <>
       <RouteAnimation>
-        <div className={'flex flex-col'}>
+        <div className='flex flex-col'>
           <div>{t('common.layout')}</div>
-          <div className={'flex gap-1'}>
+          <div className='flex gap-1'>
             <Button
               onClick={() => {
                 i18n.changeLanguage('zh')
@@ -54,7 +55,7 @@ export function Component() {
               修改语言 en
             </Button>
           </div>
-          <div className={'flex flex-wrap gap-2'}>
+          <div className='flex flex-wrap gap-2'>
             <Link to='/'>跳转 首页</Link>
             <Link to='/signin'>跳转 signin</Link>
             <Link to='/signup'>跳转 signup</Link>

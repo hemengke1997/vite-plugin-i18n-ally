@@ -35,17 +35,20 @@ export function detectLanguage<T extends Detection | undefined>(
     fallbackLng: string
     lngs: string[]
   },
-  onDetect: ({ detect, lookup }: { lookup: unknown | undefined; detect: string }) => string | null | undefined,
+  onDetect: ({ detect, lookup }: { lookup: unknown | undefined, detect: string }) => string | null | undefined,
 ): string {
   let lng: string = fallbackLng
 
-  if (!detection?.length) return lng
+  if (!detection?.length)
+    return lng
 
   for (let i = 0; i < detection.length; i++) {
     const current = detection[i]
-    if (!current) continue
+    if (!current)
+      continue
 
-    if (!current.detect) continue
+    if (!current.detect)
+      continue
 
     const detectedLang = onDetect({ lookup: current.lookup, detect: current.detect })
 

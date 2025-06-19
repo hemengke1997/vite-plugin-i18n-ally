@@ -1,4 +1,4 @@
-import { type Detector } from './types'
+import type { Detector } from './types'
 
 export class QueryString implements Detector {
   name = 'querystring' as const
@@ -7,6 +7,7 @@ export class QueryString implements Detector {
     const params = new URLSearchParams(window.location.search)
     return params.get(lookup)
   }
+
   persistLng(lng: string, options: { lookup: string }) {
     const { lookup } = options
 

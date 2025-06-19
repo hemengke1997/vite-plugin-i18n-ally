@@ -1,4 +1,4 @@
-import { type ParserConstructor } from './parsers/Parser'
+import type { ParserConstructor } from './parsers/Parser'
 
 export interface I18nAllyOptions {
   /**
@@ -61,8 +61,8 @@ export interface I18nAllyOptions {
   useVscodeI18nAllyConfig?:
     | boolean
     | {
-        stopAt: string
-      }
+      stopAt: string
+    }
 }
 
 export type ParserPlugin = ParserConstructor | undefined

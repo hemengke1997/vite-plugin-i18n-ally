@@ -1,5 +1,6 @@
 export function ensureArray(arr?: string[] | string) {
-  if (!arr) return undefined
+  if (!arr)
+    return undefined
   return Array.isArray(arr) ? arr : [arr]
 }
 
@@ -19,7 +20,7 @@ export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, k
 export function findByCase(source: string[], target: string | string[], lowerCase: boolean | undefined) {
   const targets = ensureArray(target) || []
 
-  return source.find((item) => targets.some((t) => (lowerCase ? item.toLowerCase() === t.toLowerCase() : item === t)))
+  return source.find(item => targets.some(t => (lowerCase ? item.toLowerCase() === t.toLowerCase() : item === t)))
 }
 
 /**

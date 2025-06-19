@@ -1,7 +1,8 @@
+import type { I18nAllyServerOptions } from '@/server'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-import { I18nAllyServer, type I18nAllyServerOptions } from '@/server'
+import { I18nAllyServer } from '@/server'
 
-describe('I18nAllyServer', () => {
+describe('i18nAllyServer', () => {
   beforeAll(() => {
     vi.mock('virtual:i18n-ally-async-resource', () => ({
       resources: {
@@ -53,11 +54,11 @@ describe('I18nAllyServer', () => {
     const i18nAllyServer = new I18nAllyServer(options)
 
     expect(i18nAllyServer).toBeDefined()
-    expect(i18nAllyServer['fallbackLng']).toBe('en')
+    expect(i18nAllyServer.fallbackLng).toBe('en')
     expect(i18nAllyServer.supportedLngs).toEqual(['en', 'fr', 'zh-cn'])
 
     // i18nAllyServer 的options是只读的，不能直接修改
-    expect(i18nAllyServer['options']).toEqual(options)
+    expect(i18nAllyServer.options).toEqual(options)
   })
 
   it('should detect language using cookie detector', () => {
@@ -180,7 +181,7 @@ describe('I18nAllyServer', () => {
     const i18nAllyServer = new I18nAllyServer(options)
 
     // 如果lngs中有不支持的语言，会被过滤掉
-    expect(i18nAllyServer['lngs']).toEqual(['en', 'zh-CN'])
+    expect(i18nAllyServer.lngs).toEqual(['en', 'zh-CN'])
     expect(i18nAllyServer.detect(new Request('http://example.com?locale=fr'))).toBe('en')
   })
 })

@@ -1,6 +1,6 @@
-import { type ServerRuntimeMetaDescriptor } from '@remix-run/server-runtime'
+import type { ServerRuntimeMetaDescriptor } from '@remix-run/server-runtime'
 
-export function tdk({ t, d, k }: { t?: string; d?: string; k?: string }): ServerRuntimeMetaDescriptor[] {
+export function tdk({ t, d, k }: { t?: string, d?: string, k?: string }): ServerRuntimeMetaDescriptor[] {
   return [
     {
       title: t,

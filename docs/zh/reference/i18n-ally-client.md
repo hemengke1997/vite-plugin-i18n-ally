@@ -21,48 +21,47 @@
 ## onBeforeInit
 
 - **类型**: `(
-    current: { lng: string; ns: string[] },
-    all: {
-      lngs: string[]
-      ns: {
-        [lng: string]: string[]
-      }
-    },
-  ) => Promise<void> | void`
+  current: { lng: string; ns: string[] },
+  all: {
+    lngs: string[]
+    ns: {
+      [lng: string]: string[]
+    }
+  },
+) => Promise<void> | void`
 
 初始化时调用，此时国际化资源还未加载。一般用于初始化国际化库。
 
 ## onInited
 
 - **类型**: `(
-    current: {
-      lng: string
-      ns: string[]
-    },
-    all: {
-      lngs: string[]
-      ns: {
-        [lng: string]: string[]
-      }
-    },
-  ) => Promise<void> | void`
+  current: {
+    lng: string
+    ns: string[]
+  },
+  all: {
+    lngs: string[]
+    ns: {
+      [lng: string]: string[]
+    }
+  },
+) => Promise<void> | void`
 
 初始化完成后调用，此时国际化资源已首次加载完成。一般用于渲染应用。
 
 ## onResourceLoaded
 
 - **类型**: `(
-    resources: {
-      [key in string]: string
-    },
-    current: {
-      lng: string
-      ns: string
-    },
-  ) => Promise<void> | void`
+  resources: {
+    [key in string]: string
+  },
+  current: {
+    lng: string
+    ns: string
+  },
+) => Promise<void> | void`
 
 资源加载完成后调用。一般用于将资源添加到国际化库中。
-
 
 ## detection
 
@@ -93,7 +92,6 @@
   - `cache` - 是否缓存语言标识
 - `navigator`
 
-
 参考：[语言探测](../guides/language-detection.md#客户端)
 
 ## customDetectors
@@ -108,40 +106,40 @@
 i18nAlly<
   (
     | {
-        name: 'custom'
-        lookup: (options: { lookup: string }) => string
-      }
+      name: 'custom'
+      lookup: (options: { lookup: string }) => string
+    }
     | {
-        name: 'onemore'
-        lookup: (options: { lookup: string }) => string
-      }
+      name: 'onemore'
+      lookup: (options: { lookup: string }) => string
+    }
   )[]
->({
-  customDetectors: [
-    {
-      name: 'custom',
-      lookup: ({ lookup }) => {
-        // 自定义探测逻辑
-      },
-    },
-    {
-      name: 'onemore',
-      lookup: ({ lookup }) => {
-        // 自定义探测逻辑
-      },
-    },
-  ],
-  detection: [
-    {
-      detect: 'custom',
-      lookup: 'custom-lookup',
-      cache: false,
-    }, 
-    {
-      detect: 'onemore',
-      lookup: 'onemore-lookup',
-      cache: true,
-    },
-  ],
-})
+    >({
+      customDetectors: [
+        {
+          name: 'custom',
+          lookup: ({ lookup }) => {
+            // 自定义探测逻辑
+          },
+        },
+        {
+          name: 'onemore',
+          lookup: ({ lookup }) => {
+            // 自定义探测逻辑
+          },
+        },
+      ],
+      detection: [
+        {
+          detect: 'custom',
+          lookup: 'custom-lookup',
+          cache: false,
+        },
+        {
+          detect: 'onemore',
+          lookup: 'onemore-lookup',
+          cache: true,
+        },
+      ],
+    })
 ```

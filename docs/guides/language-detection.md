@@ -29,6 +29,7 @@ new I18nAllyClient({
 Detects the language based on the `lang` attribute of the HTML tag.
 
 Example:
+
 ```html
 <html lang="en">
 </html>

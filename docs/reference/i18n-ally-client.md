@@ -21,45 +21,45 @@ Default language identifier
 ## onBeforeInit
 
 - **Type**: `(
-    current: { lng: string; ns: string[] },
-    all: {
-      lngs: string[]
-      ns: {
-        [lng: string]: string[]
-      }
-    },
-  ) => Promise<void> | void`
+  current: { lng: string; ns: string[] },
+  all: {
+    lngs: string[]
+    ns: {
+      [lng: string]: string[]
+    }
+  },
+) => Promise<void> | void`
 
 Called during initialization, before i18n resources are loaded. Typically used to initialize the i18n library.
 
 ## onInited
 
 - **Type**: `(
-    current: {
-      lng: string
-      ns: string[]
-    },
-    all: {
-      lngs: string[]
-      ns: {
-        [lng: string]: string[]
-      }
-    },
-  ) => Promise<void> | void`
+  current: {
+    lng: string
+    ns: string[]
+  },
+  all: {
+    lngs: string[]
+    ns: {
+      [lng: string]: string[]
+    }
+  },
+) => Promise<void> | void`
 
 Called after initialization is complete and i18n resources are loaded for the first time. Typically used to render the application.
 
 ## onResourceLoaded
 
 - **Type**: `(
-    resources: {
-      [key in string]: string
-    },
-    current: {
-      lng: string
-      ns: string
-    },
-  ) => Promise<void> | void`
+  resources: {
+    [key in string]: string
+  },
+  current: {
+    lng: string
+    ns: string
+  },
+) => Promise<void> | void`
 
 Called after resources are loaded. Typically used to add resources to the i18n library.
 
@@ -94,7 +94,6 @@ Supports the following types:
 
 Refer: [Language Detection](../guides/language-detection.md#client-side)
 
-
 ## customDetectors
 
 - **Type**: `Detector[]`
@@ -107,40 +106,40 @@ After adding custom detectors, you need to add the corresponding detection confi
 i18nAlly<
   (
     | {
-        name: 'custom'
-        lookup: (options: { lookup: string }) => string
-      }
+      name: 'custom'
+      lookup: (options: { lookup: string }) => string
+    }
     | {
-        name: 'onemore'
-        lookup: (options: { lookup: string }) => string
-      }
+      name: 'onemore'
+      lookup: (options: { lookup: string }) => string
+    }
   )[]
->({
-  customDetectors: [
-    {
-      name: 'custom',
-      lookup: ({ lookup }) => {
-        // Custom detection logic
-      },
-    },
-    {
-      name: 'onemore',
-      lookup: ({ lookup }) => {
-        // Custom detection logic
-      },
-    },
-  ],
-  detection: [
-    {
-      detect: 'custom',
-      lookup: 'custom-lookup',
-      cache: false,
-    }, 
-    {
-      detect: 'onemore',
-      lookup: 'onemore-lookup',
-      cache: true,
-    },
-  ],
-})
+    >({
+      customDetectors: [
+        {
+          name: 'custom',
+          lookup: ({ lookup }) => {
+            // Custom detection logic
+          },
+        },
+        {
+          name: 'onemore',
+          lookup: ({ lookup }) => {
+            // Custom detection logic
+          },
+        },
+      ],
+      detection: [
+        {
+          detect: 'custom',
+          lookup: 'custom-lookup',
+          cache: false,
+        },
+        {
+          detect: 'onemore',
+          lookup: 'onemore-lookup',
+          cache: true,
+        },
+      ],
+    })
 ```

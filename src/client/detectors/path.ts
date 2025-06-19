@@ -1,27 +1,32 @@
-import { type Detector } from './types'
+import type { Detector } from './types'
 
-const regex = /\/([^\/]*)/g
+const regex = /\/([^/]*)/g
 
 export class Path implements Detector {
   name = 'path' as const
   resolveLng(options: { lookup: number }) {
     const { lookup: lookupFromPathIndex } = options
-    if (typeof window === 'undefined') return undefined
+    if (typeof window === 'undefined')
+      return undefined
 
     const language = window.location.pathname.match(regex)
-    if (!Array.isArray(language)) return undefined
+    if (!Array.isArray(language))
+      return undefined
 
     const index = typeof lookupFromPathIndex === 'number' ? lookupFromPathIndex : 0
     return language[index]?.replace('/', '')
   }
-  persistLng(lng: string, options: { lookup: number | string; lngs: string[] }) {
+
+  persistLng(lng: string, options: { lookup: number | string, lngs: string[] }) {
     const { lookup: lookupPathIndex, lngs } = options
     const index = typeof lookupPathIndex === 'number' ? lookupPathIndex : 0
     const currentURL = new URL(window.location.href)
     const language = currentURL.pathname.match(regex)
-    if (!Array.isArray(language)) return
-    if (language[index] === `/${lng}`) return
-    const delIndex = lngs.some((l) => language[index] === `/${l}`) ? 1 : 0
+    if (!Array.isArray(language))
+      return
+    if (language[index] === `/${lng}`)
+      return
+    const delIndex = lngs.some(l => language[index] === `/${l}`) ? 1 : 0
     language.splice(index, delIndex, `/${lng}`)
     currentURL.pathname = language.join('')
     window.history.replaceState({}, '', currentURL)

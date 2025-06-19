@@ -29,6 +29,7 @@ new I18nAllyClient({
 根据网页 html 标签的 `lang` 属性来探测语言。
 
 如：
+
 ```html
 <html lang="en">
 </html>
@@ -206,7 +207,6 @@ i18nAllyServer.detect(request)
 根据请求的cookie来探测语言。
 
 如：`request.headers.get('cookie')` 为 `locale_cookie=en`时，探测语言为 `en`。
-
 
 ### 2. header
 

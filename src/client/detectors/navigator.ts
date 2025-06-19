@@ -1,5 +1,5 @@
+import type { Detector } from './types'
 import { findByCase } from '../../utils/utils'
-import { type Detector } from './types'
 
 export class Navigator implements Detector {
   name = 'navigator' as const

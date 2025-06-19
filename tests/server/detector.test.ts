@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Cookie, Header, Path, QueryString } from '@/server'
 
-describe('Cookie (Server)', () => {
+describe('cookie (Server)', () => {
   let cookieDetector: Cookie
 
   beforeAll(() => {
@@ -112,7 +112,7 @@ describe('Cookie (Server)', () => {
   })
 })
 
-describe('Header (Server)', () => {
+describe('header (Server)', () => {
   let headerDetector: Header
 
   beforeEach(() => {
@@ -166,7 +166,7 @@ describe('Header (Server)', () => {
   })
 })
 
-describe('Path (Server)', () => {
+describe('path (Server)', () => {
   let pathDetector: Path
 
   beforeEach(() => {
@@ -200,7 +200,7 @@ describe('Path (Server)', () => {
   })
 })
 
-describe('QueryString (Server)', () => {
+describe('queryString (Server)', () => {
   let queryStringDetector: QueryString
 
   beforeEach(() => {

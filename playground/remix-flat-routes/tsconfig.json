@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["esnext", "dom"],
     "jsx": "react-jsx",
+    "lib": ["esnext", "dom"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "types": ["vite-plugin-remix-flat-routes/virtual", "vite/client", "vite-plugin-i18n-ally/virtual"],

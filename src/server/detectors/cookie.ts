@@ -1,9 +1,9 @@
+import type { Detector } from './types'
 import cookie from 'cookie'
-import { type Detector } from './types'
 
 export class Cookie implements Detector {
   name = 'cookie' as const
-  resolveLng(options: { lookup: string; request: Request }) {
+  resolveLng(options: { lookup: string, request: Request }) {
     const { lookup, request } = options
     const cookies = request.headers.get('cookie')
     if (cookies) {
@@ -11,6 +11,7 @@ export class Cookie implements Detector {
     }
     return null
   }
+
   persistLng(
     lng: string,
     options: {

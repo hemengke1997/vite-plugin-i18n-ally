@@ -1,9 +1,9 @@
+import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/cssinjs'
 import { RemixBrowser } from '@remix-run/react'
+import i18next from 'i18next'
 import { startTransition } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
-import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/cssinjs'
-import i18next from 'i18next'
 import { getInitialNamespaces } from 'remix-i18next/client'
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 import { i18nOptions } from '@/i18n/i18n'
@@ -11,7 +11,7 @@ import { resolveNamespace } from './i18n/namespace.client'
 
 const i18nChangeLanguage = i18next.changeLanguage
 
-const initialNamespaces = () => {
+function initialNamespaces() {
   return getInitialNamespaces().concat(i18nOptions.defaultNS)
 }
 

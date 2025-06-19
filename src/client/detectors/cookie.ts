@@ -1,4 +1,4 @@
-import { type Detector } from './types'
+import type { Detector } from './types'
 
 // Adopted from js-cookie
 
@@ -52,7 +52,8 @@ export class Cookie implements Detector {
     }
     const name = options.lookup
 
-    if (!name) return null
+    if (!name)
+      return null
 
     // To prevent the for loop in the first place assign an empty array
     // in case there are no cookies at all.
@@ -64,21 +65,25 @@ export class Cookie implements Detector {
 
       try {
         const found = decodeURIComponent(parts[0])
-        if (!(found in jar)) jar[found] = reader(value)
+        if (!(found in jar))
+          jar[found] = reader(value)
         if (name === found) {
           break
         }
-      } catch {
+      }
+      catch {
         // Do nothing...
       }
     }
 
     return jar[name] || null
   }
-  persistLng(lng: string, options: { lookup: string; attributes?: CookieAttributes }) {
+
+  persistLng(lng: string, options: { lookup: string, attributes?: CookieAttributes }) {
     const { lookup } = options
 
-    if (!lookup) return
+    if (!lookup)
+      return
 
     const write = (value: string) =>
       encodeURIComponent(value).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent)
@@ -92,7 +97,7 @@ export class Cookie implements Detector {
         attributes.expires = new Date(Date.now() + attributes.expires * 864e5)
       }
       if (attributes.expires) {
-        // @ts-expect-error
+        // @ts-expect-error Cookie
         attributes.expires = attributes.expires.toUTCString()
       }
     }

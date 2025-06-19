@@ -1,7 +1,8 @@
-import { useTranslation } from 'react-i18next'
-import { json, type MetaFunction } from '@remix-run/node'
-import { type LoaderFunctionArgs } from '@remix-run/router'
+import type { MetaFunction } from '@remix-run/node'
+import type { LoaderFunctionArgs } from '@remix-run/router'
+import { json } from '@remix-run/node'
 import { Button, Card, Space } from 'antd'
+import { useTranslation } from 'react-i18next'
 import LocaleLink from '@/components/locale-link'
 import { i18nServer } from '@/i18n/i18n.server'
 
@@ -29,10 +30,13 @@ export default function () {
   return (
     <>
       <h1>{t('title')}</h1>
-      <LocaleLink to={'/'}>回到首页</LocaleLink>
+      <LocaleLink to='/'>回到首页</LocaleLink>
       <Card title={t('home.language')}>
         <Space direction='vertical'>
-          <div>当前语言：{i18n.language}</div>
+          <div>
+            当前语言：
+            {i18n.language}
+          </div>
           <Space>
             <Button onClick={() => i18n.changeLanguage('en')}>切换到英文</Button>
             <Button onClick={() => i18n.changeLanguage('zh')}>切换到中文</Button>

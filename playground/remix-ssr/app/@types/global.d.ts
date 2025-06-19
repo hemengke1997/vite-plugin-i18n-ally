@@ -1,4 +1,4 @@
-import { type I18nAllyClient } from 'vite-plugin-i18n-ally/client'
+import type { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 declare global {
   interface Window {

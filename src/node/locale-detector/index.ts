@@ -1,15 +1,15 @@
+import type { ChangeEvent } from 'rollup'
+import type { I18nAllyOptions } from '../types'
+import fs from 'node:fs'
+import path from 'node:path'
 import { cloneDeep, throttle, uniq } from 'es-toolkit'
 import { trimEnd } from 'es-toolkit/compat'
 import fg from 'fast-glob'
 import tags from 'language-tags'
-import fs from 'node:fs'
-import path from 'node:path'
-import { type ChangeEvent } from 'rollup'
 import { normalizePath } from 'vite'
 import { DefaultEnabledParsers } from '../parsers'
 import { Parser } from '../parsers/Parser'
 import { ParsePathMatcher } from '../path-matcher'
-import { type I18nAllyOptions } from '../types'
 import { debug } from '../utils/debugger'
 import { unflatten } from '../utils/flat'
 import { logger } from '../utils/logger'
@@ -40,7 +40,7 @@ export interface ParsedFile extends FileInfo {
 export class LocaleDetector {
   readonly config: Config
   private _dirStructure: DirStructure = 'file'
-  private _pathMatcher: { regex: PathMatcherType; matcher: string } | undefined
+  private _pathMatcher: { regex: PathMatcherType, matcher: string } | undefined
   private _localesPaths: string[]
   private _rootPath: string
   private _namespace: boolean
@@ -68,7 +68,7 @@ export class LocaleDetector {
       }
     }
 
-    this._localesPaths = c.localesPaths.map((item) =>
+    this._localesPaths = c.localesPaths.map(item =>
       trimEnd(normalizePath(path.isAbsolute(item) ? item : path.resolve(this._rootPath, item)), '/\\').replaceAll(
         '\\',
         '/',
@@ -83,7 +83,8 @@ export class LocaleDetector {
       if (this._pathMatcher) {
         debug(`Custom Path Matcher: ${this._pathMatcher.matcher}`)
         debug(`Path Matcher Regex: ${this._pathMatcher.regex}`)
-      } else {
+      }
+      else {
         const pathMatcherGussed = await this.resolvePathMatcherByDirStructure()
         this._pathMatcher = {
           regex: ParsePathMatcher(pathMatcherGussed, this.enabledParserExts()),
@@ -167,11 +168,11 @@ export class LocaleDetector {
   }
 
   get allLocaleDirs() {
-    return new Set(this.files.map((t) => t.deepDirpath))
+    return new Set(this.files.map(t => t.deepDirpath))
   }
 
   get allLocaleFiles() {
-    return new Set(this.files.map((t) => t.filepath))
+    return new Set(this.files.map(t => t.filepath))
   }
 
   async onFileChanged(event: ChangeEvent, { fsPath: filepath }: { fsPath: string }) {
@@ -223,7 +224,8 @@ export class LocaleDetector {
       let changed = false
       for (const [d, r] of list) changed = (await this.loadFile(d, r)) || changed
 
-      if (changed) this.update()
+      if (changed)
+        this.update()
     }
   }, THROTTLE_DELAY)
 
@@ -234,7 +236,7 @@ export class LocaleDetector {
   }
 
   private getRelativePath(filepath: string) {
-    let dirpath = this._localeDirs.find((dir) => filepath.startsWith(dir))
+    let dirpath = this._localeDirs.find(dir => filepath.startsWith(dir))
     if (!dirpath) {
       return
     }
@@ -258,7 +260,8 @@ export class LocaleDetector {
       try {
         debug(`Loading locales under ${pathname}`)
         await this.loadDirectory(pathname)
-      } catch (e) {
+      }
+      catch (e) {
         console.error(e)
       }
     }
@@ -321,7 +324,8 @@ export class LocaleDetector {
       }
 
       return true
-    } catch (e) {
+    }
+    catch (e) {
       this.unsetFile(relativePath)
       debug(`Failed to load ${e}`)
       console.error(e)
@@ -384,12 +388,12 @@ export class LocaleDetector {
     }
 
     // resolve parser
-    return this.getParsers().find((parser) => parser.supports(ext))
+    return this.getParsers().find(parser => parser.supports(ext))
   }
 
   private enabledParserExts() {
     return this.getParsers()
-      .map((item) => item.ext)
+      .map(item => item.ext)
       .filter(Boolean)
       .join('|')
   }
@@ -399,7 +403,7 @@ export class LocaleDetector {
 
     const parsers = DefaultEnabledParsers
     if (_parsers?.length) {
-      parsers.push(..._parsers.filter(Boolean).map((parser) => new Parser(parser!)))
+      parsers.push(..._parsers.filter(Boolean).map(parser => new Parser(parser!)))
     }
 
     return parsers
@@ -416,7 +420,8 @@ export class LocaleDetector {
   private getMtime(filepath: string) {
     try {
       return fs.statSync(filepath).mtimeMs
-    } catch {
+    }
+    catch {
       return 0
     }
   }
@@ -437,9 +442,10 @@ export class LocaleDetector {
           _locale_dirs.push('.')
         }
 
-        this._localeDirs = uniq(_locale_dirs.map((p) => path.resolve(this._rootPath, p)))
+        this._localeDirs = uniq(_locale_dirs.map(p => path.resolve(this._rootPath, p)))
         debug(`📂 Locale directories:`, this._localeDirs)
-      } catch (e) {
+      }
+      catch (e) {
         console.error(e)
       }
     }
@@ -465,11 +471,12 @@ export class LocaleDetector {
     })
 
     const total = dirnames.length
-    if (total === 0) return 'file'
+    if (total === 0)
+      return 'file'
 
-    const positives = dirnames.map((d) => tags.check(d))
+    const positives = dirnames.map(d => tags.check(d))
 
-    const positive = positives.filter((d) => d).length
+    const positive = positives.filter(d => d).length
 
     // if there are some dirs are named as locale code, guess it's dir mode
     return positive / total >= POSITIVE_RATE ? 'dir' : 'file'
@@ -484,9 +491,11 @@ export class LocaleDetector {
   resolvePathMatcher(dirStructure?: DirStructure): string {
     if (dirStructure === 'file') {
       return '{locale}.{ext}'
-    } else if (this._namespace) {
+    }
+    else if (this._namespace) {
       return '{locale}/**/{namespace}.{ext}'
-    } else {
+    }
+    else {
       return '{locale}/**/*.{ext}'
     }
   }

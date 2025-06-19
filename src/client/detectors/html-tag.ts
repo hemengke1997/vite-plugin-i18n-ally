@@ -1,4 +1,4 @@
-import { type Detector } from './types'
+import type { Detector } from './types'
 
 export class HtmlTag implements Detector {
   name = 'htmlTag' as const
@@ -6,6 +6,7 @@ export class HtmlTag implements Detector {
     const { lookup } = options
     return document.querySelector('html')?.getAttribute(lookup)
   }
+
   persistLng(
     lng: string,
     options: {

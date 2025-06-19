@@ -1,9 +1,9 @@
 import type { ErrorResponse } from '@remix-run/router'
 import { isRouteErrorResponse, useParams, useRouteError } from '@remix-run/react'
 
-type StatusHandler = (info: { error: ErrorResponse; params: Record<string, string | undefined> }) => JSX.Element | null
+type StatusHandler = (info: { error: ErrorResponse, params: Record<string, string | undefined> }) => JSX.Element | null
 
-type GenericErrorBoundaryProps = {
+interface GenericErrorBoundaryProps {
   defaultStatusHandler?: StatusHandler
   statusHandlers?: Record<number, StatusHandler>
   unexpectedErrorHandler?: (error: unknown) => JSX.Element | null
@@ -13,10 +13,12 @@ export function ErrorBoundaryComponent({
   statusHandlers,
   defaultStatusHandler = ({ error }) => (
     <p>
-      {error.status}: {error.data}
+      {error.status}
+      :
+      {error.data}
     </p>
   ),
-  unexpectedErrorHandler = (error) => <p>{getErrorMessage(error)}</p>,
+  unexpectedErrorHandler = error => <p>{getErrorMessage(error)}</p>,
 }: GenericErrorBoundaryProps) {
   const params = useParams()
   const error = useRouteError()
@@ -38,7 +40,8 @@ export function ErrorBoundaryComponent({
 }
 
 export function getErrorMessage(err: unknown) {
-  if (typeof err === 'string') return err
+  if (typeof err === 'string')
+    return err
   if (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string') {
     return err.message
   }

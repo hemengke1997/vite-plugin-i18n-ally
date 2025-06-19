@@ -33,7 +33,6 @@ export default defineConfig({
 
 关于vscode-i18n-ally配置，请参考 [官方文档](https://github.com/lokalise/i18n-ally/wiki/Configurations)。
 
-
 你也可以在 `vite.config.ts` 中配置 `i18n-ally` 插件的选项，请参考 [插件选项](/zh/reference/plugin-options)。
 
 ## 第 3 步：前端代码中使用
@@ -50,10 +49,10 @@ import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 `I18nAllyClient` API 提供了一些hook，便于开发者初始化应用和使用资源。
 
 ```tsx
+import i18next from 'i18next'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import i18next from 'i18next'
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const fallbackLng = 'en'
@@ -136,7 +135,7 @@ new I18nAllyClient({
   "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.pathMatcher": "{locale}.json",
-  "i18n-ally.namespace": false,
+  "i18n-ally.namespace": false
 }
 ```
 
@@ -165,7 +164,6 @@ export default function Hello() {
   )
 }
 ```
-
 
 现在你的项目中就具备基本的i18n国际化自动懒加载功能了！
 

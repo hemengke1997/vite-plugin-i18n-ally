@@ -33,4 +33,3 @@ features:
     icon: 📦
     details: Out-of-the-box HMR support
 ---
-

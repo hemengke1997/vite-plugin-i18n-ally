@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ParsePathMatcher } from '../src/node/path-matcher'
 
-describe('PathMatching', () => {
+describe('pathMatching', () => {
   const cases = [
     ['{namespace}/**/{locale}.json', 'moduleC/nested/locales/zh-cn.json', 'moduleC', 'zh-cn'],
     ['{namespace}/locales/{locale}.json', 'moduleC/locales/zh-cn.json', 'moduleC', 'zh-cn'],
@@ -27,7 +27,8 @@ describe('PathMatching', () => {
 
       if (!result) {
         expect(expectedNamespace).toStrictEqual(null)
-      } else {
+      }
+      else {
         expect(result.groups?.namespace).toStrictEqual(expectedNamespace)
         expect(result.groups?.locale).toStrictEqual(expectedLocale)
       }

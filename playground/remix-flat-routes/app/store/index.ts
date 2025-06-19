@@ -5,9 +5,9 @@ interface BearState {
   increase: (by: number) => void
 }
 
-const useBearStore = create<BearState>((set) => ({
+const useBearStore = create<BearState>(set => ({
   bears: 0,
-  increase: () => set((state) => ({ bears: state.bears + 1 })),
+  increase: () => set(state => ({ bears: state.bears + 1 })),
 }))
 
 export { useBearStore }

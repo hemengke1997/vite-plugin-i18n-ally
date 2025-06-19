@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next'
 import { useUpdateEffect } from 'ahooks'
+import { useTranslation } from 'react-i18next'
 
 export function useChangeI18n() {
   const { i18n } = useTranslation()

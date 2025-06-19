@@ -5,6 +5,7 @@
 ## 核心逻辑
 
 1. 通过 `vite-plugin-remix-flat-routes` 的 Meta 约定，导出路由所需要的namespaces。
+
 ```ts
 export const handle = {
   i18n: ['home'],
@@ -12,16 +13,17 @@ export const handle = {
 ```
 
 2. 在 react router 的 `dataStrategy` 中加载收集到所有的 `i18n` namespaces，并加载资源
+
 ```ts
 let namespaces: string[] = []
 
 createBrowserRouter(routes, {
   dataStrategy: async ({ matches }) => {
-    const matchesToLoad = matches.filter((m) => m.shouldLoad)
-    const results = await Promise.all(matchesToLoad.map((m) => m.resolve()))
-    namespaces = (await Promise.all(matches.map((m) => m.route.handle)))
-      .filter((t) => t?.i18n)
-      .map((t) => t.i18n)
+    const matchesToLoad = matches.filter(m => m.shouldLoad)
+    const results = await Promise.all(matchesToLoad.map(m => m.resolve()))
+    namespaces = (await Promise.all(matches.map(m => m.route.handle)))
+      .filter(t => t?.i18n)
+      .map(t => t.i18n)
       .flat()
 
     await i18nAlly.asyncLoadResource(i18next.language, {
@@ -37,6 +39,7 @@ createBrowserRouter(routes, {
 ```
 
 3. 在语言更改时，重新加载资源
+
 ```ts
 const changeLanguage = i18next.changeLanguage
 i18next.changeLanguage = async (lng?: string, ...args) => {
@@ -48,6 +51,7 @@ i18next.changeLanguage = async (lng?: string, ...args) => {
 ```
 
 4. 确保路由切换时，重新加载资源
+
 ```ts
 // root.tsx
 

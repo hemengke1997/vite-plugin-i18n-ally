@@ -29,7 +29,7 @@ export default defineConfig({
 })
 ```
 
-vite-plugin-i18n-ally will automatically read the i18n-ally.* configurations from .vscode/settings.json in your project, so no additional configuration is usually needed.
+vite-plugin-i18n-ally will automatically read the i18n-ally.\* configurations from .vscode/settings.json in your project, so no additional configuration is usually needed.
 
 For more information on vscode-i18n-ally configuration, refer to the [official documentation](https://github.com/lokalise/i18n-ally/wiki/Configurations).
 
@@ -49,10 +49,10 @@ import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 The `i18nAlly` API provides some hooks to help developers initialize the application and use resources.
 
 ```tsx
+import i18next from 'i18next'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { initReactI18next } from 'react-i18next'
-import i18next from 'i18next'
 import { I18nAllyClient } from 'vite-plugin-i18n-ally/client'
 
 const fallbackLng = 'en'
@@ -135,7 +135,7 @@ Add internationalization resource files to your project. Assuming our configurat
   "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.pathMatcher": "{locale}.json",
-  "i18n-ally.namespace": false,
+  "i18n-ally.namespace": false
 }
 ```
 
@@ -143,7 +143,7 @@ Then we need to add a resource file `en.json` in the `src/locales` directory:
 
 ```json
 {
-  "hello": "Hello, World!",
+  "hello": "Hello, World!"
 }
 ```
 

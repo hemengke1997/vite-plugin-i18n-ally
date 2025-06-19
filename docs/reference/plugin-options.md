@@ -42,11 +42,11 @@ export default defineConfig({
 
 - **Type**: `string`
 
-:::tip 
+:::tip
 This configuration follows [`vscode-i18n-ally.pathMatcher`](https://github.com/lokalise/i18n-ally/wiki/Path-Matcher)
 :::
 
-Rules for matching i18n resource files. For more rules, see  [Path Matcher](https://github.com/lokalise/i18n-ally/wiki/Path-Matcher).
+Rules for matching i18n resource files. For more rules, see [Path Matcher](https://github.com/lokalise/i18n-ally/wiki/Path-Matcher).
 
 ```json
 {
@@ -55,7 +55,6 @@ Rules for matching i18n resource files. For more rules, see  [Path Matcher](http
 ```
 
 Or configure in `vite.config.ts`:
-
 
 ```ts
 import { defineConfig } from 'vite'
@@ -112,7 +111,6 @@ export default defineConfig({
 
 Resource file parser plugins. We have built-in parsers for `json` / `json5` / `yaml` / `yml` / `ts` / `js` files, and you can also customize parser plugins.
 
-
 ```ts
 import { defineConfig } from 'vite'
 import { i18nAlly } from 'vite-plugin-i18n-ally'
@@ -132,7 +130,9 @@ export default defineConfig({
   ],
 })
 ```
+
 ## useVscodeI18nAllyConfig
+
 - **Type**: `boolean | { stopAt: string }`
 - **Default**: `true`
 

@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { createContainer } from 'context-state'
+import { useState } from 'react'
 
 function useGlobalContext() {
   const [value, setValue] = useState(0)

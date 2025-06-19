@@ -1,4 +1,4 @@
-import { type I18nAllyOptions } from '../types'
+import type { I18nAllyOptions } from '../types'
 import { debug } from './debugger'
 import { VscodeSetting } from './vscode-setting'
 
@@ -23,8 +23,8 @@ function resolveI18nAlly(options?: I18nAllyOptions): {
 }
 
 function initVscodeSetting(options: I18nAllyOptions) {
-  const stopAt =
-    typeof options.useVscodeI18nAllyConfig === 'object' ? options.useVscodeI18nAllyConfig.stopAt : undefined
+  const stopAt
+    = typeof options.useVscodeI18nAllyConfig === 'object' ? options.useVscodeI18nAllyConfig.stopAt : undefined
 
   const vscodeSetting = new VscodeSetting(options?.root || (DEFAULT_OPTIONS.root as string), stopAt)
   const i18nAlly = vscodeSetting.init()
@@ -34,9 +34,9 @@ function initVscodeSetting(options: I18nAllyOptions) {
   return {
     options: {
       ...options,
-      localesPaths: (options.localesPaths ?? i18nAlly?.['localesPaths']) || [],
-      pathMatcher: (options.pathMatcher ?? i18nAlly?.['pathMatcher']) || '',
-      namespace: (options.namespace ?? i18nAlly?.['namespace']) || false,
+      localesPaths: (options.localesPaths ?? i18nAlly?.localesPaths) || [],
+      pathMatcher: (options.pathMatcher ?? i18nAlly?.pathMatcher) || '',
+      namespace: (options.namespace ?? i18nAlly?.namespace) || false,
     },
     vscodeSetting,
   }

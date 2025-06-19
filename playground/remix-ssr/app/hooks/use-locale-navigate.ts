@@ -1,7 +1,7 @@
+import type { RouterNavigateOptions, To } from '@remix-run/router'
 import { useNavigate } from '@remix-run/react'
-import { useTranslation } from 'react-i18next'
-import { type RouterNavigateOptions, type To } from '@remix-run/router'
 import { useMemoizedFn } from 'ahooks'
+import { useTranslation } from 'react-i18next'
 
 interface LocaleNavigateFunction {
   (to: To, options?: RouterNavigateOptions): void
@@ -18,7 +18,8 @@ export default function useLocaleNavigate() {
         to = to.slice(1)
       }
       navigate(`/${locale}/${to}`, options)
-    } else {
+    }
+    else {
       if (to.pathname?.startsWith('/')) {
         to.pathname = to.pathname.slice(1)
       }

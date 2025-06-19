@@ -1,12 +1,13 @@
-import { type I18nAllyClientOptions } from '../client'
-import { type Detection, type Detections, detectLanguage } from '../utils/detect'
+import type { I18nAllyClientOptions } from '../client'
+import type { Detection, Detections } from '../utils/detect'
+import type { Detector, ResolveDetectorLookup, ResolveDetectorName } from './detectors/types'
+import { detectLanguage } from '../utils/detect'
 import { getSupportedLngs, getSupportedNs } from '../utils/supported'
 import { formatLng, omit } from '../utils/utils'
 import { Cookie } from './detectors/cookie'
 import { Header } from './detectors/header'
 import { Path } from './detectors/path'
 import { QueryString } from './detectors/query-string'
-import { type Detector, type ResolveDetectorLookup, type ResolveDetectorName } from './detectors/types'
 
 export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> = Pick<
   I18nAllyClientOptions,
@@ -14,22 +15,22 @@ export type I18nAllyServerOptions<D extends Detector[] | undefined = undefined> 
 > & {
   detection?: Detections<
     | {
-        detect: ResolveDetectorName<Cookie>
-        lookup: ResolveDetectorLookup<Cookie>
-        attributes?: Cookies.CookieAttributes
-        cache?: boolean
-      }
+      detect: ResolveDetectorName<Cookie>
+      lookup: ResolveDetectorLookup<Cookie>
+      attributes?: Cookies.CookieAttributes
+      cache?: boolean
+    }
     | {
-        detect: ResolveDetectorName<Header>
-      }
+      detect: ResolveDetectorName<Header>
+    }
     | {
-        detect: ResolveDetectorName<Path>
-        lookup?: ResolveDetectorLookup<Path>
-      }
+      detect: ResolveDetectorName<Path>
+      lookup?: ResolveDetectorLookup<Path>
+    }
     | {
-        detect: ResolveDetectorName<QueryString>
-        lookup: ResolveDetectorLookup<QueryString>
-      },
+      detect: ResolveDetectorName<QueryString>
+      lookup: ResolveDetectorLookup<QueryString>
+    },
     D extends Detector[]
       ? {
           detect: ResolveDetectorName<D[number]>
@@ -55,14 +56,14 @@ export class I18nAllyServer {
     this.fallbackLng = this.formatLngs(this.options.fallbackLng)
     this.supportedLngs = this.formatLngs(this.supportedLngs)
 
-    this.lngs = this.formatLngs(this.options.lngs || []).filter((lng) => this.supportedLngs.includes(lng))
+    this.lngs = this.formatLngs(this.options.lngs || []).filter(lng => this.supportedLngs.includes(lng))
     if (!this.lngs?.length) {
       this.lngs = this.supportedLngs
     }
 
     const builtinDetectors = [new Cookie(), new Header(), new Path(), new QueryString()] as Detector[]
 
-    this.detectorMap = new Map<string, Detector>(builtinDetectors.map((detector) => [detector.name, detector]))
+    this.detectorMap = new Map<string, Detector>(builtinDetectors.map(detector => [detector.name, detector]))
 
     return this
   }
@@ -82,9 +83,10 @@ export class I18nAllyServer {
   }
 
   persistLng(lng: string, headers: Headers) {
-    const persistDetector = (this.options.detection as Detection[])?.filter((d) => d.cache !== false)
+    const persistDetector = (this.options.detection as Detection[])?.filter(d => d.cache !== false)
 
-    if (!persistDetector?.length) return
+    if (!persistDetector?.length)
+      return
 
     persistDetector.forEach(async (d) => {
       const detector = this.detectorMap.get(d.detect)

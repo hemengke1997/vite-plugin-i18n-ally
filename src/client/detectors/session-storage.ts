@@ -1,4 +1,4 @@
-import { type Detector } from './types'
+import type { Detector } from './types'
 
 export class SessionStorage implements Detector {
   name = 'sessionStorage' as const
@@ -6,6 +6,7 @@ export class SessionStorage implements Detector {
     const { lookup } = options
     return window.sessionStorage.getItem(lookup)
   }
+
   persistLng(lng: string, options: { lookup: string }) {
     const { lookup } = options
     window.sessionStorage.setItem(lookup, lng)

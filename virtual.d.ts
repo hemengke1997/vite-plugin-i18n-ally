@@ -1,5 +1,5 @@
 declare module 'virtual:i18n-ally-async-resource' {
-  type I18nAllyAsyncResource = {
+  interface I18nAllyAsyncResource {
     [lng__ns: string]: () => Promise<{ default: Record<string, any> | undefined }>
   }
   const resources: I18nAllyAsyncResource
@@ -7,7 +7,7 @@ declare module 'virtual:i18n-ally-async-resource' {
 }
 
 declare module 'virtual:i18n-ally-resource' {
-  type I18nAllyResource = {
+  interface I18nAllyResource {
     [lng: string]: Record<string, any>
   }
   const resources: I18nAllyResource
@@ -15,7 +15,7 @@ declare module 'virtual:i18n-ally-resource' {
 }
 
 declare module 'virtual:i18n-ally-empty-resource' {
-  type I18nAllyEmptyResource = {
+  interface I18nAllyEmptyResource {
     [lng__ns: string]: object
   }
   const resources: I18nAllyEmptyResource
@@ -23,7 +23,7 @@ declare module 'virtual:i18n-ally-empty-resource' {
 }
 
 declare module 'virtual:i18n-ally-config' {
-  type I18nAllyConfig = {
+  interface I18nAllyConfig {
     namespace: boolean
     separator: string
   }

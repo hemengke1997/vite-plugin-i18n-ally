@@ -1,8 +1,9 @@
-import { generatePath, Link, type Path } from '@remix-run/react'
-import { type RemixLinkProps } from '@remix-run/react/dist/components'
+import type { Path } from '@remix-run/react'
+import type { RemixLinkProps } from '@remix-run/react/dist/components'
+import { generatePath, Link } from '@remix-run/react'
+import { isString } from 'es-toolkit'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { isString } from 'es-toolkit'
 
 function generateLocalePath(route: string, locale: string, params: Record<string, string>) {
   route = route.replace(/^\/+/, '')
@@ -15,7 +16,8 @@ function LocaleLink(props: RemixLinkProps) {
   let localoTo: Partial<Path>
   if (isString(to)) {
     localoTo = { pathname: to }
-  } else {
+  }
+  else {
     localoTo = to
   }
   return (

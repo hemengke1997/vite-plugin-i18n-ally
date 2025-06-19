@@ -1,13 +1,13 @@
-import { type Detections } from '../utils/detect'
-import { type Cookie, type CookieAttributes } from './detectors/cookie'
-import { type HtmlTag } from './detectors/html-tag'
-import { type LocalStorage } from './detectors/local-storage'
-import { type Navigator } from './detectors/navigator'
-import { type Path } from './detectors/path'
-import { type QueryString } from './detectors/query-string'
-import { type SessionStorage } from './detectors/session-storage'
-import { type Detector } from './detectors/types'
-import { type LogLevel } from './logger'
+import type { Detections } from '../utils/detect'
+import type { Cookie, CookieAttributes } from './detectors/cookie'
+import type { HtmlTag } from './detectors/html-tag'
+import type { LocalStorage } from './detectors/local-storage'
+import type { Navigator } from './detectors/navigator'
+import type { Path } from './detectors/path'
+import type { QueryString } from './detectors/query-string'
+import type { SessionStorage } from './detectors/session-storage'
+import type { Detector } from './detectors/types'
+import type { LogLevel } from './logger'
 
 type ResolveDetectorName<T extends Detector> = T['name']
 type ResolveDetectorLookup<T extends Detector> = Parameters<T['resolveLng']>[0]['lookup']
@@ -64,7 +64,7 @@ export interface I18nAllyClientOptions<D extends Detector[] | undefined = undefi
    * i18n-ally初始化之前的回调
    */
   onBeforeInit?: (
-    current: { lng: string; ns: string[] },
+    current: { lng: string, ns: string[] },
     all: {
       lngs: string[]
       ns: {
@@ -120,49 +120,49 @@ export interface I18nAllyClientOptions<D extends Detector[] | undefined = undefi
    */
   detection?: Detections<
     | {
-        detect: ResolveDetectorName<HtmlTag>
-        lookup?: ResolveDetectorLookup<HtmlTag>
-        cache?: boolean
-      }
+      detect: ResolveDetectorName<HtmlTag>
+      lookup?: ResolveDetectorLookup<HtmlTag>
+      cache?: boolean
+    }
     | {
-        detect: ResolveDetectorName<QueryString>
-        lookup?: ResolveDetectorLookup<QueryString>
-        cache?: boolean
-      }
+      detect: ResolveDetectorName<QueryString>
+      lookup?: ResolveDetectorLookup<QueryString>
+      cache?: boolean
+    }
     | {
-        detect: ResolveDetectorName<Cookie>
-        lookup?: ResolveDetectorLookup<Cookie>
-        cache?: boolean
-        attributes?: CookieAttributes
-      }
+      detect: ResolveDetectorName<Cookie>
+      lookup?: ResolveDetectorLookup<Cookie>
+      cache?: boolean
+      attributes?: CookieAttributes
+    }
     | {
-        detect: ResolveDetectorName<LocalStorage>
-        lookup?: ResolveDetectorLookup<LocalStorage>
-        cache?: boolean
-      }
+      detect: ResolveDetectorName<LocalStorage>
+      lookup?: ResolveDetectorLookup<LocalStorage>
+      cache?: boolean
+    }
     | {
-        detect: ResolveDetectorName<SessionStorage>
-        lookup?: ResolveDetectorLookup<SessionStorage>
-        cache?: boolean
-      }
+      detect: ResolveDetectorName<SessionStorage>
+      lookup?: ResolveDetectorLookup<SessionStorage>
+      cache?: boolean
+    }
     | {
-        detect: ResolveDetectorName<Navigator>
-      }
+      detect: ResolveDetectorName<Navigator>
+    }
     | {
-        detect: ResolveDetectorName<Path>
-        /**
-         * @description
-         * The path index to get language
-         *
-         * 路径中获取语言的索引
-         *
-         * @example
-         * '/en-US/...' => 0
-         * '/prefix/en-US' => 1
-         */
-        lookup?: ResolveDetectorLookup<Path>
-        cache?: boolean
-      },
+      detect: ResolveDetectorName<Path>
+      /**
+       * @description
+       * The path index to get language
+       *
+       * 路径中获取语言的索引
+       *
+       * @example
+       * '/en-US/...' => 0
+       * '/prefix/en-US' => 1
+       */
+      lookup?: ResolveDetectorLookup<Path>
+      cache?: boolean
+    },
     D extends Detector[]
       ? {
           detect: ResolveDetectorName<D[number]>

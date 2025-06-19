@@ -1,5 +1,8 @@
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
+import type { ClientLoaderFunction } from '@remix-run/react'
+import { redirect } from '@remix-run/node'
 import {
-  type ClientLoaderFunction,
+
   json,
   Links,
   Meta,
@@ -8,23 +11,22 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react'
-import { useTranslation } from 'react-i18next'
-import { useChangeLanguage } from 'remix-i18next/react'
-import { type LinksFunction, type LoaderFunctionArgs, type MetaFunction, redirect } from '@remix-run/node'
 import { isBrowser } from 'browser-or-node'
 import i18next from 'i18next'
+import { useTranslation } from 'react-i18next'
+import { useChangeLanguage } from 'remix-i18next/react'
 import { ExternalScripts } from 'remix-utils/external-scripts'
 import { manifest } from 'virtual:public-typescript-manifest'
 import { getSupportedLngs } from 'vite-plugin-i18n-ally/server'
 import AntdConfigProvider from './components/antd-config-provider'
 import { ErrorBoundaryComponent } from './components/error-boundary'
+import globalCss from './css/global.css?url'
 import { useChangeI18n } from './hooks/use-change-i18n'
 import { i18nOptions } from './i18n/i18n'
 import { i18nServer, localeCookie } from './i18n/i18n.server'
 import { resolveNamespace } from './i18n/namespace.client'
 import { siteConfig } from './utils/constants/site'
 import { isDev } from './utils/env'
-import globalCss from './css/global.css?url'
 
 export const clientLoader: ClientLoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
@@ -36,7 +38,7 @@ export const clientLoader: ClientLoaderFunction = async ({ request }) => {
   return {}
 }
 
-export const shouldRevalidate = () => {
+export function shouldRevalidate() {
   return true
 }
 
@@ -73,7 +75,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!params.lang || params.lang !== locale) {
     if (url.pathname === '/') {
       url.pathname = `/${locale}`
-    } else {
+    }
+    else {
       url.pathname = `/${locale}${url.pathname}`
     }
     throw redirect(url.toString())
@@ -110,7 +113,7 @@ function Document({
         <Meta />
         <Links />
 
-        {<script src={manifest.flexible} />}
+        <script src={manifest.flexible} />
 
         {!isBrowser && !isDev() && '__ANTD_STYLE__'}
       </head>
